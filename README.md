@@ -1,4 +1,5 @@
 # TubesAlstrukdat
 
-files : Pedoman + Spesifikasi
+file : Pedoman + Spesifikasi,
+
 src : Kumpulan ADT yang dipakai + main.c
