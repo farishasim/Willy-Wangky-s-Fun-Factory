@@ -39,9 +39,9 @@ void CreateEmpty (Stack *S);
 /* Ciri stack kosong : TOP bernilai Nil */
 
 /* ************ Predikat Untuk test keadaan KOLEKSI ************ */
-boolean IsEmpty (Stack S);
+boolean IsEmptyStackt (Stack S);
 /* Mengirim true jika Stack kosong: lihat definisi di atas */
-boolean IsFull (Stack S);
+boolean IsFullStackt (Stack S);
 /* Mengirim true jika tabel penampung nilai elemen stack penuh */
 
 /* ************ Menambahkan sebuah elemen ke Stack ************ */
