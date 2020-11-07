@@ -1,0 +1,5 @@
+7 * - P O A W < ^ > V
+.
+# size_map char_fence char_empty char_player (size 7 = persegi empty 5x5 ditambah kulit fence)
+#char_office char_antri char_wahana 
+#char_gate_left char_gate_up char_gate_right char_gate_down
