@@ -140,7 +140,7 @@ boolean EQSize (MATRIKS M1, MATRIKS M2){
         return false;
     }
 }
-int NBElmt (MATRIKS M){
+int NBElmtMatriks (MATRIKS M){
     return (M.NBrsEff*M.NKolEff);
 }
 
