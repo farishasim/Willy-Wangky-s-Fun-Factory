@@ -1,19 +1,16 @@
-/* Nama : Almeiza Arvin Muzaki
-NIM : 13519066 */
-
 #include "queue.h"
 #include "boolean.h"
 #include <stdlib.h>
 
-boolean IsEmpty (Queue Q){
+boolean IsEmptyQueue (Queue Q){
 	return (Head(Q)==Nil && Tail(Q)==Nil);
 }
 
-boolean IsFull (Queue Q){
+boolean IsFullQueue (Queue Q){
 	return ((Tail(Q)+1)%MaxEl(Q) == Head(Q));
 }
 
-int NBElmt (Queue Q){
+int NBElmtQueue (Queue Q){
 	if(IsEmpty(Q)){
 			return 0;
 	}
@@ -28,7 +25,7 @@ int NBElmt (Queue Q){
 	}
 }
 
-void MakeEmpty (Queue * Q, int Max){
+void MakeEmptyQueue (Queue * Q, int Max){
 	if (Max>0) {
 		(*Q).T=(infotype*) malloc ((Max)*sizeof (infotype));
 		MaxEl(*Q)=Max-1;
@@ -40,7 +37,7 @@ void MakeEmpty (Queue * Q, int Max){
 	Tail(*Q)=0;
 }
 
-void DeAlokasi(Queue * Q){
+void DeAlokasiQueue(Queue * Q){
 	if(MaxEl(*Q)!=0){
 	    MaxEl(*Q) = 0;
     	Head(*Q) = Nil;
