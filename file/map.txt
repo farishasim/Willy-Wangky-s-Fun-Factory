@@ -1,0 +1,3 @@
+fence * empty - player P office O antri A wahana W
+.
+#fence char_fence empty char_empty player char_player office char_office antri char_antri wahana char_wahana
