@@ -4,13 +4,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void CreateEmpty (Stack *S){
+void CreateEmptyStackt (Stack *S){
   Top(*S) = Nil;
 }
-boolean IsEmpty (Stack S){
+boolean IsEmptyStackt (Stack S){
   return (Top(S)==Nil);
 }
-boolean IsFull (Stack S){
+boolean IsFullStackt (Stack S){
   return(Top(S)==MaxEl-1);
 }
 void Push (Stack * S, infotype X)
