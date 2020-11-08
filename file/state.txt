@@ -1,0 +1,26 @@
+player player 
+uang 10000 
+jam 540 
+day 1
+playerpos 3 3
+prep 1
+materialstorage 0 0 0 0 0
+officepos 5 5
+antripos 7 7 
+wahana uWuCoaster 2 7 0 0 0 0
+actlist 0 0 0 0 0 0 0 0
+antrian 0
+.
+
+#player nama_player 
+#uang jumlah_uang 
+#jam jam_dalam_menit (540 = jam 09.00)
+#day hari_ke
+#playerpos pos_x_player pos_y_player 
+#prep 1 (1= true / prep mode, 0=false/ main mode)
+#materialstorage matbata matbesi matkaca matkayu matplastik 
+#office pos_x_office pos_y_office
+#antripos pos_x_antri pos_y_antri
+#wahana nama_wahana pos_x_wahana pos_y_wahana count_used income count_used1 income1
+#act_list banyak_aksi total_waktu_diperlukan total_uang_diperlukan matbata matbesi matkaca matkayu matplastik aksi1 aksi2 ... ( if in prep mode )
+#antrian banyak_antrian customer1 wahana1 wahana2 ... jumlah_kesabaran customer2 wahana1 ... jumlah_kesabaran ... ( if in main mode )
