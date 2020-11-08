@@ -24,7 +24,7 @@ void IgnoreBlank();
    I.S. : CC sembarang 
    F.S. : CC ≠ BLANK atau CC = MARK */
 
-void STARTKATA();
+void STARTKATA(char * namafile);
 /* I.S. : CC sembarang 
    F.S. : EndKata = true, dan CC = MARK; 
           atau EndKata = false, CKata adalah kata yang sudah diakuisisi,
@@ -44,5 +44,11 @@ void SalinKata();
           CC = BLANK atau CC = MARK; 
           CC adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
+
+void CopyKata(Kata Kin, Kata * Kout);
+
+int ConvertKata(Kata Kin);
+
+void PrintKata(Kata K);
 
 #endif

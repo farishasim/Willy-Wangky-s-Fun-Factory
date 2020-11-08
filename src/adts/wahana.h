@@ -8,8 +8,9 @@
 
 typedef struct {
     Kata nama;
-    Point position;
-    Point size;
+    Kata deskripsi;
+    POINT position;
+    POINT size;
     int harga;
     int kapasitas;
     int durasi;
@@ -21,5 +22,6 @@ typedef struct {
     int income1;
 } Wahana;
 
+void LoadWahana(Wahana * W, Material list[5]);
 
 #endif

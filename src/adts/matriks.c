@@ -9,7 +9,7 @@ void MakeMATRIKS (int NB, int NK, MATRIKS * M){
     int i,j;
     for (i=0;i<=NB-1;i++){
         for (j=0;j<=NB-1;j++){
-            M->Mem[i][j]=0;
+            M->Mem[i][j]='0';
         }
     }
 }

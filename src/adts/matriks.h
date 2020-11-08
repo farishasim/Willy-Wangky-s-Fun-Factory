@@ -7,12 +7,12 @@
 
 /* Ukuran minimum dan maksimum baris dan kolom */
 #define BrsMin 0
-#define BrsMax 99
+#define BrsMax 19
 #define KolMin 0
-#define KolMax 99
+#define KolMax 19
 
 typedef int indeks; /* indeks baris, kolom */
-typedef int ElType; 
+typedef char ElType; 
 typedef struct { 
 	ElType Mem[BrsMax+1][KolMax+1];
     int NBrsEff; /* banyaknya/ukuran baris yg terdefinisi */

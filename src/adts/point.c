@@ -3,7 +3,7 @@
 #include "point.h"
 #include <math.h>
 /**** Konstruktor POINT ****/
-POINT MakePOINT (float x, float y)
+POINT MakePOINT (int x, int y)
 /* Membentuk sebuah POINT dari x dan y dengan x sebagai absis dan y sebagai ordinat */
 { /* KAMUS */
     POINT P;
@@ -24,7 +24,7 @@ boolean IsOrigin (POINT P)
 void BacaPOINT (POINT * P)
 /* Membentuk P dari x dan y yang dibaca dari keyboard */
 { /* KAMUS */
-    float x, y;
+    int x, y;
 /* ALGORITMA */
     scanf("%f", &x);
     scanf("%f", &y);
@@ -37,7 +37,7 @@ void BacaPOINT (POINT * P)
     printf("(%.2f,%.2f)", Absis(P), Ordinat(P));
 }
 /**** Fungsi/Operasi lain terhadap POINT ****/
-    void Geser (POINT *P, float deltaX, float deltaY)
+    void Geser (POINT *P, int deltaX, int deltaY)
 /* Menghasilkan POINT yang merupakan hasil penggeseran P */
 /* sebesar dx arah sumbu x dan dy arah sumbu y */
 { /* ALGORITMA */
@@ -63,7 +63,7 @@ POINT NextY (POINT P){
     next.Y=P.Y+1;
     return next;}
 /* Mengirim salinan P dengan ordinat ditambah satu */
-POINT PlusDelta (POINT P, float deltaX, float deltaY){
+POINT PlusDelta (POINT P, int deltaX, int deltaY){
     POINT next=P;
     next.X=P.X+deltaX;
     next.Y=P.Y+deltaY;

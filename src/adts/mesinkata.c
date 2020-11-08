@@ -5,8 +5,8 @@
 #include "mesinkar.h"
 
 
-void IgnoreBlank(){
-    while (CC==BLANK)
+void IgnoreBlank(char separator){
+    while (CC==separator)
     {
         ADV();
     }
@@ -15,15 +15,15 @@ void IgnoreBlank(){
    I.S. : CC sembarang 
    F.S. : CC ≠ BLANK atau CC = MARK */
 
-void STARTKATA(){
-    START();
-    IgnoreBlank();
+void STARTKATA(char * namafile){
+    START(namafile);
+    IgnoreBlank(BLANK);
     if (CC==MARK){
         EndKata=true;
     }
     else {
         EndKata=false;
-        ADVKATA();
+        ADVKATA(BLANK);
     }
 }
 /* I.S. : CC sembarang 
@@ -31,13 +31,13 @@ void STARTKATA(){
           atau EndKata = false, CKata adalah kata yang sudah diakuisisi,
           CC karakter pertama sesudah karakter terakhir kata */
 
-void ADVKATA(){
-    IgnoreBlank();
+void ADVKATA(char separator){
     if (CC==MARK){
         EndKata=true;
     }
     else {
-        SalinKata();
+        SalinKata(separator);
+        IgnoreBlank(separator);
     }
 
 }
@@ -47,20 +47,19 @@ void ADVKATA(){
           Jika CC = MARK, EndKata = true.		  
    Proses : Akuisisi kata menggunakan procedure SalinKata */
 
-void SalinKata(){
-    int i=0;
-    while ((CC != MARK) && (CC != BLANK)) {
-        CKata.TabKata[i] = CC;
+void SalinKata(char separator){
+    // Kamus Lokal
+    int i;
+    // Algoritma
+    i = 0;
+    while ((CC != MARK) && (CC != separator)) {
+        if (i < NMax) {
+            CKata.TabKata[i] = CC;
+            i++;
+        }
         ADV();
-        i++;
-    } 
-    if (CKata.Length < NMax) {
-        CKata.Length = i;
     }
-    else {
-        CKata.Length = NMax;
-    }
-
+    CKata.Length = i;
 }
 /* Mengakuisisi kata, menyimpan dalam CKata
    I.S. : CC adalah karakter pertama dari kata
@@ -69,3 +68,32 @@ void SalinKata(){
           CC adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
 
+void CopyKata(Kata Kin, Kata * Kout) {
+    int i;
+
+    for(i = 0; i < Kin.Length; i++) {
+        (*Kout).TabKata[i] = Kin.TabKata[i];
+    }
+
+    (*Kout).Length = Kin.Length;
+}
+
+int ConvertKata(Kata Kin) {
+    int i;
+    int val;
+
+    val =0;
+    for(i = 0; i < Kin.Length; i++) {
+        val *= 10;
+        val += (Kin.TabKata[i] - '0');
+    } 
+
+    return val;
+}
+
+void PrintKata(Kata K){
+    int i;
+    for(i = 0; i < K.Length; i++) {
+        printf("%c", K.TabKata[i]);
+    }
+}

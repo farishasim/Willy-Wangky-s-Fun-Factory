@@ -9,8 +9,10 @@ typedef struct {
     int quantity;
 } Material;
 
-void LoadMaterial(Material mat);
+void LoadMaterial(Material * mat);
 
 void WriteMaterial(Material mat);
+
+void PrintMaterial(Material mat);
 
 #endif
