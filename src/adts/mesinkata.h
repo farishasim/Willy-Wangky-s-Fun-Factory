@@ -19,7 +19,7 @@ typedef struct {
 extern boolean EndKata;
 extern Kata CKata;
 
-void IgnoreBlank();
+void IgnoreBlank(char separator);
 /* Mengabaikan satu atau beberapa BLANK
    I.S. : CC sembarang 
    F.S. : CC ≠ BLANK atau CC = MARK */
@@ -30,14 +30,14 @@ void STARTKATA(char * namafile);
           atau EndKata = false, CKata adalah kata yang sudah diakuisisi,
           CC karakter pertama sesudah karakter terakhir kata */
 
-void ADVKATA();
+void ADVKATA(char separator);
 /* I.S. : CC adalah karakter pertama kata yang akan diakuisisi 
    F.S. : CKata adalah kata terakhir yang sudah diakuisisi, 
           CC adalah karakter pertama dari kata berikutnya, mungkin MARK
           Jika CC = MARK, EndKata = true.		  
    Proses : Akuisisi kata menggunakan procedure SalinKata */
 
-void SalinKata();
+void SalinKata(char separator);
 /* Mengakuisisi kata, menyimpan dalam CKata
    I.S. : CC adalah karakter pertama dari kata
    F.S. : CKata berisi kata yang sudah diakuisisi; 

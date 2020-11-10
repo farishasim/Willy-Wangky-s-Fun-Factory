@@ -9,17 +9,20 @@
 #include "jam.h"
 #include "stackt.h"
 #include "queue.h"
+#include "wahana.h"
 
 typedef int infotype;
 typedef int address;   /* indeks tabel */
 
 typedef struct { 
+  Wahana listWahana[5];  /* list semua wahana yang dimiliki pemain */
+  map_wahana map_address;  // map yang setiap elemennya merupakan address dari suatu wahana
   Kata nama;         /* nama yg di-input oleh player */
   int money;         /* uang yang dimiliki pemain */
-  Jam current_time;  /* current time dari permainan */
+  JAM current_time;  /* current time dari permainan */
   int day;           /* hari ke-berapa */
   Map peta;          /* merepresentasikan lahan wahana yang dimiliki oleh pemain */
-  Point position;    /* merepresentasikan kordinat posisi pemain berdiri */
+  POINT position;    /* merepresentasikan kordinat posisi pemain berdiri */
   boolean prep_phase; /* bernilai true jika permainan sedang dalam preparation phase */
   Stack act_list;    /* stack untuk menyimpan aksi-aksi pada prep phase */
   Queue antrian;
@@ -32,7 +35,7 @@ typedef struct {
 
 #define Name(S) (S).nama
 #define Money(S) (S).money
-#define Time(S) (S).current_timet
+#define Time(S) (S).current_time
 #define Day(S) (S).day
 #define Position(S) (S).position
 #define Peta(S) (S).peta

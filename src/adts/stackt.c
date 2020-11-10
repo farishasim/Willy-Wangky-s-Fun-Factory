@@ -11,9 +11,9 @@ boolean IsEmptyStackt (Stack S){
   return (Top(S)==Nil);
 }
 boolean IsFullStackt (Stack S){
-  return(Top(S)==MaxEl-1);
+  return(Top(S)==MaxElStack-1);
 }
-void Push (Stack * S, infotype X)
+void Push (Stack * S, infotype X){
   Top(*S)++;
   InfoTop(*S) = X;
 }

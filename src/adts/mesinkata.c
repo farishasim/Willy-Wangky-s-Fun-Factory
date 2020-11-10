@@ -4,6 +4,8 @@
 #include "mesinkata.h"
 #include "mesinkar.h"
 
+boolean EndKata;
+Kata CKata;
 
 void IgnoreBlank(char separator){
     while (CC==separator)

@@ -35,3 +35,7 @@ void SetWahana(Map * M, POINT P) {
 /* F.S. M sebuah map yang berisi n+1 buah wahana, dengan wahana baru terletak pada koordinat P*/
     Elmt(*M,Absis(P),Ordinat(P)) = 'W';
 }
+
+boolean IsWahana(Map M, POINT P) {
+    return Elmt(M,Absis(P),Ordinat(P)) == 'W';
+}
