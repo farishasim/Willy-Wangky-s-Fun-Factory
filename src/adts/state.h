@@ -17,7 +17,7 @@ typedef int address;   /* indeks tabel */
 typedef struct { 
   Wahana listWahana[5];  /* list semua wahana yang dimiliki pemain */
   map_wahana map_address;  // map yang setiap elemennya merupakan address dari suatu wahana
-  Kata nama;         /* nama yg di-input oleh player */
+  Kata username;         /* nama yg di-input oleh player */
   int money;         /* uang yang dimiliki pemain */
   JAM current_time;  /* current time dari permainan */
   int day;           /* hari ke-berapa */
@@ -26,6 +26,7 @@ typedef struct {
   boolean prep_phase; /* bernilai true jika permainan sedang dalam preparation phase */
   Stack act_list;    /* stack untuk menyimpan aksi-aksi pada prep phase */
   Queue antrian;
+  int NWahana;       /* banyaknya wahana yang dimiliki pemain*/
 } State;
 
 /* WARNING!! : Adt state ini masih mentah, */
@@ -33,7 +34,7 @@ typedef struct {
 /* tergantung dari banyak aspek, misalnya adt yang digunakan*/
 /* atau kebutuhan fungsi2 pada game mechanicnya atau yg lainnya*/
 
-#define Name(S) (S).nama
+#define Name(S) (S).username
 #define Money(S) (S).money
 #define Time(S) (S).current_time
 #define Day(S) (S).day
@@ -42,7 +43,9 @@ typedef struct {
 #define Prep(S) (S).prep_phase
 #define Antrian(S) (S).antrian
 #define Act(S) (S).act_list
+#define ListWahana(S) (S).listWahana
 
+//********** PRIMITIF Untuk STATE ***********//
 void StartState(State * S);
 /* I.S. sembarang */
 /* F.S. State S merupakan state di awal permainan*/
@@ -55,5 +58,11 @@ void LoadState(State * S);
 /* I.S. sembarang */
 /* F.S. State S adalah state permainan yang sudah di-save sebelumnya pada suatu file eksternal */
 
+
+
+//********** Fungsi-fungsi untuk Support ************//
+void printListWahana(State * S);
+/* I.S. Sembarang */
+/* F.S. Menampilkan semua nama wahana yang dimiliki pemain*/
 
 #endif

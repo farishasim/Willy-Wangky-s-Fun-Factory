@@ -46,4 +46,7 @@ Wahana getWahanaAt(map_wahana map_of_address, POINT P);
 void printDetail(Wahana W);
     // menampilkan detail wahana ke layar.
 
+void printReport(Wahana W);
+    //menampilkan report wahana ke layar.
+
 #endif

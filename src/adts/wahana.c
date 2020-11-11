@@ -1,4 +1,5 @@
 #include "wahana.h"
+#include <stdio.h>
 
 void LoadWahana(Wahana * W, Material list_material[5]){
     int i;
@@ -66,5 +67,33 @@ Wahana getWahanaAt(map_wahana map_of_address, POINT P) {
 }
 
 void printDetail(Wahana W) {
+    // menampilkan detail wahana ke layar.
+    printd("// Melihat detail wahana //");
+
+    printf("\nNama : ");
+    PrintKata(W.nama);
     
+    printf("\nLokasi : ");
+    TulisPOINT(W.position);
+    
+    printf("\nUpgrade(s) : []");  // untuk sementara kosong dulu
+
+    printf("\nHistory : ");   // untuk sementara kosong dulu
+    
+    printf("\nStatus : ");
+    if (W.broke) {
+        printf("Tidak Berfungsi\n");
+    } else {
+        printf("berfungsi\n");
+    }
+}
+
+
+void printReport(Wahana W){
+    //menampilkan report wahana ke layar.
+    printf("Total Pemakaian : %d\n", W.count_used);
+    printf("Pemakaian hari ini : %d\n", W.count_used1);
+
+    printf("Total Pemasukkan : %d\n", W.income);
+    printf("Pemasukkan hari ini: %d\n", W.income1);
 }

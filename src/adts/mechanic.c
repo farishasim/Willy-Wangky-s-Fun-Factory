@@ -62,6 +62,7 @@ void Office(State * S) {
 
     if (NEQPOINT((*S).position, office)) {
         printf("Anda tidak sedang berada di Office!");
+        return;
     }
 
     printf("Anda sedang membuka Office.");
@@ -69,13 +70,13 @@ void Office(State * S) {
     do {
         fgets(&choice, 8, stdin);
         if (choice == "Details") {
-            printListWahana(*S); // tampilkan semua pilihan wahana
+            printListWahana(S); // tampilkan semua pilihan wahana
             scanf("%d", &choice_w);
             printDetail((*S).listWahana[choice_w]);
             Time(*S) = NextNMenit(Time(*S), 2); // melihat detail membutuhkan waktu 2 menit.
         
         } else if (choice == "Report") {
-            printListWahana(*S); // tampilkan semua pilihan wahana
+            printListWahana(S); // tampilkan semua pilihan wahana
             scanf("%d", &choice_w);
             printReport((*S).listWahana[choice_w]);
             Time(*S) = NextNMenit(Time(*S), 2); // melihat report membutuhkan waktu 2 menit.
