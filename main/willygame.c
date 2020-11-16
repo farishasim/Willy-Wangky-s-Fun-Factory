@@ -10,7 +10,11 @@ int main()
 {
     if (!isPlaying)
     {
-        printf("\n******************** Welcome to Willy Wangky's fum factory!!! ********************\n");
+        printf("************************************************************************************\n");
+        printf("*                                                                                  *\n");
+        printf("*                    Welcome to Willy Wangky's fum factory!!!                      *\n");
+        printf("*                                                                                  *\n");
+        printf("************************************************************************************\n");
         isLoad = false;
         isName = false;
     }
