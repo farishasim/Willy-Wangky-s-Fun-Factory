@@ -1,3 +1,0 @@
-bata 15 besi 20 kaca 20 kayu 10 plastik 15 
-. 
-#nama_material harga_material
