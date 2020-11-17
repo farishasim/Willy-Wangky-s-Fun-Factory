@@ -24,9 +24,9 @@ void Repair(State * S) {
         return;
     }
 
-    (*address_wahana_kanan).broke = false;
+    (*address_wahana_kanan).time_reparation = (*address_wahana_kanan).durasi_repair;
     Money(*S) -= (*address_wahana_kanan).harga_repair;
-    Time(*S) = NextNMenit(Time(*S), (*address_wahana_kanan).durasi_repair);
+    timeFlow(S,5);  //  waktu yang diperlukan untuk memulai perbaikan wahana adalah 5 menit (opsional)
     printf("// Memperbaiki ");
     PrintKata((*address_wahana_kanan).nama);
 
@@ -47,39 +47,49 @@ void Detail(State * S) {
     wahana_kanan = getWahanaAt((*S).map_address, posisi_wahana);
 
     printDetail(wahana_kanan);
-    Time(*S) = NextNMenit(Time(*S), 2); // melihat detail membutuhkan waktu 2 menit.
+    timeFlow(S,2); // melihat detail membutuhkan waktu 2 menit. (opsional)
 }
 
 
 void Office(State * S) {
-    // posisi office adalah di (5,5)
     POINT office;
     char choice[8];
     int choice_w;
     boolean exit;
 
-    office = MakePOINT(5,5);
+    office = MakePOINT(Absis((*S).office),Ordinat((*S).office));
 
     if (NEQPOINT((*S).position, office)) {
-        printf("Anda tidak sedang berada di Office!");
+        printf("// Anda tidak sedang berada di Office! //");
         return;
     }
 
-    printf("Anda sedang membuka Office.");
+    printf("// Memasuki office mode //");
+
+    exit = false;
 
     do {
+        printf("Masukkan perintah (Details / Report / Exit):");
         fgets(&choice, 8, stdin);
         if (choice == "Details") {
             printListWahana(S); // tampilkan semua pilihan wahana
             scanf("%d", &choice_w);
-            printDetail((*S).listWahana[choice_w]);
-            Time(*S) = NextNMenit(Time(*S), 2); // melihat detail membutuhkan waktu 2 menit.
-        
+            if (choice_w >= 0 && choice_w < (*S).NWahana) {
+                printDetail((*S).listWahana[choice_w]);
+                timeFlow(S,2); // melihat detail membutuhkan waktu 2 menit.
+            } else {
+                printf("invalid");
+            }
+
         } else if (choice == "Report") {
             printListWahana(S); // tampilkan semua pilihan wahana
             scanf("%d", &choice_w);
-            printReport((*S).listWahana[choice_w]);
-            Time(*S) = NextNMenit(Time(*S), 2); // melihat report membutuhkan waktu 2 menit.
+            if (choice_w >= 0 && choice_w < (*S).NWahana) {
+                printReport((*S).listWahana[choice_w]);
+                timeFlow(S,2); // melihat report membutuhkan waktu 2 menit.
+            } else {
+                printf("invalid");
+            }
 
         } else if (choice == "Exit") {
             exit = true;
@@ -92,3 +102,83 @@ void Office(State * S) {
 
     printf("Anda keluar dari Office.");
 }   
+
+
+//********** Fungsi-fungsi untuk Support ************//
+void printListWahana(State * S) {
+/* I.S. Sembarang */
+/* F.S. Menampilkan semua nama wahana yang dimiliki pemain*/
+    int i;
+    
+    printf("Daftar Wahana yang dimiliki : \n");
+    
+    for(i = 0; i < ((*S).NWahana); i++) {
+        printf("%d. ", i+1);
+        PrintKata((*S).listWahana[i].nama);
+        printf("\n");
+    }
+}
+
+
+
+void incrementTime(State * S) {
+/* I.S. Sembarang */
+/* F.S. Time(S) akan bertambah satu menit, dan semua proses lain akan dijalankan paralel */
+    int i,count_play,j;
+    Customer temp;
+    boolean quit;
+    Time(*S) = NextMenit(Time(*S));
+
+    // cek setiap customer
+    for(i=0 ; i<NBElmtQueue(Antrian(*S)); i++) {
+        Dequeue(&Antrian(*S),&temp);
+        quit = false;
+        temp.time -= 1;
+        if (temp.time == 0) {
+            if (temp.loc != -1) {  //  customer berada pada suatu wahana
+                temp.loc = -1;
+                // skema menghitung banyaknya wahana yang ingin dinaiki user
+                count_play = 0;
+                for (j=0; j<5; j++) {
+                    if (temp.play[j] != -1) {
+                        count_play++;
+                    }
+                }
+                if (count_play == 0) {  //  jika customer sudah tidak lagi memiliki daftar wahana yang ingin dinaiki, ia akan keluar
+                    quit = true;
+                } else {
+                    temp.time = 10;
+                }
+            } else {   //  customer berada pada antrian
+                temp.kesabaran -= 1;
+                temp.prio -= 1;
+                if (temp.kesabaran == 0) {  //  jika kesabaran customer habis, ia akan keluar.
+                    quit = true;
+                }
+            }
+        }
+        if (!quit) {
+            Enqueue(&Antrian(*S),temp);
+        }
+    }
+
+    //  cek setiap wahana
+    for(i=0; i<(*S).NWahana; i++) {
+        if ((*S).listWahana[i].time_reparation != 0) {  // wahana sedang dalam perbaikan 
+            (*S).listWahana[i].time_reparation -= 1;
+            if ((*S).listWahana[i].time_reparation == 0) {  // jika wahana selesai diperbaiki
+                (*S).listWahana[i].broke = false;
+            }
+        }
+    }
+}
+
+
+void timeFlow(State * S, int N) {
+    // I.S. Sembarang
+    // F.S. Time(S) akan bertambah sebanyak N menit
+    int i;
+    for(i=0; i<N; i++) {
+        incrementTime(S);
+    }
+}

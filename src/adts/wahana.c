@@ -97,3 +97,14 @@ void printReport(Wahana W){
     printf("Total Pemasukkan : %d\n", W.income);
     printf("Pemasukkan hari ini: %d\n", W.income1);
 }
+
+
+/* &W = 8
+MAP                     MATRIK ADDress
+* * * * * *             0 0 0 0 0 0
+* * * W W *             0 0 0 8 8 0
+* * * W W *             0 0 0 8 8 0
+* * * * * *             0 0 0 0 0 0
+*/
+
+// *Matriks_Address[4][2]

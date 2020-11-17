@@ -23,19 +23,3 @@ void LoadState(State * S){
     CopyKata(CKata, &Name(*S));
 }
 
-
-//********** Fungsi-fungsi untuk Support ************//
-void printListWahana(State * S) {
-/* I.S. Sembarang */
-/* F.S. Menampilkan semua nama wahana yang dimiliki pemain*/
-    int i;
-    
-    printf("Daftar Wahana yang dimiliki : \n");
-    
-    for(i = 0; i < ((*S).NWahana); i++) {
-        printf("%d. ", i+1);
-        PrintKata((*S).listWahana[i].nama);
-        printf("\n");
-    }
-}
-

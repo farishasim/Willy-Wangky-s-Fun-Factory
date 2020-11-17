@@ -35,7 +35,7 @@ int NBElmt (PrioQueueChar Q){
 }
 
 void MakeEmpty (PrioQueueChar * Q, int Max){
-    (*Q).T= (infotype * ) malloc (Max * sizeof(infotype));
+    (*Q).T= (Customer * ) malloc (Max * sizeof(Customer));
     if ((*Q).T!=NULL){
         (*Q).MaxEl=Max;
         (*Q).HEAD=Nil;
@@ -52,7 +52,7 @@ void DeAlokasi(PrioQueueChar * Q){
     free((*Q).T);
 }
 
-void Enqueue (PrioQueueChar * Q, infotype X){
+void Enqueue (PrioQueueChar * Q, Customer X){
     if(IsEmpty(*Q)){
         (*Q).HEAD=0;
     }
@@ -60,7 +60,7 @@ void Enqueue (PrioQueueChar * Q, infotype X){
     InfoTail(*Q)=X;
     int i = (*Q).TAIL;
     int j = (i-1+(*Q).MaxEl)%(*Q).MaxEl;
-    infotype temp;
+    Customer temp;
     while ( i!=(*Q).HEAD && Prio((*Q).T[i])<Prio((*Q).T[j])){
         temp=(*Q).T[i];
         (*Q).T[i]=(*Q).T[j];
@@ -74,7 +74,7 @@ void Enqueue (PrioQueueChar * Q, infotype X){
 /* F.S. X disisipkan pada posisi yang tepat sesuai dengan prioritas,
         TAIL "maju" dengan mekanisme circular buffer; */
         
-void Dequeue (PrioQueueChar * Q, infotype * X){
+void Dequeue (PrioQueueChar * Q, Customer * X){
     *X=InfoHead(*Q);
     if ((*Q).HEAD==((*Q).TAIL)){
         (*Q).HEAD=Nil;

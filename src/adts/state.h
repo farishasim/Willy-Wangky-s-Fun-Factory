@@ -8,7 +8,7 @@
 #include "map.h"
 #include "jam.h"
 #include "stackt.h"
-#include "queue.h"
+#include "PrioQueueChar.h"
 #include "wahana.h"
 
 typedef int infotype;
@@ -22,10 +22,11 @@ typedef struct {
   JAM current_time;  /* current time dari permainan */
   int day;           /* hari ke-berapa */
   Map peta;          /* merepresentasikan lahan wahana yang dimiliki oleh pemain */
+  POINT office;
   POINT position;    /* merepresentasikan kordinat posisi pemain berdiri */
   boolean prep_phase; /* bernilai true jika permainan sedang dalam preparation phase */
   Stack act_list;    /* stack untuk menyimpan aksi-aksi pada prep phase */
-  Queue antrian;
+  PrioQueueChar antrian;
   int NWahana;       /* banyaknya wahana yang dimiliki pemain*/
 } State;
 
@@ -58,11 +59,5 @@ void LoadState(State * S);
 /* I.S. sembarang */
 /* F.S. State S adalah state permainan yang sudah di-save sebelumnya pada suatu file eksternal */
 
-
-
-//********** Fungsi-fungsi untuk Support ************//
-void printListWahana(State * S);
-/* I.S. Sembarang */
-/* F.S. Menampilkan semua nama wahana yang dimiliki pemain*/
 
 #endif
