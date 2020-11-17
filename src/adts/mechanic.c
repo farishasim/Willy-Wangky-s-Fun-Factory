@@ -91,7 +91,7 @@ void Office(State * S) {
             printListWahana(S); // tampilkan semua pilihan wahana
             scanf("%d", &choice_w);
             if (choice_w >= 0 && choice_w < (*S).NWahana) {
-                printDetail((*S).listWahana[choice_w]);
+                printDetail(*ListWahana(*S)[choice_w]);
                 timeFlow(S,2); // melihat detail membutuhkan waktu 2 menit.
             } else {
                 printf("invalid");
@@ -101,7 +101,7 @@ void Office(State * S) {
             printListWahana(S); // tampilkan semua pilihan wahana
             scanf("%d", &choice_w);
             if (choice_w >= 0 && choice_w < (*S).NWahana) {
-                printReport((*S).listWahana[choice_w]);
+                printReport(*ListWahana(*S)[choice_w]);
                 timeFlow(S,2); // melihat report membutuhkan waktu 2 menit.
             } else {
                 printf("invalid");
@@ -130,7 +130,7 @@ void printListWahana(State * S) {
     
     for(i = 0; i < ((*S).NWahana); i++) {
         printf("%d. ", i+1);
-        PrintKata((*S).listWahana[i].nama);
+        PrintKata(((*ListWahana(*S)[i])).nama);
         printf("\n");
     }
 }
@@ -208,10 +208,10 @@ void incrementTime(State * S) {
 
     //  CEK SETIAP WAHANA
     for(i=0; i<(*S).NWahana; i++) {
-        if ((*S).listWahana[i].time_reparation != 0) {  // wahana sedang dalam perbaikan 
-            (*S).listWahana[i].time_reparation -= 1;
-            if ((*S).listWahana[i].time_reparation == 0) {  // jika wahana selesai diperbaiki
-                (*S).listWahana[i].broke = false;
+        if ((*ListWahana(*S)[i]).time_reparation != 0) {  // wahana sedang dalam perbaikan 
+            (*ListWahana(*S)[i]).time_reparation -= 1;
+            if ((*ListWahana(*S)[i]).time_reparation == 0) {  // jika wahana selesai diperbaiki
+                (*ListWahana(*S)[i]).broke = false;
             }
         }
     }

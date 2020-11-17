@@ -11,11 +11,10 @@
 #include "PrioQueueChar.h"
 #include "wahana.h"
 
-typedef int infotype;
-typedef int address;   /* indeks tabel */
-
 typedef struct { 
-  Wahana listWahana[5];  /* list semua wahana yang dimiliki pemain */
+  Wahana data_wahana[10]; //  Data semua wahana yang tersedia pada permainan
+  address_w listWahana[5];  /* list semua wahana yang dimiliki pemain */
+                            /* setiap elemennya adalah address memori wahana */
   map_wahana map_address;  // map yang setiap elemennya merupakan address dari suatu wahana
   Kata username;         /* nama yg di-input oleh player */
   int money;         /* uang yang dimiliki pemain */
@@ -47,6 +46,7 @@ typedef struct {
 #define Act(S) (S).act_list
 #define ListWahana(S) (S).listWahana
 #define DataCustomers(S) (S).data_customer
+#define DataWahana(S)  (S).data_wahana
 
 //********** PRIMITIF Untuk STATE ***********//
 void StartState(State * S);
