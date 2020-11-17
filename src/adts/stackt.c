@@ -5,10 +5,10 @@
 #include <stdio.h>
 
 void CreateEmptyStackt (Stack *S){
-  Top(*S) = Nil;
+  Top(*S) = NilStackt;
 }
 boolean IsEmptyStackt (Stack S){
-  return (Top(S)==Nil);
+  return (Top(S)==NilStackt);
 }
 boolean IsFullStackt (Stack S){
   return(Top(S)==MaxElStack-1);

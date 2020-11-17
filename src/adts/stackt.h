@@ -7,7 +7,7 @@
 
 #include "boolean.h"
 
-#define Nil -1
+#define NilStackt -1
 #define MaxElStack 10
 /* Nil adalah stack dengan elemen kosong . */
 
@@ -32,7 +32,7 @@ typedef struct {
 
 /* ************ Prototype ************ */
 /* *** Konstruktor/Kreator *** */
-void CreateEmpty (Stack *S);
+void CreateEmptyStackt (Stack *S);
 /* I.S. sembarang; */
 /* F.S. Membuat sebuah stack S yang kosong berkapasitas MaxElStack */
 /* jadi indeksnya antara 0.. MaxElStack */

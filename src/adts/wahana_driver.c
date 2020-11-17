@@ -26,7 +26,7 @@ int main() {
     PrintKata(W.nama); printf("\n");
     TulisPOINT(W.size); printf("\n");
     for(i = 0; i < 5; i++){
-        PrintMaterial(W.bahan[i]); printf("\n");
+        printf("%d",W.bahan[i]); printf("\n");
     }
     PrintKata(W.deskripsi);
 
@@ -41,7 +41,7 @@ int main() {
     PrintKata((*addressmap[0][0]).nama); printf("\n");
     TulisPOINT((*addressmap[0][0]).size); printf("\n");
     for(i = 0; i < 5; i++){
-        PrintMaterial((*addressmap[0][0]).bahan[i]); printf("\n");
+        printf("%d",(*addressmap[0][0]).bahan[i]); printf("\n");
     }
     PrintKata((*addressmap[0][0]).deskripsi);
 

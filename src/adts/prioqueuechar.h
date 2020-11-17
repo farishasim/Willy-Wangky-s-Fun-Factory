@@ -2,30 +2,25 @@
 /* Definisi ADT Priority Queue Char dengan representasi array secara eksplisit dan alokasi dinamik */
 /* Model Implementasi Versi III dengan circular buffer */
 /* Elemen queue terurut tidak mengecil berdasarkan elemen prio */
+/* Elemen queue adalah address memori dari customer*/
 
 #ifndef prioqueuechar_H
 #define prioqueuechar_H
 
 #include "boolean.h"
+#include "listcustomer.h"
 
-#define Nil -1
+#define Nilqueue -1
 /* Konstanta untuk mendefinisikan address tak terdefinisi */
 
 /* Definisi elemen dan address */
-typedef struct {
-    int prio; /* [1..10], prioritas dengan nilai 1..10 (1 adalah prioritas tertinggi) */
-    int play[5];  /* [1..10], prioritas dengan nilai 1..10 (1 adalah prioritas tertinggi) */
-    int loc;  
-    int time;
-    int kesabaran;
-} Customer;
 
 typedef int address;   /* indeks tabel */
 /* Contoh deklarasi variabel bertype PrioQueueChar : */
 /* Versi I : tabel dinamik, Head dan Tail eksplisit, ukuran disimpan */
 
 typedef struct {
-    Customer * T;   /* tabel penyimpan elemen */
+    address_c * T;   /* tabel penyimpan elemen */
     address HEAD;  /* alamat penghapusan */
     address TAIL;  /* alamat penambahan */
     int MaxEl;     /* Max elemen queue */
@@ -33,8 +28,8 @@ typedef struct {
 /* Definisi PrioQueueChar kosong: HEAD=Nil; TAIL=Nil. */
 
 /* ********* AKSES (Selektor) ********* */
-/* Jika e adalah Customer dan Q adalah PrioQueueChar, maka akses elemen : */
-#define Prio(e)     (e).prio
+/* Jika e adalah address_c dan Q adalah PrioQueueChar, maka akses elemen : */
+
 #define Head(Q)     (Q).HEAD
 #define Tail(Q)     (Q).TAIL
 #define InfoHead(Q) (Q).T[(Q).HEAD]
@@ -66,12 +61,12 @@ void DeAlokasi(PrioQueueChar * Q);
 /* F.S. Q menjadi tidak terdefinisi lagi, MaxEl(Q) diset 0 */
 
 /* *** Primitif Add/Delete *** */
-void Enqueue (PrioQueueChar * Q, Customer X);
+void Enqueue (PrioQueueChar * Q, address_c X);
 /* Proses: Menambahkan X pada Q dengan aturan priority queue, terurut mengecil berdasarkan prio */
 /* I.S. Q mungkin kosong, tabel penampung elemen Q TIDAK penuh */
 /* F.S. X disisipkan pada posisi yang tepat sesuai dengan prioritas,
         TAIL "maju" dengan mekanisme circular buffer; */
-void Dequeue (PrioQueueChar * Q, Customer * X);
+void Dequeue (PrioQueueChar * Q, address_c * X);
 /* Proses: Menghapus X pada Q dengan aturan FIFO */
 /* I.S. Q tidak mungkin kosong */
 /* F.S. X = nilai elemen HEAD pd I.S., HEAD "maju" dengan mekanisme circular buffer;

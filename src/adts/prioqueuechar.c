@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-boolean IsEmpty (PrioQueueChar Q){
-    if (Q.HEAD==Nil && Q.TAIL==Nil){
+boolean IsEmptyQueue (PrioQueueChar Q){
+    if (Q.HEAD==Nilqueue && Q.TAIL==Nilqueue){
         return true;
     }
     else {
@@ -13,7 +13,7 @@ boolean IsEmpty (PrioQueueChar Q){
     }
 }
 
-boolean IsFull (PrioQueueChar Q){
+boolean IsFullQueue (PrioQueueChar Q){
     if (Q.HEAD==(Q.TAIL+1)%MaxEl(Q)){
         return true;
     }
@@ -22,24 +22,24 @@ boolean IsFull (PrioQueueChar Q){
     }
 }
 
-int NBElmt (PrioQueueChar Q){
-    if (IsEmpty(Q)){
+int NBElmtQueue (PrioQueueChar Q){
+    if (IsEmptyQueue(Q)){
         return 0;
     }
-    if (IsFull(Q)){
+    if (IsFullQueue(Q)){
         return MaxEl(Q);
     }
-    if (!IsEmpty(Q) && !IsFull(Q)){
+    if (!IsEmptyQueue(Q) && !IsFullQueue(Q)){
         return (Q.TAIL-Q.HEAD + Q.MaxEl)%Q.MaxEl+1;
     }
 }
 
-void MakeEmpty (PrioQueueChar * Q, int Max){
-    (*Q).T= (Customer * ) malloc (Max * sizeof(Customer));
+void MakeEmptyQueue (PrioQueueChar * Q, int Max){
+    (*Q).T= (address_c * ) malloc (Max * sizeof(address_c));
     if ((*Q).T!=NULL){
         (*Q).MaxEl=Max;
-        (*Q).HEAD=Nil;
-        (*Q).TAIL=Nil;
+        (*Q).HEAD=Nilqueue;
+        (*Q).TAIL=Nilqueue;
     }
     else{
         (*Q).MaxEl=0;
@@ -52,15 +52,15 @@ void DeAlokasi(PrioQueueChar * Q){
     free((*Q).T);
 }
 
-void Enqueue (PrioQueueChar * Q, Customer X){
-    if(IsEmpty(*Q)){
+void Enqueue (PrioQueueChar * Q, address_c X){
+    if(IsEmptyQueue(*Q)){
         (*Q).HEAD=0;
     }
     (*Q).TAIL=((*Q).TAIL+1)%(*Q).MaxEl;
     InfoTail(*Q)=X;
     int i = (*Q).TAIL;
     int j = (i-1+(*Q).MaxEl)%(*Q).MaxEl;
-    Customer temp;
+    address_c temp;
     while ( i!=(*Q).HEAD && Prio((*Q).T[i])<Prio((*Q).T[j])){
         temp=(*Q).T[i];
         (*Q).T[i]=(*Q).T[j];
@@ -74,11 +74,11 @@ void Enqueue (PrioQueueChar * Q, Customer X){
 /* F.S. X disisipkan pada posisi yang tepat sesuai dengan prioritas,
         TAIL "maju" dengan mekanisme circular buffer; */
         
-void Dequeue (PrioQueueChar * Q, Customer * X){
+void Dequeue (PrioQueueChar * Q, address_c * X){
     *X=InfoHead(*Q);
     if ((*Q).HEAD==((*Q).TAIL)){
-        (*Q).HEAD=Nil;
-        (*Q).TAIL=Nil;
+        (*Q).HEAD=Nilqueue;
+        (*Q).TAIL=Nilqueue;
     }
     else {
         (*Q).HEAD= ((*Q).HEAD+1)%(*Q).MaxEl;
@@ -86,12 +86,12 @@ void Dequeue (PrioQueueChar * Q, Customer * X){
 }
 /* Proses: Menghapus X pada Q dengan aturan FIFO */
 /* I.S. Q tidak mungkin kosong */
-/* F.S. X = nilai elemen HEAD pd I.S., HEAD "maju" dengan mekanisme circular buffer;
+/* F.S. X = nilqueueNilqueueai elemen HEAD pd I.S., HEAD "maju" dengan mekanisme circular buffer;
         Q mungkin kosong */
 
 /* Operasi Tambahan */
 void PrintPrioQueueChar (PrioQueueChar Q){
-    if (IsEmpty(Q)){
+    if (IsEmptyQueue(Q)){
     }
     else{
         printf("%d %c\n",Prio(InfoHead(Q)),Info(InfoHead(Q)));

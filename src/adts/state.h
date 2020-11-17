@@ -28,6 +28,7 @@ typedef struct {
   Stack act_list;    /* stack untuk menyimpan aksi-aksi pada prep phase */
   PrioQueueChar antrian;
   int NWahana;       /* banyaknya wahana yang dimiliki pemain*/
+  ListCustomer data_customer;
 } State;
 
 /* WARNING!! : Adt state ini masih mentah, */
@@ -45,6 +46,7 @@ typedef struct {
 #define Antrian(S) (S).antrian
 #define Act(S) (S).act_list
 #define ListWahana(S) (S).listWahana
+#define DataCustomers(S) (S).data_customer
 
 //********** PRIMITIF Untuk STATE ***********//
 void StartState(State * S);

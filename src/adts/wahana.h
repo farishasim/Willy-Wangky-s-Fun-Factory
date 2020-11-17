@@ -16,7 +16,7 @@ typedef struct twahana {
     int harga;
     int kapasitas;
     int durasi;
-    Material bahan[5];
+    int bahan[5];
     int uang;
     int harga_repair;
     int durasi_repair;  // waktu yang diperlukan untuk repair

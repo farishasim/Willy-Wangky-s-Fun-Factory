@@ -36,4 +36,20 @@ void timeFlow(State * S, int N);
 // I.S. Sembarang
 // F.S. Time(S) akan bertambah sebanyak N menit dan semua proses lain akan dijalankan paralel
 
+void generateCustomer(State * S);
+/* I.S. Sembarang */
+/* F.S. didatangkan seorang customer baru. 
+        jika antrian sudah penuh, maka customer tersebut pulang lagi
+        jika tidak penuh, maka customer akan tercatat di data_customer
+        dan customer akan masuk antrian*/
+
+
+//********** Fungsi-fungsi RNG ***********//
+int Randomize(int lower_bound, int upper_bound);
+// menghasilkan bilangan random antara lower_bound dan upper_bound
+
+void RandomPlay(address_c P);
+// I.S. Sembarang
+/* F.S. RNG for Play(P)*/
+
 #endif

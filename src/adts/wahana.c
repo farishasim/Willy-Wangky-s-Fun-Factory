@@ -29,9 +29,7 @@ void LoadWahana(Wahana * W, Material list_material[5]){
     
     for(i = 0; i < 5; i++) {
         ADVKATA(separator);
-        ((*W).bahan)[i].quantity = ConvertKata(CKata);
-        CopyKata(list_material[i].nama, &((*W).bahan)[i].nama);
-        ((*W).bahan)[i].harga = list_material[i].harga;      
+        ((*W).bahan)[i] = list_material[i].harga;      
     }
 
     ADVKATA(separator);
