@@ -30,7 +30,7 @@ typedef struct twahana {
 
 typedef address_w map_wahana[20][20]; 
 
-void LoadWahana(Wahana * W, Material list[5]);
+void LoadWahana(Wahana * W);
     // I.S. list[5] adalah list of material yang sudah di-load.
     // F.S. W adalah node wahana yang sudah di-load
 

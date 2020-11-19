@@ -39,3 +39,13 @@ void SetWahana(Map * M, POINT P) {
 boolean IsWahana(Map M, POINT P) {
     return Elmt(M,Absis(P),Ordinat(P)) == 'W';
 }
+
+void SetOffice(Map * M, POINT P)
+{
+    Elmt(*M,Absis(P)-1,Ordinat(P)-1) = 'O';
+}
+
+void SetAntrian(Map * M, POINT P)
+{
+    Elmt(*M,Absis(P)-1,Ordinat(P)-1) = 'A';
+}

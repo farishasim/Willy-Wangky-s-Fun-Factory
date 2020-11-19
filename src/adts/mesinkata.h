@@ -24,7 +24,7 @@ void IgnoreBlank(char separator);
    I.S. : CC sembarang 
    F.S. : CC ≠ BLANK atau CC = MARK */
 
-void STARTKATA(char * namafile);
+void STARTKATA(char * namafile, char separator);
 /* I.S. : CC sembarang 
    F.S. : EndKata = true, dan CC = MARK; 
           atau EndKata = false, CKata adalah kata yang sudah diakuisisi,
@@ -49,6 +49,12 @@ void CopyKata(Kata Kin, Kata * Kout);
 
 int ConvertKata(Kata Kin);
 
+void convert2StrKata(char** str, int integer);
+
+char* appended2Strings(char* str1, char* str2);
+
 void PrintKata(Kata K);
+
+boolean isKataSama(Kata K1, char* K2);
 
 #endif

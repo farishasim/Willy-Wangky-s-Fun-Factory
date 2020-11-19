@@ -17,15 +17,15 @@ void IgnoreBlank(char separator){
    I.S. : CC sembarang 
    F.S. : CC ≠ BLANK atau CC = MARK */
 
-void STARTKATA(char * namafile){
+void STARTKATA(char * namafile, char separator){
     START(namafile);
-    IgnoreBlank(BLANK);
+    IgnoreBlank(separator);
     if (CC==MARK){
         EndKata=true;
     }
     else {
         EndKata=false;
-        ADVKATA(BLANK);
+        ADVKATA(separator);
     }
 }
 /* I.S. : CC sembarang 

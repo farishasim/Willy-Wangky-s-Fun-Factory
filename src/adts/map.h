@@ -19,4 +19,8 @@ void SetWahana(Map * M, POINT P);
 boolean IsWahana(Map M, POINT P);
 // menhasilkan true jika map pada posisi P adalah 'W'
 
+void SetOffice(Map *S, POINT P);
+
+void SetAntrian(Map * M, POINT P);
+
 #endif

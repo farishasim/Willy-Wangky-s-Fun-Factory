@@ -18,7 +18,7 @@ int main() {
 
     // Load wahana ke wahana W
     START("../../file/teswahana.txt");
-    LoadWahana(&W, list_bahan);
+    LoadWahana(&W);
 
     printf("%d",&W);
 

@@ -26,4 +26,6 @@ void ADV();
           CC mungkin = MARK
           Jika  CC = MARK maka EOP akan menyala (true) */
 
+void INSERTING(char def[12][50], FILE** filename);
+
 #endif

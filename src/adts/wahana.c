@@ -1,7 +1,7 @@
 #include "wahana.h"
 #include <stdio.h>
 
-void LoadWahana(Wahana * W, Material list_material[5]){
+void LoadWahana(Wahana * W){
     int i;
     int x,y;
     char separator = ',';
@@ -29,7 +29,7 @@ void LoadWahana(Wahana * W, Material list_material[5]){
     
     for(i = 0; i < 5; i++) {
         ADVKATA(separator);
-        ((*W).bahan)[i] = list_material[i].harga;      
+        ((*W).bahan)[i] = ConvertKata(CKata);      
     }
 
     ADVKATA(separator);

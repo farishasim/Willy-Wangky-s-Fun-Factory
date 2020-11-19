@@ -16,7 +16,7 @@ void Detail(State * S);
         akan ditampilkan detail dari wahana tersebut
         dan waktu akan bertambah sebanyak 2 menit (opsional)*/
         
-void Office(State * S);
+void OFFice(State * S);
 /* I.S. user memberi command untuk mengakses office */
 /* F.S. jika user berada pada posisi office, akan ditampilkan antarmuka office
         selama di dalam office, user dapat memberi command Details, Report, Exit

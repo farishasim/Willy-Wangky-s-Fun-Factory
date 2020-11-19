@@ -37,3 +37,23 @@ void ADV() {
        fclose(pita);
  	}
 }
+
+void INSERTING(char def[12][50], FILE** filename)
+{
+       int i = 0, j = 0;
+       while ((CC = def[i][j]) != '.' && i < 12 && j < 50)
+       {
+              if (CC != '\0')
+              {
+                     fputc(CC, *filename);
+                     ++j;
+              }
+
+              else
+              {
+                     fputc(CC = '\n', *filename);
+                     j = 0; ++i;
+              }    
+       }
+       fputc(CC = MARK, *filename);
+}
