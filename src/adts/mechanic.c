@@ -294,21 +294,21 @@ int Randomize(int lower_bound, int upper_bound) {
 }
 
 
-void RandomPlay(address_c P) {
+void RandomPlay(address_c P, State * S) {
 // I.S. Sembarang
 /* F.S. RNG for Play(P)*/
     int rand_num,i,nplay,j;
     boolean found;
     rand_num = Randomize(0,100);
 
-    // 50 % chance 1 wahana, 20 % chance 2 wahana
-    // 15 % chance 3 wahana, 10 % chance 4 wahana
+    // 50 % chance 1 wahana, 25 % chance 2 wahana
+    // 13 % chance 3 wahana, 7 % chance 4 wahana
     // 5 % chance 5 wahana (opsional)
     if (rand_num < 50) {
         nplay = 1;
-    } else if (rand_num < 70) {
+    } else if (rand_num < 75) {
         nplay = 2;
-    } else if (rand_num < 85) {
+    } else if (rand_num < 88) {
         nplay = 3;
     } else if (rand_num < 95) {
         nplay = 4;
@@ -316,19 +316,23 @@ void RandomPlay(address_c P) {
         nplay = 5;
     }
 
+    if (nplay > NWahana(*S)) { 
+        nplay = NWahana(*S);
+    }
+
     i = 0;
     while (i < nplay) {
-        rand_num = Randomize(0,5);
+        rand_num = Randomize(0,NWahana(*S));
         found = false;
         j = 0;
         while (Play(P,j) != -1 && !found) {
-            if (Play(P,j) = rand_num) {
+            if (Play(P,j) = ListWahana(*S)[rand_num]) {
                 found = true;
             }
             j++;
         }
         if (!found){
-            Play(P,j) = rand_num;
+            Play(P,j) = ListWahana(*S)[rand_num];
             i++;
         }
     }

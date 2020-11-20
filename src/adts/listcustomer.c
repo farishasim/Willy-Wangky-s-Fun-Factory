@@ -174,4 +174,6 @@ int PlayCount(address_c P) {
             count++;
         }
     }
+
+    return count;
 }
