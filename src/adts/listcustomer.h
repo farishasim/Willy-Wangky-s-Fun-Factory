@@ -107,4 +107,9 @@ void PrintInfo (ListCustomer L);
 int NbElmt (ListCustomer L);
 /* Mengirimkan banyaknya elemen ListCustomer; mengirimkan 0 jika ListCustomer kosong */
 
+
+//***************** PROSES-PROSES LAIN UNTUK CUSTOMER ********************//
+int PlayCount(address_c P);
+/* Mengirimkan banyaknya wahana yang ingin dinaiki cutomer*/
+
 #endif

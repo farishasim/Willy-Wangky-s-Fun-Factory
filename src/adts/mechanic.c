@@ -68,14 +68,11 @@ void OFFice(State * S) {
 /* F.S. jika user berada pada posisi office, akan ditampilkan antarmuka office
         selama di dalam office, user dapat memberi command Details, Report, Exit
         user akan terus berada di office hingga memberi command Exit*/
-    POINT office;
     char choice[8];
     int choice_w;
     boolean exit;
 
-    office = MakePOINT(Absis((*S).office),Ordinat((*S).office));
-
-    if (NEQPOINT((*S).position, office)) {
+    if (NEQPOINT(Position(*S), Office(*S))) {
         printf("// Anda tidak sedang berada di Office! //");
         return;
     }
@@ -140,81 +137,14 @@ void printListWahana(State * S) {
 void incrementTime(State * S) {
 /* I.S. Sembarang */
 /* F.S. Time(S) akan bertambah satu menit, dan semua proses lain akan dijalankan paralel */
-    int rand_num,count_play,i;
-    address_c P,Prec;
-    boolean quit,masuk_antrian;
+    // waktu bertambah satu menit
     Time(*S) = NextMenit(Time(*S));
 
-    // CEK SETIAP CUSTOMER
-    P = First(DataCustomers(*S));
-    while (P != Nil) {
-        quit = false;
-        Playtime(P) -= 1;
-        if (Playtime(P) == 0) {
-            if (Loc(P) != -1) {  //  customer berada pada suatu wahana
-                Loc(P) = -1;
-                // skema menghitung banyaknya wahana yang ingin dinaiki user
-                count_play = 0;
-                for (i=0; i<5; i++) {
-                    if (Play(P,i) != -1) {
-                        count_play++;
-                    }
-                }
-                //  jika customer sudah tidak lagi memiliki daftar wahana 
-                //  yang ingin dinaiki, atau jika antrian penuh,
-                //  ia akan keluar
-                if (count_play == 0 || IsFullQueue(Antrian(*S))) {  
-                    quit = true;
-                } else {
-                    Playtime(P) = 10;
-                    masuk_antrian = true;
-                }
-            } else {   //  customer berada pada antrian
-                Kesabaran(P) -= 1;
-                Prio(P) -= 1;
-                if (Kesabaran(P) == 0) {  //  jika kesabaran customer habis, ia akan keluar.
-                    quit = true;
-                } else {
-                    Playtime(P) = 10;
-                }
-            }
-        }
-        if (quit) {
-            if (P == First(DataCustomers(*S))) {
-                DelFirst(&DataCustomers(*S), &P);
-                Dealokasi(&P);
-                P = First(DataCustomers(*S));
-            } else {
-                DelAfter(&DataCustomers(*S), &P, Prec);
-                Dealokasi(&P);
-                P = Next(Prec);
-            }
-        } else if (masuk_antrian) {
-            Enqueue(&Antrian(*S),P);
-        }
-        Prec = P;
-        P = Next(P);  //  ke customer selanjutnya
-    }
+    // Proses SETIAP CUSTOMER
+    ProcessAllCustomers(S);
 
-    //  PADA KONDISI INI, Prec menunjukkan customer terakhir
-    rand_num = Randomize(0,6);
-    if (rand_num < 1) {  //  16.7 % chance for generate customer
-        P = generateCustomer(S);
-        if (P) {  //  if generate customer succes
-            InsertAfter(&DataCustomers(*S), P, Prec);  // masukkan customer ke data
-            Enqueue(&Antrian(*S), P);   //  masukkan customer ke antrian
-        }
-    }
-
-    //  CEK SETIAP WAHANA
-    for(i=0; i<(*S).NWahana; i++) {
-        if ((*ListWahana(*S)[i]).time_reparation != 0) {  // wahana sedang dalam perbaikan 
-            (*ListWahana(*S)[i]).time_reparation -= 1;
-            if ((*ListWahana(*S)[i]).time_reparation == 0) {  // jika wahana selesai diperbaiki
-                (*ListWahana(*S)[i]).broke = false;
-            }
-        }
-    }
+    // Proses SETIAP WAHANA
+    ProcessAllWahana(S);
 }
 
 
@@ -224,6 +154,99 @@ void timeFlow(State * S, int N) {
     int i;
     for(i=0; i<N; i++) {
         incrementTime(S);
+    }
+}
+
+
+void ProcessAllCustomers(State * S) {
+// I.S. Sembarang
+/* F.S. Akan dilakukan proses terhadap semua customer dalam satu satuan waktu
+        sehingga seolah-olah proses paralel 
+        setelah proses semua cutomer, ada 16.7% chance generate customer*/
+    // KAMUS
+    int rand_num,count_play;
+    address_c P,Prec;
+    boolean quit,masuk_antrian;
+    
+    // CEK SETIAP CUSTOMER
+    P = First(DataCustomers(*S));
+    while (P != Nil) {
+        quit = false;
+        Playtime(P) -= 1;
+        if (Playtime(P) == 0) {
+            if (Loc(P) != -1) {  //  customer berada pada suatu wahana
+                //  jika customer sudah tidak lagi memiliki daftar wahana 
+                //  yang ingin dinaiki, atau jika antrian penuh,
+                //  ia akan keluar
+                count_play = PlayCount(P);  //  menghitung daftar wahana customer
+                if (count_play == 0 || IsFullQueue(Antrian(*S))) {  
+                    quit = true;
+                } else {
+                    Loc(P) = -1;
+                    Playtime(P) = 10;
+                    masuk_antrian = true;
+                }
+            } else {   //  customer berada pada antrian
+                Kesabaran(P) -= 1;
+                Prio(P) -= 1;
+                ReSort(&Antrian(*S),P); // customer akan diposisikan ke urutan yang semestinya
+                if (Kesabaran(P) == 0) {  //  jika kesabaran customer habis, ia akan keluar.
+                    quit = true;
+                } else {
+                    Playtime(P) = 10;
+                }
+            }
+        }
+
+        if (masuk_antrian) {
+            Enqueue(&Antrian(*S),P);
+        } else if (quit) {
+            // jika berada pada antrian, customer akan di-dequeue
+            if (Loc(P) == -1) {
+                Dequeue(&Antrian(*S),&P);
+            }
+            if (P == First(DataCustomers(*S))) {
+                DelFirst(&DataCustomers(*S), &P);
+                Dealokasi(&P);
+                P = First(DataCustomers(*S)); //  ke customer selanjutnya
+            } else {
+                DelAfter(&DataCustomers(*S), &P, Prec);
+                Dealokasi(&P);
+                Prec = P;
+                P = Next(Prec); //  ke customer selanjutnya
+            }
+        } else {
+            Prec = P;
+            P = Next(P);  //  ke customer selanjutnya
+        }
+    }
+
+    //  PADA KONDISI INI, P = Nil, Prec menunjukkan customer terakhir
+    rand_num = Randomize(0,6);
+    if (rand_num < 1) {  //  16.7 % chance for generate customer
+        P = generateCustomer(S);
+        if (P) {  //  if generate customer succes
+            InsertAfter(&DataCustomers(*S), P, Prec);  // masukkan customer setelah Prec ke data
+            Enqueue(&Antrian(*S), P);   //  masukkan customer ke antrian
+        }
+    }
+}
+
+
+void ProcessAllWahanas(State * S) {
+// I.S. Sembarang
+/* F.S. Akan dilakukan proses terhadap semua wahana dalam satu satuan waktu
+        sehingga seolah-olah proses paralel */
+    //  CEK SETIAP WAHANA
+    int i;
+    
+    for(i=0; i<(*S).NWahana; i++) {
+        if ((*ListWahana(*S)[i]).time_reparation != 0) {  // wahana sedang dalam perbaikan 
+            (*ListWahana(*S)[i]).time_reparation -= 1;
+            if ((*ListWahana(*S)[i]).time_reparation == 0) {  // jika wahana selesai diperbaiki
+                (*ListWahana(*S)[i]).broke = false;
+            }
+        }
     }
 }
 
@@ -242,8 +265,8 @@ address_c generateCustomer(State * S) {
         return P;
     }
 
-    if (IsFullQueue(Antrian(*S))) {  //  Jika Antrian penuh, langsung keluar tidak melakukan apa-apa
-        Dealokasi(&P);
+    if (IsFullQueue(Antrian(*S))) {  //  Jika Antrian penuh, langsung keluar
+        Dealokasi(&P);               //  P di-dealokasi
         P = Nil;
         return P;
     }

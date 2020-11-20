@@ -61,6 +61,13 @@ void Enqueue (PrioQueueChar * Q, address_c X){
     int i = (*Q).TAIL;
     int j = (i-1+(*Q).MaxEl)%(*Q).MaxEl;
     address_c temp;
+    while ( i!=(*Q).HEAD && Kesabaran((*Q).T[i])<Kesabaran((*Q).T[j])){
+        temp=(*Q).T[i];
+        (*Q).T[i]=(*Q).T[j];
+        (*Q).T[j]=temp;
+        i=j;
+        j=(i-1+(*Q).MaxEl)%(*Q).MaxEl;
+    }
     while ( i!=(*Q).HEAD && Prio((*Q).T[i])<Prio((*Q).T[j])){
         temp=(*Q).T[i];
         (*Q).T[i]=(*Q).T[j];
@@ -86,7 +93,7 @@ void Dequeue (PrioQueueChar * Q, address_c * X){
 }
 /* Proses: Menghapus X pada Q dengan aturan FIFO */
 /* I.S. Q tidak mungkin kosong */
-/* F.S. X = nilqueueNilqueueai elemen HEAD pd I.S., HEAD "maju" dengan mekanisme circular buffer;
+/* F.S. X = Nilqueue elemen HEAD pd I.S., HEAD "maju" dengan mekanisme circular buffer;
         Q mungkin kosong */
 
 /* Operasi Tambahan */
@@ -112,3 +119,34 @@ void PrintPrioQueueChar (PrioQueueChar Q){
 #
 */
 
+void ReSort(PrioQueueChar * Q, address_c P) {
+/* I.S. Q tidak mungkin kosong, P adalah elemen pada Q*/
+/* F.S. Pada waktu tertentu, P mungkin berubah prioritasnya 
+        sehingga perlu di sort khusus untuk P saja
+        P akan ditempatkan pada urutan yang seharusnya*/
+    idxqueue i,j;
+    address_c temp;
+
+    i = 0;
+
+    while (Elmt(*Q,i) != P) {
+        i++;
+    }
+
+    j = (i-1+(*Q).MaxEl)%(*Q).MaxEl;
+    while ( i!=(*Q).HEAD && Kesabaran((*Q).T[i])<Kesabaran((*Q).T[j])){
+        temp=(*Q).T[i];
+        (*Q).T[i]=(*Q).T[j];
+        (*Q).T[j]=temp;
+        i=j;
+        j=(i-1+(*Q).MaxEl)%(*Q).MaxEl;
+    }
+
+    while ( i!=(*Q).HEAD && Prio((*Q).T[i])<Prio((*Q).T[j])){
+        temp=(*Q).T[i];
+        (*Q).T[i]=(*Q).T[j];
+        (*Q).T[j]=temp;
+        i=j;
+        j=(i-1+(*Q).MaxEl)%(*Q).MaxEl;
+    }
+}

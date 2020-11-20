@@ -161,3 +161,17 @@ int NbElmt (ListCustomer L) {
 
     return count;
 }
+
+//***************** PROSES-PROSES LAIN UNTUK CUSTOMER ********************//
+int PlayCount(address_c P) {
+/* Mengirimkan banyaknya wahana yang ingin dinaiki cutomer*/
+    int count,i;
+
+    // skema menghitung banyaknya wahana yang ingin dinaiki customer
+    count = 0;
+    for (i=0; i<5; i++) {
+        if (Play(P,i) != -1) {
+            count++;
+        }
+    }
+}

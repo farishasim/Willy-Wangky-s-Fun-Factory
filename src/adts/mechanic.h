@@ -30,11 +30,24 @@ void printListWahana(State * S);
 
 void incrementTime(State * S);
 /* I.S. Sembarang */
-/* F.S. Time(S) akan bertambah satu menit, dan semua proses lain akan dijalankan paralel */
+/* F.S. Time(S) akan bertambah satu menit, dan 
+        semua proses lain akan dijalankan paralel */
 
 void timeFlow(State * S, int N);
 // I.S. Sembarang
-// F.S. Time(S) akan bertambah sebanyak N menit dan semua proses lain akan dijalankan paralel
+/* F.S. Time(S) akan bertambah sebanyak N menit dan 
+        semua proses lain akan dijalankan paralel*/
+
+void ProcessAllCustomers(State * S);
+// I.S. Sembarang
+/* F.S. Akan dilakukan proses terhadap semua customer dalam satu satuan waktu
+        sehingga seolah-olah proses paralel 
+        setelah proses semua cutomer, ada 16.7% chance generate customer*/
+
+void ProcessAllWahanas(State * S);
+// I.S. Sembarang
+/* F.S. Akan dilakukan proses terhadap semua wahana dalam satu satuan waktu
+        sehingga seolah-olah proses paralel */
 
 address_c generateCustomer(State * S);
 /* I.S. Sembarang */

@@ -11,24 +11,26 @@
 #include "listcustomer.h"
 
 #define Nilqueue -1
-/* Konstanta untuk mendefinisikan address tak terdefinisi */
+/* Konstanta untuk mendefinisikan idxqueue tak terdefinisi */
 
-/* Definisi elemen dan address */
+/* Definisi elemen dan idxqueue */
 
-typedef int address;   /* indeks tabel */
+typedef address_c infoqueue;
+
+typedef int idxqueue;   /* indeks tabel */
 /* Contoh deklarasi variabel bertype PrioQueueChar : */
 /* Versi I : tabel dinamik, Head dan Tail eksplisit, ukuran disimpan */
 
 typedef struct {
-    address_c * T;   /* tabel penyimpan elemen */
-    address HEAD;  /* alamat penghapusan */
-    address TAIL;  /* alamat penambahan */
+    infoqueue * T;   /* tabel penyimpan elemen */
+    idxqueue HEAD;  /* alamat penghapusan */
+    idxqueue TAIL;  /* alamat penambahan */
     int MaxEl;     /* Max elemen queue */
 } PrioQueueChar;
 /* Definisi PrioQueueChar kosong: HEAD=Nil; TAIL=Nil. */
 
 /* ********* AKSES (Selektor) ********* */
-/* Jika e adalah address_c dan Q adalah PrioQueueChar, maka akses elemen : */
+/* Jika e adalah infoqueue dan Q adalah PrioQueueChar, maka akses elemen : */
 
 #define Head(Q)     (Q).HEAD
 #define Tail(Q)     (Q).TAIL
@@ -61,19 +63,19 @@ void DeAlokasi(PrioQueueChar * Q);
 /* F.S. Q menjadi tidak terdefinisi lagi, MaxEl(Q) diset 0 */
 
 /* *** Primitif Add/Delete *** */
-void Enqueue (PrioQueueChar * Q, address_c X);
+void Enqueue (PrioQueueChar * Q, infoqueue X);
 /* Proses: Menambahkan X pada Q dengan aturan priority queue, terurut mengecil berdasarkan prio */
 /* I.S. Q mungkin kosong, tabel penampung elemen Q TIDAK penuh */
 /* F.S. X disisipkan pada posisi yang tepat sesuai dengan prioritas,
         TAIL "maju" dengan mekanisme circular buffer; */
-void Dequeue (PrioQueueChar * Q, address_c * X);
+void Dequeue (PrioQueueChar * Q, infoqueue * X);
 /* Proses: Menghapus X pada Q dengan aturan FIFO */
 /* I.S. Q tidak mungkin kosong */
 /* F.S. X = nilai elemen HEAD pd I.S., HEAD "maju" dengan mekanisme circular buffer;
         Q mungkin kosong */
 
 /* Operasi Tambahan */
-void PrintPrioQueueChar (PrioQueueChar Q);
+void PrintPrioQueueChar (PrioQueueChar Q); /// mungkin bisa buat printcustomer;
 /* Mencetak isi queue Q ke layar */
 /* I.S. Q terdefinisi, mungkin kosong */
 /* F.S. Q tercetak ke layar dengan format:
@@ -82,5 +84,11 @@ void PrintPrioQueueChar (PrioQueueChar Q);
 <prio-n> <elemen-n>
 #
 */
+
+void ReSort(PrioQueueChar * Q, infoqueue P);
+/* I.S. Q tidak mungkin kosong, P adalah elemen pada Q*/
+/* F.S. Pada waktu tertentu, P mungkin berubah prioritasnya 
+        sehingga perlu di sort khusus untuk P saja
+        P akan ditempatkan pada urutan yang seharusnya*/
 
 #endif
