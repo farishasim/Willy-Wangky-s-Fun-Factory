@@ -101,11 +101,11 @@ void PrintPrioQueueChar (PrioQueueChar Q){
     if (IsEmptyQueue(Q)){
     }
     else{
-        printf("%d %c\n",Prio(InfoHead(Q)),Info(InfoHead(Q)));
+        printf("%d %c\n",Prio(InfoHead(Q)),Kesabaran(InfoHead(Q)));
         while (Q.HEAD!=Q.TAIL)
         {
             (Q).HEAD= ((Q).HEAD+1)%(Q).MaxEl;
-            printf("%d %c\n",Prio(InfoHead(Q)),Info(InfoHead(Q)));
+            printf("%d %c\n",Prio(InfoHead(Q)),Kesabaran(InfoHead(Q)));
         }
     }
     printf("#\n");
@@ -129,7 +129,7 @@ void ReSort(PrioQueueChar * Q, address_c P) {
 
     i = 0;
 
-    while (Elmt(*Q,i) != P) {
+    while (ElmtQueue(*Q,i) != P) {
         i++;
     }
 

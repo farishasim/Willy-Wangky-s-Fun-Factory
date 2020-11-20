@@ -3,6 +3,7 @@
 
 #include "boolean.h"
 #include "commands.h"
+#include "mechanic.h"
 
 void phasesFlow(State *S);
 

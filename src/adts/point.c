@@ -44,9 +44,9 @@ void BacaPOINT (POINT * P)
     MakePOINT(Absis(*P) +deltaX, Ordinat(*P) +deltaY);
 }
 
-boolean EQ (POINT P1, POINT P2){return ((P1.X == P2.X) && (P1.Y == P2.Y));}
+boolean EQPOINT (POINT P1, POINT P2){return ((P1.X == P2.X) && (P1.Y == P2.Y));}
 /* Mengirimkan true jika P1 = P2 : absis dan ordinatnya sama */
-boolean NEQ (POINT P1, POINT P2){return (!EQ(P1,P2));}
+boolean NEQPOINT (POINT P1, POINT P2){return (!EQPOINT(P1,P2));}
 /* Mengirimkan true jika P1 tidak sama dengan P2 */
 boolean IsOnSbX (POINT P){return (P.Y == 0);}
 /* Menghasilkan true jika P terletak Pada sumbu X */

@@ -1,7 +1,7 @@
-#include "state.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "mechanic.h"
 
 
 //********* Fungsi-Fungsi untuk command *************//
@@ -83,7 +83,7 @@ void OFFice(State * S) {
 
     do {
         printf("Masukkan perintah (Details / Report / Exit):");
-        fgets(&choice, 8, stdin);
+        fgets(choice, 8, stdin);
         if (choice == "Details") {
             printListWahana(S); // tampilkan semua pilihan wahana
             scanf("%d", &choice_w);
@@ -144,7 +144,7 @@ void incrementTime(State * S) {
     ProcessAllCustomers(S);
 
     // Proses SETIAP WAHANA
-    ProcessAllWahana(S);
+    ProcessAllWahanas(S);
 }
 
 

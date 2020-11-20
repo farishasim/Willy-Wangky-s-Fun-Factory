@@ -26,12 +26,12 @@ typedef struct {
   Map peta;          /* merepresentasikan lahan wahana yang dimiliki oleh pemain */
   POINT office;     /* merepresentasikan kordinat posisi office berada*/
   POINT position;    /* merepresentasikan kordinat posisi pemain berdiri */
-  POINT locAntrian;     /* merepresentasikan kordinat posisi office berada*/ 
+  POINT locAntrian;     /* merepresentasikan kordinat posisi antrian berada*/ 
   boolean prep_phase; /* bernilai true jika permainan sedang dalam preparation phase */
   Stack act_list;    /* stack untuk menyimpan aksi-aksi pada prep phase */
   ListCustomer data_customer;
   PrioQueueChar antrian;
-  Wahana data_wahana[10];  /* list semua wahana yang dimiliki pemain */
+  Wahana data_wahana[10];  /* data semua wahana yang tersedia pada permainan */
   address_w listWahana[5];  /* list semua wahana yang dimiliki pemain */
   map_wahana map_address;  // map yang setiap elemennya merupakan address dari suatu wahana
 } State;
@@ -61,6 +61,7 @@ typedef struct {
 #define ListWahana(S) (S).listWahana
 #define DataCustomers(S) (S).data_customer
 #define DataWahana(S)  (S).data_wahana
+#define NWahana(S) (S).NWahana
 
 void loading(State* S, char* filename, boolean isInput, boolean isLoad);
 

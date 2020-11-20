@@ -1,6 +1,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "mesinkata.h"
 #include "mesinkar.h"
 
@@ -70,6 +71,7 @@ void SalinKata(char separator){
           CC adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
 
+
 void CopyKata(Kata Kin, Kata * Kout) {
     int i;
 
@@ -79,6 +81,7 @@ void CopyKata(Kata Kin, Kata * Kout) {
 
     (*Kout).Length = Kin.Length;
 }
+
 
 int ConvertKata(Kata Kin) {
     int i;
@@ -93,9 +96,57 @@ int ConvertKata(Kata Kin) {
     return val;
 }
 
+
+void convert2StrKata(char** str, int integer)
+{
+    *str = malloc (snprintf(NULL, 0, "%d", integer) + 1);
+    if (!*str)
+    {
+        printf("Maaf, terjadi kesalahan saat mengonversi data.\n");
+    }
+    snprintf(*str, snprintf(NULL, 0, "%d", integer) + 1, "%d", integer);
+}
+
+
+char* appended2Strings(char* str1, char* str2)
+{   
+    char* new;
+    if ((new = malloc((strlen(str1) + strlen(str2)))) != NULL)
+    {
+        new[0] = '\0';
+        strncat(new, str1, strlen(str1));
+        strncat(new, str2, strlen(str2));
+    }
+
+    else
+    {
+        printf("Maaf, terjadi kesalahan saat mengkonkatenasi data.\n");
+    }
+
+    return new;
+}
+
+
 void PrintKata(Kata K){
     int i;
     for(i = 0; i < K.Length; i++) {
         printf("%c", K.TabKata[i]);
+    }
+}
+
+
+boolean isKataSama(Kata K1, char* K2)
+{
+    if (K1.Length != strlen(K2)) return 0;
+
+    else
+    {
+        int i;
+        for(i = 0; i < K1.Length; ++i)
+        {
+            if (K1.TabKata[i] != K2[i]) return 0;
+        }
+
+        return 1;
     }
 }

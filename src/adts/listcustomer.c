@@ -137,11 +137,11 @@ void PrintInfo (ListCustomer L) {
     printf("[");
     P = First(L);
     if (P != Nil) {
-        printf("%d", Info(P));
+        printf("%d", Kesabaran(P));
         P = Next(P);
     }
     while (P != Nil) {
-        printf(",%d", Info(P));
+        printf(",%d", Kesabaran(P));
         P = Next(P);        
     }
     printf("]");

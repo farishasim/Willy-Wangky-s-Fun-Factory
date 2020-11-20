@@ -132,21 +132,24 @@ void phasesFlow(State *S)
             
         else if (options == (int)'2')
         {
-            //repair
+            // repair
+            Repair(S);
             mainPhase(S);
             phasesFlow(S);
         }
 
         else if (options == (int)'3')
         {
-            //detail
+            // detail
+            Detail(S);
             mainPhase(S);
             phasesFlow(S);
         }
 
         else if (options == (int)'4')
         {
-            //office
+            // office
+            OFFice(S);
             mainPhase(S);
             phasesFlow(S);
         }
