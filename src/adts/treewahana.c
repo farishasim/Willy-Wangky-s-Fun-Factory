@@ -3,7 +3,7 @@
 
 #define Nil NULL
 
-address AlokasiTree (Wahana X){
+address AlokasiTree (IdWahana X){
     address result;
     result = (address) malloc (sizeof(Node));
     if (result != Nil){
@@ -19,7 +19,7 @@ void Dealokasi (address P){
 }
 
 //Konstruktor
-BinTree Tree (Wahana X , BinTree L ,BinTree R ){
+BinTree Tree (IdWahana X , BinTree L ,BinTree R ){
     address P ;
     P= AlokasiTree(X);
     if (P != Nil) {
@@ -32,7 +32,7 @@ BinTree Tree (Wahana X , BinTree L ,BinTree R ){
 berhasil }
 { Menghasilkan pohon kosong (Nil) jika alokasi gagal */
 
-void MakeTree (Wahana X, BinTree L , BinTree R ,BinTree *P ){
+void MakeTree (IdWahana X, BinTree L , BinTree R ,BinTree *P ){
     *P = AlokasiTree(X);
     if (*P != Nil) {
         Left(*P) = L;
@@ -45,7 +45,7 @@ void MakeTree (Wahana X, BinTree L , BinTree R ,BinTree *P ){
 { Menghasilkan pohon P yang kosong (Nil) jika alokasi gagal }*/
 
 
-Wahana GetAkar (BinTree T){
+IdWahana GetAkar (BinTree T){
     return Akar(T);
 }
 // Mengirimkan nilai Akar pohon biner P 
@@ -98,7 +98,7 @@ mempunyai subpohon kiri dan subpohon kanan }*/
 
 
 
-boolean SearchTree (BinTree T, Wahana X){
+boolean SearchTree (BinTree T, IdWahana X){
     if (IsOneElmt(T)){
         if (Akar(T)==X){
             return true;
@@ -123,7 +123,7 @@ boolean SearchTree (BinTree T, Wahana X){
 */
 
 
-void AddDaun (BinTree T ,Wahana X, Wahana Y,boolean Kiri){
+void AddDaun (BinTree T ,IdWahana X, IdWahana Y,boolean Kiri){
     if (IsOneElmt(T) && Akar(T)==X){
         if (Kiri){
             address P = AlokasiTree(Y);
@@ -150,14 +150,14 @@ void AddDaun (BinTree T ,Wahana X, Wahana Y,boolean Kiri){
             }
         }
     }
-    
+
 }
 /*{ I.S. P tidak kosong, X adalah daun Pohon Biner P }
 { F.S. P bertambah simpulnya, dengan Y sebagai anak kiri X (jika
 Kiri), atau sebagai anak Kanan X (jika not Kiri). Jika ada lebih
 dari satu daun bernilai X, Y ditambahkan pada daun paling kiri. }*/
 
-void DelDaun (BinTree P ,Wahana X ){
+void DelDaun (BinTree P ,IdWahana X ){
     BinTree temp,del;
     if (IsOneElmt(P) && Akar(P)==X){
         P=Nil;

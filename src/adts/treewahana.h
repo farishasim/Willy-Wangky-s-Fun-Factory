@@ -9,9 +9,10 @@
 
 
 
+typedef int IdWahana;
 typedef struct tNode *address;
 typedef struct tNode {
-Wahana info;
+IdWahana info;
 address left;
 address right;
 } Node;
@@ -25,7 +26,7 @@ typedef address BinTree;
 #define Left(P) (P)->left
 #define Right(P) (P)->right
 
-address AlokasiTree (Wahana X);
+address AlokasiTree (IdWahana X);
 /* Mengirimkan address hasil alokasi sebuah elemen X }
 { Jika alokasi berhasil, maka address tidak nil, dan misalnya
 menghasilkan P, maka Info(P)=X, Left(P)=Nil, Right(P)=Nil 
@@ -38,19 +39,19 @@ void Dealokasi (address P);
 */
 
 //Konstruktor
-BinTree Tree (Wahana X , BinTree L ,BinTree R );
+BinTree Tree (IdWahana X , BinTree L ,BinTree R );
 /*{ Menghasilkan sebuah pohon biner dari X, L, dan R, jika alokasi
 berhasil }
 { Menghasilkan pohon kosong (Nil) jika alokasi gagal */
 
-void MakeTree (Wahana X, BinTree L , BinTree R ,BinTree *P );
+void MakeTree (IdWahana X, BinTree L , BinTree R ,BinTree *P );
 /*{ I.S. Sembarang }
 { F.S. Menghasilkan sebuah pohon P }
 { Menghasilkan sebuah pohon biner P dari X, L, dan R, jika alokasi berhasil }
 { Menghasilkan pohon P yang kosong (Nil) jika alokasi gagal }*/
 
 
-Wahana GetAkar (address P);
+IdWahana GetAkar (address P);
 // Mengirimkan nilai Akar pohon biner P 
 
 BinTree GetLeft (address P);
@@ -80,17 +81,17 @@ boolean IsBiner (BinTree T);
 /*{ Mengirimkan true jika pohon biner tidak kosong, P adalah pohon biner:
 mempunyai subpohon kiri dan subpohon kanan }*/
 
-boolean SearchTree (BinTree T, Wahana X);
+boolean SearchTree (BinTree T, IdWahana X);
 /*{ Mengirimkan true jika ada node dari P yang bernilai X }
 */
 
-void AddDaun (BinTree P ,Wahana X, Wahana Y,boolean Kiri);
+void AddDaun (BinTree P ,IdWahana X, IdWahana Y,boolean Kiri);
 /*{ I.S. P tidak kosong, X adalah daun Pohon Biner P }
 { F.S. P bertambah simpulnya, dengan Y sebagai anak kiri X (jika
 Kiri), atau sebagai anak Kanan X (jika not Kiri). Jika ada lebih
 dari satu daun bernilai X, Y ditambahkan pada daun paling kiri. }*/
 
-void DelDaun (BinTree P ,Wahana X );
+void DelDaun (BinTree P ,IdWahana X );
 /*{ I.S. P tidak kosong, minimum 1 daun bernilai X }
 { F.S. Semua daun yang bernilai X dihapus dari P }*/
 
