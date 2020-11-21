@@ -13,14 +13,15 @@ boolean IsEmptyStackt (Stack S){
 boolean IsFullStackt (Stack S){
   return(Top(S)==MaxElStack-1);
 }
+int NbElmt(Stack S){
+  return Top(S)+1;
+}
 void Push (Stack * S, infostack X){
   Top(*S)++;
   InfoTop(*S) = X;
-  NbElmt(*S)++;
 }
 
 void Pop (Stack * S, infostack* X){
   *X = InfoTop(*S);
   Top(*S)--;
-  NbElmt(*S)--;
 }
