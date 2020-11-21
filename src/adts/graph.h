@@ -41,11 +41,11 @@ M3 = map 3 pojok kanan bawah
 M4 = map 4 pojok kiri bawah*/
 
 /*Move map*/
-void MoveMapLeft (address *current_map);
+void MoveMapLeft (Graph G);
 
-void MoveMapRight (address *current_map);
+void MoveMapRight (Graph G);
 
-void MoveMapUp (address *current_map);
+void MoveMapUp (Graph G);
 
-void MoveMapDown (address *current_map);
+void MoveMapDown (Graph G);
 #endif

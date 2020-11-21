@@ -43,21 +43,17 @@ M4 = map 4 pojok kiri bawah*/
 
 
 /*Move map*/
-void MoveMapLeft (Graph G, address *current_map){
-    *current_map= Left(*current_map);
-    First(G)=Left(G);
+void MoveMapLeft (Graph G){
+    First(G)=Left(First(G));
 }
 
-void MoveMapRight (Graph G, address *current_map){
-    *current_map= Right(*current_map);
-    First(G)=Right(G);
+void MoveMapRight (Graph G){
+    First(G)=Right(First(G));
 }
 
-void MoveMapUp (Graph G, address *current_map){
-    *current_map= Up(*current_map);
-    First(G)=Up(G);
+void MoveMapUp (Graph G){
+    First(G)=Up(First(G));
 }
-void MoveMapDown (Graph G, address *current_map){
-    *current_map= Down(*current_map);
-    First(G)=Down(G);
+void MoveMapDown (Graph G){
+    First(G)=Down(First(G));
 }
