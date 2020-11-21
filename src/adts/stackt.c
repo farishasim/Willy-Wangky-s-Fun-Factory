@@ -16,9 +16,11 @@ boolean IsFullStackt (Stack S){
 void Push (Stack * S, infostack X){
   Top(*S)++;
   InfoTop(*S) = X;
+  NbElmt(*S)++;
 }
 
 void Pop (Stack * S, infostack* X){
   *X = InfoTop(*S);
   Top(*S)--;
+  NbElmt(*S)--;
 }
