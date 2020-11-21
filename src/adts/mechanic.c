@@ -58,7 +58,7 @@ void Detail(State * S) {
 
     wahana_kanan = getWahanaAt((*S).map_address, posisi_wahana);
 
-    printDetail(wahana_kanan);
+    printDetail(&wahana_kanan);
     timeFlow(S,2); // melihat detail membutuhkan waktu 2 menit. (opsional)
 }
 
@@ -88,7 +88,7 @@ void OFFice(State * S) {
             printListWahana(S); // tampilkan semua pilihan wahana
             scanf("%d", &choice_w);
             if (choice_w >= 0 && choice_w < (*S).NWahana) {
-                printDetail(*ListWahana(*S)[choice_w]);
+                printDetail(ListWahana(*S)[choice_w]);
                 timeFlow(S,2); // melihat detail membutuhkan waktu 2 menit.
             } else {
                 printf("invalid");
@@ -98,7 +98,7 @@ void OFFice(State * S) {
             printListWahana(S); // tampilkan semua pilihan wahana
             scanf("%d", &choice_w);
             if (choice_w >= 0 && choice_w < (*S).NWahana) {
-                printReport(*ListWahana(*S)[choice_w]);
+                printReport(ListWahana(*S)[choice_w]);
                 timeFlow(S,2); // melihat report membutuhkan waktu 2 menit.
             } else {
                 printf("invalid");
@@ -281,7 +281,7 @@ address_c generateCustomer(State * S) {
 
     //  penentuan wahana yang ingin dinaiki customer, 
     //  lagi-lagi dengan RNG.
-    RandomPlay(P);  
+    RandomPlay(P,S);  
 
     return P;
 }
@@ -326,13 +326,13 @@ void RandomPlay(address_c P, State * S) {
         found = false;
         j = 0;
         while (Play(P,j) != -1 && !found) {
-            if (Play(P,j) = ListWahana(*S)[rand_num]) {
+            if (Play(P,j) = (*ListWahana(*S)[rand_num]).ID) {
                 found = true;
             }
             j++;
         }
         if (!found){
-            Play(P,j) = ListWahana(*S)[rand_num];
+            Play(P,j) = (*ListWahana(*S)[rand_num]).ID;
             i++;
         }
     }

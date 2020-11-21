@@ -61,7 +61,7 @@ address_c generateCustomer(State * S);
 int Randomize(int lower_bound, int upper_bound);
 // menghasilkan bilangan random antara lower_bound dan upper_bound-1
 
-void RandomPlay(address_c P);
+void RandomPlay(address_c P, State * State);
 // I.S. Sembarang
 /* F.S. RNG for Play(P)*/
 

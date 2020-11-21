@@ -64,22 +64,22 @@ Wahana getWahanaAt(map_wahana map_of_address, POINT P) {
     return *(map_of_address[Absis(P)][Ordinat(P)]);
 }
 
-void printDetail(Wahana W) {
+void printDetail(Wahana * W) {
     // menampilkan detail wahana ke layar.
     printf("// Melihat detail wahana //");
 
     printf("\nNama : ");
-    PrintKata(W.nama);
+    PrintKata((*W).nama);
     
     printf("\nLokasi : ");
-    TulisPOINT(W.position);
+    TulisPOINT((*W).position);
     
     printf("\nUpgrade(s) : []");  // untuk sementara kosong dulu
 
     printf("\nHistory : ");   // untuk sementara kosong dulu
     
     printf("\nStatus : ");
-    if (W.broke) {
+    if ((*W).broke) {
         printf("Tidak Berfungsi\n");
     } else {
         printf("berfungsi\n");
@@ -87,13 +87,13 @@ void printDetail(Wahana W) {
 }
 
 
-void printReport(Wahana W){
+void printReport(Wahana (*W)){
     //menampilkan report wahana ke layar.
-    printf("Total Pemakaian : %d\n", W.count_used);
-    printf("Pemakaian hari ini : %d\n", W.count_used1);
+    printf("Total Pemakaian : %d\n", (*W).count_used);
+    printf("Pemakaian hari ini : %d\n", (*W).count_used1);
 
-    printf("Total Pemasukkan : %d\n", W.income);
-    printf("Pemasukkan hari ini: %d\n", W.income1);
+    printf("Total Pemasukkan : %d\n", (*W).income);
+    printf("Pemasukkan hari ini: %d\n", (*W).income1);
 }
 
 

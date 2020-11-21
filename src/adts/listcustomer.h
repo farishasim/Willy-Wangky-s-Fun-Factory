@@ -14,7 +14,7 @@ typedef struct tCustomer * address_c;
 
 typedef struct tCustomer { 
 	int prio; /* [1..10], prioritas dengan nilai 1..10 (1 adalah prioritas tertinggi) */
-    int play[5];  /* [1..10], prioritas dengan nilai 1..10 (1 adalah prioritas tertinggi) */
+    int play[5];  
     int loc;  
     int time;
     int kesabaran;
