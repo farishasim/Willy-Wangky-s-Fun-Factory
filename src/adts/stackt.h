@@ -30,7 +30,7 @@ typedef struct {
 /* Definisi akses dengan Selektor : Set dan Get */
 #define Top(S) (S).TOP
 #define InfoTop(S) (S).T[(S).TOP]
-
+#define NbElmt(S) (S).NbElmt
 /* ************ Prototype ************ */
 /* *** Konstruktor/Kreator *** */
 void CreateEmptyStackt (Stack *S);
