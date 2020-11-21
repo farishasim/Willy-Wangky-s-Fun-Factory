@@ -19,6 +19,7 @@ typedef int address_s;   /* indeks tabel */
 typedef struct { 
   infostack T[MaxElStack]; /* tabel penyimpan elemen */
   address_s TOP;  /* alamat TOP: elemen puncak */
+  int NbElmt; /*Jumlah elemen stack*/
 } Stack;
 /* Definisi stack S kosong : S.TOP = Nil */
 /* Elemen yang dipakai menyimpan nilai Stack T[0]..T[MaxElStack-1] */
