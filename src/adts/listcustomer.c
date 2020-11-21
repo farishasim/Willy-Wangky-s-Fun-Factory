@@ -147,7 +147,7 @@ void PrintInfo (ListCustomer L) {
     printf("]");
 }
 
-int NbElmt (ListCustomer L) {
+int NbElmtList (ListCustomer L) {
 /* Mengirimkan banyaknya elemen listcustomer; mengirimkan 0 jika listcustomer kosong */
     int count;
     address_c P;

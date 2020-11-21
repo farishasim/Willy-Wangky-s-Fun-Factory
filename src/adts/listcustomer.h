@@ -10,7 +10,6 @@
 
 #define Nil NULL
 
-typedef struct tCustomer * address_c;
 
 typedef struct tCustomer { 
 	int prio; /* [1..10], prioritas dengan nilai 1..10 (1 adalah prioritas tertinggi) */
@@ -18,8 +17,16 @@ typedef struct tCustomer {
     int loc;  
     int time;
     int kesabaran;
-	address_c next;
 } Customer;
+
+typedef Customer infolist;
+
+typedef struct tNodeCustomer * address_c;
+
+typedef struct tNodeCustomer { 
+	infolist info;
+	address_c next;
+} NodeCustomer;
 
 typedef struct {
 	address_c First;
@@ -30,11 +37,11 @@ typedef struct {
 /* Setiap elemen dengan address_c P dapat diacu Info(P), Next(P) */
 /* Elemen terakhir ListCustomer : jika address_cnya Last, maka Next(Last)=Nil */
 
-#define Prio(P)   (P)->prio
-#define Play(P,i) (*P).play[i]
-#define Loc(P)    (P)->loc
-#define Playtime(P) (P)->time
-#define Kesabaran(P) (P)->kesabaran
+#define Prio(P)   (P)->info.prio
+#define Play(P,i) (*P).info.play[i]
+#define Loc(P)    (P)->info.loc
+#define Playtime(P) (P)->info.time
+#define Kesabaran(P) (P)->info.kesabaran
 #define Next(P) (P)->next
 #define First(L) ((L).First)
 
@@ -104,7 +111,7 @@ void PrintInfo (ListCustomer L);
 /* Jika ListCustomer kosong : menulis [] */
 /* Tidak ada tambahan karakter apa pun di awal, akhir, atau di tengah */
 
-int NbElmt (ListCustomer L);
+int NbElmtList (ListCustomer L);
 /* Mengirimkan banyaknya elemen ListCustomer; mengirimkan 0 jika ListCustomer kosong */
 
 

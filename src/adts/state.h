@@ -32,7 +32,7 @@ typedef struct {
   ListCustomer data_customer;
   PrioQueueChar antrian;
   Wahana data_wahana[10];  /* data semua wahana yang tersedia pada permainan */
-  address_w listWahana[5];  /* list semua wahana yang dimiliki pemain */
+  address_w listWahana[5];  /* list semua wahana yang dimiliki pemain */  // [&DataWahana[1],nil,nil,nil,nil]
   map_wahana map_address;  // map yang setiap elemennya merupakan address dari suatu wahana
 } State;
 

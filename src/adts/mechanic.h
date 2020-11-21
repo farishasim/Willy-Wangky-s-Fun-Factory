@@ -4,6 +4,10 @@
 #include "state.h"
 
 //********* Fungsi-Fungsi untuk command *************//
+void Serve(State * S);
+/* I.S. user memberi command untuk serve */
+/* F.S. serve customer terdepan pada Antrian(S),.*/
+
 void Repair(State * S);
 // I.S. user memberi command untuk repair
 /* F.S. jika di sebelah kanan user terdapat wahana, 
@@ -24,6 +28,9 @@ void OFFice(State * S);
 
 
 //********** Fungsi-fungsi untuk Support ************//
+boolean isBetween(int val, int lower, int upper);
+// true jika lower <= val <= upper
+
 void printListWahana(State * S);
 /* I.S. Sembarang */
 /* F.S. Menampilkan semua nama wahana yang dimiliki pemain*/
@@ -56,6 +63,9 @@ address_c generateCustomer(State * S);
         jika tidak penuh, maka customer akan tercatat di data_customer
         dan customer akan masuk antrian*/
 
+void triggerBroke(address_w W, State * S);
+// I.S. seorang pengunjung baru saja berhasil dilayani
+// F.S. ada kemungkinan wahana dengan address W menjadi rusak
 
 //********** Fungsi-fungsi RNG ***********//
 int Randomize(int lower_bound, int upper_bound);

@@ -96,13 +96,40 @@ void printReport(Wahana (*W)){
     printf("Pemasukkan hari ini: %d\n", (*W).income1);
 }
 
+boolean IsWahanaFull(Wahana * W){
+    // true jika suatu wahana full
+    // definisi full yaitu banyak orang == kapasitas
+    return (*W).banyak_orang == (*W).kapasitas;
+}
+
+
 
 /* &W = 8
-MAP                     MATRIK ADDress
-* * * * * *             0 0 0 0 0 0
-* * * W W *             0 0 0 8 8 0
-* * * W W *             0 0 0 8 8 0
-* * * * * *             0 0 0 0 0 0
+MAP                     MATRIK ADDress -2
+# * * * * * *             0 0 0 0 0 0
+# * O * W W *             0 -2 0 8 8 0
+# * * * W W *             0 0 0 8 8 0
+# * * * * * *             0 0 0 0 0 0
 */
 
 // *Matriks_Address[4][2]
+
+
+// wahana yang dibangun 0, 1, 4
+
+/*
+i traversal
+if DataWahana[i].starter then
+[0,1,4]
+
+1. DataWahana[0].nama
+2. DataWahana[1].nama
+3. DataWahana[4].nama
+
+2
+
+&DataWahana[1]
+
+uwucoaster -> engi descent
+
+*/

@@ -5,6 +5,94 @@
 
 
 //********* Fungsi-Fungsi untuk command *************//
+void Serve(State * S) {
+/* I.S. user memberi command untuk serve */
+/* F.S. serve customer terdepan pada Antrian(S),.*/
+    infoqueue P;
+    int i,idwahana,choice,num;
+    int daftarID[5];
+
+    if (NEQPOINT(NextY(Position(*S)),LocAntrian(*S)) &&
+        NEQPOINT(NextX(Position(*S)),LocAntrian(*S)) &&
+        NEQPOINT(NextX(LocAntrian(*S)),Position(*S)) &&
+        NEQPOINT(NextY(LocAntrian(*S)),Position(*S))) {
+        printf("Anda tidak sedang berada di samping antrian!\n");
+        return;
+    }
+
+    // Ambil informasi customer terdepan
+    P = InfoHead(Antrian(*S));
+
+    printf("// Daftar wahana yang dapat di-serve //\n\n");
+
+    num = 0;
+    for(i = 0; i < 5; i++) {
+        idwahana = Play(P,i);
+        if (idwahana != -1) {
+            daftarID[num] = idwahana;
+            num++;
+            printf("%d. ", num);
+            PrintKata(DataWahana(*S)[idwahana].nama);
+            printf("\n");
+        }
+    }
+    
+    printf("Masukkan pilihan: ");
+    scanf("%d", &choice);
+
+    while (!isBetween(choice,1,num)) {
+        printf("Masukkan tidak valid. ");
+        printf("Masukkan pilihan: ");
+        scanf("%d", &choice);
+    }
+
+    choice--;
+    idwahana = daftarID[choice];
+    
+    // jika berhasil wahana yang dipilih user adalah DataWahana(*S)[idwahana]
+    // jika wahana rusak
+    if (DataWahana(*S)[idwahana].broke) {
+        printf("// Gagal melayani pengunjung, wahana sedang rusak //\n");
+        return;
+    }
+
+    // jika wahana full
+    if (IsWahanaFull(&(DataWahana(*S)[idwahana]))) {
+        printf("// Gagal melayani pengunjung, wahana sudah penuh //\n");
+        return;
+    }
+
+    // jika wahana tidak penuh dan tidak rusak, maka berhasil melayani customer
+    Money(*S) += DataWahana(*S)[idwahana].harga;
+
+    // jumlah orang pada wahana tersebut akan bertambah    
+    DataWahana(*S)[idwahana].banyak_orang++;
+
+    // pendapatan yang tercatat akan bertambah
+    DataWahana(*S)[idwahana].income += DataWahana(*S)[idwahana].harga;
+    DataWahana(*S)[idwahana].income1 += DataWahana(*S)[idwahana].harga;
+    
+    // banyak pemakaian yang tercatat akan bertambah
+    DataWahana(*S)[idwahana].count_used++;
+    DataWahana(*S)[idwahana].count_used1++;
+
+    // Pengunjung tersebut akan di-dequeue, lokasinya akan berpindah ke wahana
+    Dequeue(&Antrian(*S),&P);
+    Loc(P) = idwahana;
+    Playtime(P) = DataWahana(*S)[idwahana].durasi; // waktu bermain customer akan di-set dengan durasi wahana
+    Prio(P)--;  // prioritas pemain akan meningkat
+
+    // wahana tersebut akan dihapus dari daftar wahana customer
+    for(i = 0; i < 5; i++) {
+        if (Play(P,i) == idwahana){
+            Play(P,i) = -1;
+        }
+    }
+
+    triggerBroke(&DataWahana(*S)[idwahana],S);  
+    //  ada 10% chance wahana tersebut berubah menjadi rusak
+}
+
 void Repair(State * S) {
 // I.S. user memberi command untuk repair
 /* F.S. jika di sebelah kanan user terdapat wahana, 
@@ -16,19 +104,19 @@ void Repair(State * S) {
     posisi_wahana = NextX(Position(*S));
     
     if (!IsWahana(Peta(*S),posisi_wahana)) {
-        printf("Tidak ada wahana apapun di samping kanan");
+        printf("Tidak ada wahana apapun di samping kanan\n");
         return;
     }
 
     address_wahana_kanan = (*S).map_address[Absis(posisi_wahana)][Ordinat(posisi_wahana)];
 
     if (!(*address_wahana_kanan).broke) {
-        printf("wahana di samping kanan tidak rusak!");
+        printf("wahana di samping kanan tidak rusak!\n");
         return;
     } 
 
     if (Money(*S) < (*address_wahana_kanan).harga_repair) {
-        printf("Uang tidak cukup!");
+        printf("Uang tidak cukup!\n");
         return;
     }
 
@@ -76,7 +164,7 @@ void OFFice(State * S) {
         printf("// Anda tidak sedang berada di Office! //");
         return;
     }
-
+    
     printf("// Memasuki office mode //");
 
     exit = false;
@@ -118,6 +206,11 @@ void OFFice(State * S) {
 
 
 //********** Fungsi-fungsi untuk Support ************//
+boolean isBetween(int val, int lower, int upper) {
+// true jika lower <= val <= upper
+    return val >= lower && val <= upper;
+}
+
 void printListWahana(State * S) {
 /* I.S. Sembarang */
 /* F.S. Menampilkan semua nama wahana yang dimiliki pemain*/
@@ -287,6 +380,53 @@ address_c generateCustomer(State * S) {
 }
 
 
+void triggerBroke(address_w W, State * S) {
+// I.S. seorang pengunjung baru saja berhasil dilayani
+// F.S. ada kemungkinan wahana dengan address W menjadi rusak
+    int rand_num;
+    address_c P,Prec;
+
+    rand_num = Randomize(0,10);
+
+    if (rand_num < 1) { // 10% chance wahana broke
+        (*W).broke = true;
+    }
+
+    if ((*W).broke) {
+        //  Jika wahana rusak, maka akan dilakukan proses setiap customer
+        //  Jika Antrian tidak penuh,
+        //  untuk customer yg berada di wahana tersebut akan pindah ke Antrian
+        //  Loc(P) berubah menjadi -1, dan di-enqueue
+        //  Jika Antrian penuh, cutomer pulang.
+        P = First(DataCustomers(*S));
+        while (P != Nil) {
+            if (Loc(P) == (*W).ID) {
+                Loc(P) = -1;
+                Prio(P)--;
+                Playtime(P) = 10;
+                if (!IsFullQueue(Antrian(*S))) {
+                    Enqueue(&Antrian(*S),P);
+                    Prec = P;
+                    P = Next(P);
+                } else {  //  jika antrian penuh, customer pulang.
+                    if (P == First(DataCustomers(*S))) {
+                        DelFirst(&DataCustomers(*S),&P);
+                        P = First(DataCustomers(*S));
+                    } else {
+                        DelAfter(&DataCustomers(*S),&P,Prec);
+                        Prec = P;
+                        P = Next(P);
+                    }
+                }
+            } else {
+                Prec = P;
+                P = Next(P);
+            }
+        }
+    }
+}
+
+//********** Fungsi-fungsi RNG ***********//
 int Randomize(int lower_bound, int upper_bound) {
 // menghasilkan bilangan random antara lower_bound dan upper_bound
     srand(time(NULL));

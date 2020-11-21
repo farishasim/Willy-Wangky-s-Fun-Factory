@@ -16,6 +16,7 @@ typedef struct twahana {
     int ID;
     int harga;
     int kapasitas;
+    int banyak_orang;
     int durasi;
     int bahan[5];
     int uang;
@@ -27,6 +28,7 @@ typedef struct twahana {
     int income;
     int count_used1;
     int income1;
+    // boolean starter;  // rencananya starter ini buat menunjukkan kalo suatu wahana itu wahana starter atau hasil upgrade
     boolean broke;
 } Wahana;
 
@@ -51,5 +53,9 @@ void printDetail(Wahana * W);
 
 void printReport(Wahana * W);
     //menampilkan report wahana ke layar.
+
+boolean IsWahanaFull(Wahana * W);
+    // true jika suatu wahana full
+    // definisi full yaitu banyak orang == kapasitas
 
 #endif
