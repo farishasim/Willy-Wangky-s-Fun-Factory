@@ -19,7 +19,6 @@ typedef int address_s;   /* indeks tabel */
 typedef struct { 
   infostack T[MaxElStack]; /* tabel penyimpan elemen */
   address_s TOP;  /* alamat TOP: elemen puncak */
-  int NbElmt; /*Jumlah elemen stack*/
 } Stack;
 /* Definisi stack S kosong : S.TOP = Nil */
 /* Elemen yang dipakai menyimpan nilai Stack T[0]..T[MaxElStack-1] */
@@ -30,7 +29,6 @@ typedef struct {
 /* Definisi akses dengan Selektor : Set dan Get */
 #define Top(S) (S).TOP
 #define InfoTop(S) (S).T[(S).TOP]
-#define NbElmt(S) (S).NbElmt
 /* ************ Prototype ************ */
 /* *** Konstruktor/Kreator *** */
 void CreateEmptyStackt (Stack *S);
@@ -44,6 +42,8 @@ boolean IsEmptyStackt (Stack S);
 /* Mengirim true jika Stack kosong: lihat definisi di atas */
 boolean IsFullStackt (Stack S);
 /* Mengirim true jika tabel penampung nilai elemen stack penuh */
+int NbElmt (Stack S);
+/*Mengirim nilai jumlah elemen terisi stack */
 
 /* ************ Menambahkan sebuah elemen ke Stack ************ */
 void Push (Stack * S, infostack X);
