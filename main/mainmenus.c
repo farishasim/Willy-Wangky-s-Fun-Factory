@@ -1,6 +1,5 @@
-#include "mainmenus.h"
-#include "commands.h"
 #include "phases.h"
+#include "mainmenus.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -73,17 +72,16 @@ void inputPName(State* S)
     fgets(Name(*S).TabKata, NMax, stdin);
     Name(*S).Length = strlen(Name(*S).TabKata)-1;
 
-    while (Name(*S).Length > 20)
+    while (Name(*S).Length > 20 || Name(*S).Length == 0)
     {
-        printf("Jumlah karakter pada nama melebihi 20 karakter.\n");
-        printf("Masukkan nama (maksimal 20 karakter): ");  
-        fgets(Name(*S).TabKata, NMax, stdin);
-        Name(*S).Length = strlen(Name(*S).TabKata)-1;
-    }
-
-    while (Name(*S).Length == 0)
-    {
-        printf("Nama pemain tidak boleh kosong.\n");
+        if (Name(*S).Length == 0)
+        {
+            printf("Nama pemain tidak boleh kosong.\n");
+        }
+        else
+        {
+            printf("Jumlah karakter pada nama melebihi 20 karakter.\n");
+        }
         printf("Masukkan nama (maksimal 20 karakter): ");  
         fgets(Name(*S).TabKata, NMax, stdin);
         Name(*S).Length = strlen(Name(*S).TabKata)-1;
@@ -98,28 +96,30 @@ void validateOptions(optiontype* menu, char l, char g, boolean isMove)
     *menu = getc(stdin);
     while (getc(stdin) != '\n');
 
-    if (isMove) //terdapat command W, A, S, atau D
+    while ((*menu < (int)l || *menu > (int)g) && *menu != 48)
     {
-        while ((*menu < (int)l || *menu > (int)g) && *menu != 48 && *menu != 57 && *menu != 119 && *menu != 87 && *menu != 97 && *menu != 65 && *menu != 115 && *menu != 83 && *menu != 100 && *menu != 68)
+        if (isMove)
         {
-            printf("Pilihan perintah tidak tersedia. Masukkan huruf atau angka yang sesuai.\n");
-            printf("Pilih perintah (huruf atau angka pertama yang akan disimpan): ");
-            *menu = getc(stdin);
-            while (getc(stdin) != '\n');
-        }
-    }
+            if (*menu != 57 && *menu != 119 && *menu != 87 && *menu != 97 && *menu != 65 && *menu != 115 && *menu != 83 && *menu != 100 && *menu != 68)
+            {
+                printf("Pilihan perintah tidak tersedia. Masukkan huruf atau angka yang sesuai.\n");
+                printf("Pilih perintah (huruf atau angka pertama yang akan disimpan): ");
+            }
 
-    else
-    {
-        while ((*menu < (int)l || *menu > (int)g) && *menu != 48)
+            else
+            {
+                break;
+            }
+        }
+
+        else
         {
             printf("Pilihan menu tidak tersedia. Masukkan angka antara %c -- %c atau 0.\n", l, g);
             printf("Pilih menu (angka pertama yang akan disimpan): ");
-            *menu = getc(stdin);
-            while (getc(stdin) != '\n');
         }
+        
+        *menu = getc(stdin);
+        while (getc(stdin) != '\n'); 
     }
 }
-
-
 
