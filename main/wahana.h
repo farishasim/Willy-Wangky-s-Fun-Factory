@@ -13,26 +13,28 @@ typedef struct twahana {
     Kata deskripsi;
     POINT position;
     POINT size;
+    int ID;
     int harga;
     int kapasitas;
+    int banyak_orang;
     int durasi;
-    Material bahan[5];
+    int bahan[5];
     int uang;
+    int time_needed;
     int harga_repair;
-    int durasi_repair;
+    int durasi_repair;  // waktu yang diperlukan untuk repair
+    int time_reparation;  // waktu yang tersisa untuk selesainya repair
     int count_used;
     int income;
     int count_used1;
     int income1;
+    // boolean starter;  // rencananya starter ini buat menunjukkan kalo suatu wahana itu wahana starter atau hasil upgrade
     boolean broke;
 } Wahana;
 
 typedef address_w map_wahana[20][20]; 
 
-#define LocWahana(W) (W).position
-#define SizeWahana(W) (W).size
-
-void LoadWahana(Wahana * W, Material list[5]);
+void LoadWahana(Wahana * W);
     // I.S. list[5] adalah list of material yang sudah di-load.
     // F.S. W adalah node wahana yang sudah di-load
 
@@ -46,12 +48,14 @@ Wahana getWahanaAt(map_wahana map_of_address, POINT P);
     // prekondisi : P  point yang valid
     // return value : sebuah wahana yang terletak pada P.
 
-void printDetail(Wahana W);
+void printDetail(Wahana * W);
     // menampilkan detail wahana ke layar.
 
-void printReport(Wahana W);
+void printReport(Wahana * W);
     //menampilkan report wahana ke layar.
 
-#endif
+boolean IsWahanaFull(Wahana * W);
+    // true jika suatu wahana full
+    // definisi full yaitu banyak orang == kapasitas
 
-//void LoadWahana(Wahana * W, Material list[5]);
+#endif

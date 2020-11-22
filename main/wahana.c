@@ -1,7 +1,7 @@
 #include "wahana.h"
 #include <stdio.h>
 
-void LoadWahana(Wahana * W, Material list_material[5]){
+void LoadWahana(Wahana * W){
     int i;
     int x,y;
     char separator = ',';
@@ -29,9 +29,7 @@ void LoadWahana(Wahana * W, Material list_material[5]){
     
     for(i = 0; i < 5; i++) {
         ADVKATA(separator);
-        ((*W).bahan)[i].quantity = ConvertKata(CKata);
-        CopyKata(list_material[i].nama, &((*W).bahan)[i].nama);
-        ((*W).bahan)[i].harga = list_material[i].harga;      
+        ((*W).bahan)[i] = ConvertKata(CKata);      
     }
 
     ADVKATA(separator);
@@ -66,22 +64,22 @@ Wahana getWahanaAt(map_wahana map_of_address, POINT P) {
     return *(map_of_address[Absis(P)][Ordinat(P)]);
 }
 
-void printDetail(Wahana W) {
+void printDetail(Wahana * W) {
     // menampilkan detail wahana ke layar.
-    printd("// Melihat detail wahana //");
+    printf("// Melihat detail wahana //");
 
     printf("\nNama : ");
-    PrintKata(W.nama);
+    PrintKata((*W).nama);
     
     printf("\nLokasi : ");
-    TulisPOINT(W.position);
+    TulisPOINT((*W).position);
     
     printf("\nUpgrade(s) : []");  // untuk sementara kosong dulu
 
     printf("\nHistory : ");   // untuk sementara kosong dulu
     
     printf("\nStatus : ");
-    if (W.broke) {
+    if ((*W).broke) {
         printf("Tidak Berfungsi\n");
     } else {
         printf("berfungsi\n");
@@ -89,11 +87,49 @@ void printDetail(Wahana W) {
 }
 
 
-void printReport(Wahana W){
+void printReport(Wahana (*W)){
     //menampilkan report wahana ke layar.
-    printf("Total Pemakaian : %d\n", W.count_used);
-    printf("Pemakaian hari ini : %d\n", W.count_used1);
+    printf("Total Pemakaian : %d\n", (*W).count_used);
+    printf("Pemakaian hari ini : %d\n", (*W).count_used1);
 
-    printf("Total Pemasukkan : %d\n", W.income);
-    printf("Pemasukkan hari ini: %d\n", W.income1);
+    printf("Total Pemasukkan : %d\n", (*W).income);
+    printf("Pemasukkan hari ini: %d\n", (*W).income1);
 }
+
+boolean IsWahanaFull(Wahana * W){
+    // true jika suatu wahana full
+    // definisi full yaitu banyak orang == kapasitas
+    return (*W).banyak_orang == (*W).kapasitas;
+}
+
+
+
+/* &W = 8
+MAP                     MATRIK ADDress -2
+# * * * * * *             0 0 0 0 0 0
+# * O * W W *             0 -2 0 8 8 0
+# * * * W W *             0 0 0 8 8 0
+# * * * * * *             0 0 0 0 0 0
+*/
+
+// *Matriks_Address[4][2]
+
+
+// wahana yang dibangun 0, 1, 4
+
+/*
+i traversal
+if DataWahana[i].starter then
+[0,1,4]
+
+1. DataWahana[0].nama
+2. DataWahana[1].nama
+3. DataWahana[4].nama
+
+2
+
+&DataWahana[1]
+
+uwucoaster -> engi descent
+
+*/
