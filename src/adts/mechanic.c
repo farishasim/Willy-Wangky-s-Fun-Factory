@@ -3,6 +3,275 @@
 #include <time.h>
 #include "mechanic.h"
 
+//W A S D yang belum clear :
+// - Gimana caranya saat move map, titiknya pindah ke depan gerbang
+
+void W(Map *M, State *S, Graph G){
+	Point P1, P2, P3;
+	P1=Position(*S);
+	P2=	PlusDelta(P1,0,-1);
+	P3=Office(*S);
+
+	if(EQPOINT(P1, P3)){
+		if(Elmt(*M,Absis(P2),Ordinat(P2))=='*' || Elmt(*M,Absis(P2),Ordinat(P2))=='W' || Elmt(*M,Absis(P2),Ordinat(P2))=='A'){
+			Position(*S)=P1;
+		}
+		else if(Elmt(*M,Absis(P2),Ordinat(P2))=='-' || Elmt(*M,Absis(P2),Ordinat(P2))=='O'){
+			Position(*S)=P2;
+			Elmt(*M,Absis(P1),Ordinat(P1))='-';
+			Elmt(*M,Absis(P2),Ordinat(P2))='P';
+		}
+		else if((Elmt(*M,Absis(P2),Ordinat(P2))=='^')){
+			MoveMapUp(G);
+		}
+	}
+	else{
+		if(Elmt(*M,Absis(P2),Ordinat(P2))!='*' || Elmt(*M,Absis(P2),Ordinat(P2))!='A'){
+			Position(*S)=P1;
+		}
+		else if(Elmt(*M,Absis(P2),Ordinat(P2))=='-'){
+			Position(*S)=P2;
+			Elmt(*M,Absis(P1),Ordinat(P1))='O';
+			Elmt(*M,Absis(P2),Ordinat(P2))='P';
+		}
+		else if((Elmt(*M,Absis(P2),Ordinat(P2))=='^')){
+			Elmt(*M,Absis(P1),Ordinat(P1))='O';
+			MoveMapUp(G);
+		}
+	}
+}
+
+void A(Map *M, State *S, Graph G){
+	Point P1, P3, P3;
+	P1=Position(*S);
+	P2=PlusDelta(P1,-1,0);
+	P3=Office(*S);
+
+	if(EQPOINT(P1, P3)){
+		if(Elmt(*M,Absis(P2),Ordinat(P2))=='*' || Elmt(*M,Absis(P2),Ordinat(P2))=='W' || Elmt(*M,Absis(P2),Ordinat(P2))=='A'){
+			Position(*S)=P1;
+		}
+		else if(Elmt(*M,Absis(P2),Ordinat(P2))=='-' || Elmt(*M,Absis(P2),Ordinat(P2))=='O'){
+			Position(*S)=P2;
+			Elmt(*M,Absis(P1),Ordinat(P1))='-';
+			Elmt(*M,Absis(P2),Ordinat(P2))='P';
+		}
+		else if((Elmt(*M,Absis(P2),Ordinat(P2))=='^')){
+			MoveMapUp(G);
+		}
+	}
+	else{
+		if(Elmt(*M,Absis(P2),Ordinat(P2))!='*' || Elmt(*M,Absis(P2),Ordinat(P2))!='A'){
+			Position(*S)=P1;
+		}
+		else if(Elmt(*M,Absis(P2),Ordinat(P2))=='-'){
+			Position(*S)=P2;
+			Elmt(*M,Absis(P1),Ordinat(P1))='O';
+			Elmt(*M,Absis(P2),Ordinat(P2))='P';
+		}
+		else if((Elmt(*M,Absis(P2),Ordinat(P2))=='^')){
+			Elmt(*M,Absis(P1),Ordinat(P1))='O';
+			MoveMapUp(G);
+		}
+	}
+}
+
+void S(Map *M, State *S, Graph G){
+	Point P1, P2, P3;
+	P1=Position(*S);
+	P2=NextY(P1);
+	P3=Office(*S);
+
+	if(EQPOINT(P1, P3)){
+		if(Elmt(*M,Absis(P2),Ordinat(P2))=='*' || Elmt(*M,Absis(P2),Ordinat(P2))=='W' || Elmt(*M,Absis(P2),Ordinat(P2))=='A'){
+			Position(*S)=P1;
+		}
+		else if(Elmt(*M,Absis(P2),Ordinat(P2))=='-' || Elmt(*M,Absis(P2),Ordinat(P2))=='O'){
+			Position(*S)=P2;
+			Elmt(*M,Absis(P1),Ordinat(P1))='-';
+			Elmt(*M,Absis(P2),Ordinat(P2))='P';
+		}
+		else if((Elmt(*M,Absis(P2),Ordinat(P2))=='^')){
+			MoveMapUp(G);
+		}
+	}
+	else{
+		if(Elmt(*M,Absis(P2),Ordinat(P2))!='*' || Elmt(*M,Absis(P2),Ordinat(P2))!='A'){
+			Position(*S)=P1;
+		}
+		else if(Elmt(*M,Absis(P2),Ordinat(P2))=='-'){
+			Position(*S)=P2;
+			Elmt(*M,Absis(P1),Ordinat(P1))='O';
+			Elmt(*M,Absis(P2),Ordinat(P2))='P';
+		}
+		else if((Elmt(*M,Absis(P2),Ordinat(P2))=='^')){
+			Elmt(*M,Absis(P1),Ordinat(P1))='O';
+			MoveMapUp(G);
+		}
+	}
+}
+
+
+void D(Map *M, State *S, Graph G){
+	Point P1, P2, P3;
+	P1=Position(*S);
+	P2=NextX(P1);
+	P3=Office(*S);
+
+	if(EQPOINT(P1, P3)){
+		if(Elmt(*M,Absis(P2),Ordinat(P2))=='*' || Elmt(*M,Absis(P2),Ordinat(P2))=='W' || Elmt(*M,Absis(P2),Ordinat(P2))=='A'){
+			Position(*S)=P1;
+		}
+		else if(Elmt(*M,Absis(P2),Ordinat(P2))=='-' || Elmt(*M,Absis(P2),Ordinat(P2))=='O'){
+			Position(*S)=P2;
+			Elmt(*M,Absis(P1),Ordinat(P1))='-';
+			Elmt(*M,Absis(P2),Ordinat(P2))='P';
+		}
+		else if((Elmt(*M,Absis(P2),Ordinat(P2))=='^')){
+			MoveMapUp(G);
+		}
+	}
+	else{
+		if(Elmt(*M,Absis(P2),Ordinat(P2))!='*' || Elmt(*M,Absis(P2),Ordinat(P2))!='A'){
+			Position(*S)=P1;
+		}
+		else if(Elmt(*M,Absis(P2),Ordinat(P2))=='-'){
+			Position(*S)=P2;
+			Elmt(*M,Absis(P1),Ordinat(P1))='O';
+			Elmt(*M,Absis(P2),Ordinat(P2))='P';
+		}
+		else if((Elmt(*M,Absis(P2),Ordinat(P2))=='^')){
+			Elmt(*M,Absis(P1),Ordinat(P1))='O';
+			MoveMapUp(G);
+		}
+	}
+}
+
+//Build yang belum clear
+// - Bentuk questnya gimana
+// - Push ke stacknya blm bisa dibuat (atribut data_wahananya masih kurang)
+void Build(Map *M, State *S, Wahana *W){
+	int id;
+	printf("Ingin membangun apa?\nList:\n");
+	//print list wahana;
+	scanf(&ID);
+
+	int quest;
+	quest=ID*10+1;
+
+	// if(! time_needed < open time){
+	// 	Push(Act(*S), quest);
+	// 	MoneyNeeded(*S)+=data_wahana(*S)[ID].harga;
+	// 	TimeNeeded(*S)+=data_wahana(*S)[ID].time_needed;
+	// }
+
+	//Prasyarat build = Setiap titik pada sekeliling Position(*S) harus '-'
+	if((Absis(P1))-1=='-'&& (Absis(P1))+1=='-'&& (Ordinat(P1))+1=='-'&& (Ordinat(P1))-1=='-'){
+		SetWahana(P1);
+		Point P2;
+		if((Ordinat(P1))-1=='-'){
+			if((Absis(P1))-1=='-'){
+				Elmt(*M,(Absis(P1))-1,(Ordinat(P1))-1)='P';
+				Absis(P2)=Absis(P1)-1;
+				Absis(P2)=Absis(P1)-1;
+				Position(*S)=P2;
+			}
+			else if((Absis(P1))=='-'){
+				Elmt(*M,(Absis(P1)),(Ordinat(P1))-1)='P';
+				Absis(P2)=Absis(P1);
+				Ordinat(P2)=Ordinat(P1)-1;
+				Position(*S)=P2;
+			}
+			else if((Absis(P1))+1=='-'){
+				Elmt(*M,(Absis(P1))+1,(Ordinat(P1))-1)='P';
+				Absis(P2)=Absis(P1)+1;
+				Ordinat(P2)=Ordinat(P1)-1
+				Position(*S)=P2;
+			}
+		}
+		else if((Ordinat(P1))=='-'){
+			if((Absis(P1))-1=='-'){
+				Elmt(*M,(Absis(P1))-1,(Ordinat(P1)))='P';
+				Absis(P2)=Absis(P1)-1;
+				Ordinat(P2)=Ordinat(P1);
+				Position(*S)=P2;
+			}
+			else if((Absis(P1))+1=='-'){
+				Elmt(*M,(Absis(P1))+1,(Ordinat(P1)))='P';
+				Absis(P2)=Absis(P1)+1;
+				Ordinat(P2)=Ordinat(P1);
+				Position(*S)=P2;
+			}
+		}
+		else if((Ordinat(P1))+1=='-'){
+			if((Absis(P1))-1=='-'){
+				Elmt(*M,(Absis(P1))-1,(Ordinat(P1))+1)='P';
+				Absis(P2)=Absis(P1)-1;
+				Ordinat(P2)=Ordinat(P1)+1;
+				Position(*S)=P2;
+			}
+			else if((Absis(P1))=='-'){
+				Elmt(*M,(Absis(P1)),(Ordinat(P1))+1)='P';
+				Absis(P2)=Absis(P1);
+				Ordinat(P2)=Ordinat(P1)+1;
+				Position(*S)=P2;
+			}
+			else if((Absis(P1))+1=='-'){
+				Elmt(*M,(Absis(P1))+1,(Ordinat(P1))+1)='P';
+				Absis(P2)=Absis(P1)+1;
+				Ordinat(P2)=Ordinat(P1)+1;
+				Position(*S)=P2;
+			}
+		}
+	}
+	else{
+		printf("Anda tidak bisa membangun wahana di posisi ini");
+	}
+}
+
+void Upgrade(Map *M, State *S){
+	int X;
+	int Y;
+	if(IsWahana(NextX(Position(*S)))){
+
+		printf("Ingin melakukan upgrade apa?\nList :\n");
+		scanf(up);
+
+		//If resource<requirement, print error
+		
+		else{
+			int quest;
+
+		
+			Push(Act(*S), quest);
+		}
+	}
+
+	else{
+		printf("Tidak ada wahana di sisi kanan anda: \n ");
+	}
+}
+
+void Buy(Material mat, State *S){
+	int n, id, quest;
+
+	printf("Ingin membeli apa?\nList :\n");
+	//PrintMaterial(mat);
+	printf("Format input : jumlah(spasi)id material\n");
+
+	scanf("%d %d", &n, &id);
+	quest=n*100+id*10+1;
+
+// 	if(Money(*S) < n*hargamaterial){
+// 		printf("Jumlah uang tidak mencukupi. Silahkan ulangi lagi!");
+// 	}
+    
+	else{
+		Push(Act(*S),&quest);
+		MoneyNeeded(*S)+=
+		TimeNeeded(*S)+=1
+	}
+}
 
 //********* Fungsi-Fungsi untuk command *************//
 void Serve(State * S) {
