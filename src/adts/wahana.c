@@ -40,11 +40,14 @@ void LoadWahana(Wahana * W){
 }
 
 
-void setAddressMap(map_wahana * map_of_address, address_w address_wahana, POINT loc, POINT size) {
+void setAddressMap(State * S, Wahana * W, POINT loc, POINT size) {
     // I.S. loc adalah kordinat yang valid dan size valid
     // F.S. pada map of address, akan dimasukkan address dari wahana 
     //      yang terletak pada titik : loc, dengan ukuran wahana : size
     int firstBrs,firstKol,lastBrs,lastKol,i,j;
+    address_w address_wahana;
+    address_wahana = W;
+
     firstBrs = Absis(loc);
     firstKol = Ordinat(loc);
     lastBrs = firstBrs + Absis(size) - 1;
@@ -52,16 +55,16 @@ void setAddressMap(map_wahana * map_of_address, address_w address_wahana, POINT 
 
     for(i = firstBrs; i <= lastBrs; i++) {
         for(j = firstKol; j <= lastKol; j++) {
-            (*map_of_address)[i][j] = address_wahana;
+            PetaAddress(*S)[i][j] = address_wahana;
         }
     }
 }
 
-Wahana getWahanaAt(map_wahana map_of_address, POINT P) {
+Wahana getWahanaAt(State * S, POINT P) {
     // prekondisi : P  point yang valid
     // return value : sebuah wahana yang terletak pada P.
 
-    return *(map_of_address[Absis(P)][Ordinat(P)]);
+    return *Elmt(PetaAddress(*S),Absis(P),Ordinat(P));
 }
 
 void printDetail(Wahana * W) {

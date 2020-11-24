@@ -4,7 +4,7 @@
 #include "mesinkata.h"
 #include "jam.h"
 #include "material.h"
-#include "point.h"
+#include "state.h"
 
 typedef struct twahana * address_w;  // address w adalah tipe pointer to node wahana
 
@@ -32,19 +32,31 @@ typedef struct twahana {
     boolean broke;
 } Wahana;
 
-typedef address_w map_wahana[20][20]; 
+typedef struct {
+    address_w Mem[BrsMax+1][KolMax+1];
+    int NBrsEff; /* banyaknya/ukuran baris yg terdefinisi */
+	int NKolEff; /* banyaknya/ukuran kolom yg terdefinisi */
+} Map_wahana;
+
+/*
+Map_wahana adalah sebuah matriks yang setiap elemennya merupakan address memori dari wahana
+Selektor Map_Wahana sama seperti matriks, yaitu
+#define NBrsEff(M) (M).NBrsEff
+#define NKolEff(M) (M).NKolEff
+#define Elmt(M,i,j) (M).Mem[(i)][(j)]
+*/
 
 void LoadWahana(Wahana * W);
     // I.S. list[5] adalah list of material yang sudah di-load.
     // F.S. W adalah node wahana yang sudah di-load
 
-
-void setAddressMap(map_wahana * map_of_address, address_w address_wahana, POINT loc, POINT size);
-    // I.S. loc adalah kordinat yang valid dan size valid
-    // F.S. pada map of address, akan dimasukkan address dari wahana 
+void setAddressMap(State * S, Wahana * W, POINT loc, POINT size);
+    // I.S. loc adalah kordinat yang valid dan size valid, 
+    //      W adalah wahana yang akan disimpan addressnya pada PetaAddress(S)
+    // F.S. pada PetaAddress(S), akan dimasukkan address dari wahana W
     //      yang terletak pada titik : loc, dengan ukuran wahana : size
 
-Wahana getWahanaAt(map_wahana map_of_address, POINT P);
+Wahana getWahanaAt(State * S, POINT P);
     // prekondisi : P  point yang valid
     // return value : sebuah wahana yang terletak pada P.
 

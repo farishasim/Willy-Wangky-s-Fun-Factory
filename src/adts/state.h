@@ -35,7 +35,7 @@ typedef struct {
   Wahana data_wahana[10];  /* data semua wahana yang tersedia pada permainan */
   address_w listWahana[5];  /* list semua wahana yang dimiliki pemain */  // [&DataWahana[1],nil,nil,nil,nil]
   Map peta[4];              /* merepresentasikan lahan wahana yang dimiliki oleh pemain */
-  map_wahana peta_address[4];  // map yang setiap elemennya merupakan address dari suatu wahana
+  Map_wahana peta_address[4];  // map yang setiap elemennya merupakan address dari suatu wahana
 } State;
 
 
@@ -56,7 +56,6 @@ typedef struct {
 #define Position(S) (S).position
 #define Office(S) (S).office
 #define LocAntrian(S) (S).locAntrian
-#define Area(S) (S).area
 #define Prep(S) (S).prep_phase
 #define Antrian(S) (S).antrian
 #define Act(S) (S).act_list
@@ -67,8 +66,9 @@ typedef struct {
 
 // SELEKTOR Peta yang sedang aktif
 // aktif artinya dimana pemain sedang berada
-#define Peta(S) (S).peta[Info(First(Area(S)))]
-#define PetaAddress(S) (S).peta_address[Info(First(Area(S)))]
+#define Area(S) (S).area.First->info  //  area yang sedang aktif
+#define Peta(S) (S).peta[Area(S)]
+#define PetaAddress(S) (S).peta_address[Area(S)]
 
 void loading(State* S, char* filename, boolean isInput, boolean isLoad);
 

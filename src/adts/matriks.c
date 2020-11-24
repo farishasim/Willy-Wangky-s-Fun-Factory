@@ -72,6 +72,7 @@ void BacaMATRIKS (MATRIKS * M, int NB, int NK){
 void TulisMATRIKS (MATRIKS M){
     
 }
+
 MATRIKS TambahMATRIKS (MATRIKS M1, MATRIKS M2){
     MATRIKS MHasil;
     MakeMATRIKS (M1.NBrsEff,M1.NKolEff,&MHasil);

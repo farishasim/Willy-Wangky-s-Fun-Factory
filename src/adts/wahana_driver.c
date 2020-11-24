@@ -5,7 +5,7 @@
 int main() {
     Wahana W;
     Material list_bahan[5];
-    map_wahana addressmap;
+    Map_wahana addressmap;
     int i;
 
     // LOad material ke list material
@@ -33,17 +33,17 @@ int main() {
     printf("%c", CC);
 
     // testing map of address
-    addressmap[0][0] = &W;
-    printf("%d", addressmap[0][0]);
+    Elmt(addressmap,0,0) = &W;
+    printf("%d", Elmt(addressmap,0,0));
 
     // tampilkan hasil wahana yang di-input untuk testing
     // dengan mencoba menggunakan address wahana
-    PrintKata((*addressmap[0][0]).nama); printf("\n");
-    TulisPOINT((*addressmap[0][0]).size); printf("\n");
+    PrintKata((*Elmt(addressmap,0,0)).nama); printf("\n");
+    TulisPOINT((*Elmt(addressmap,0,0)).size); printf("\n");
     for(i = 0; i < 5; i++){
-        printf("%d",(*addressmap[0][0]).bahan[i]); printf("\n");
+        printf("%d",(*Elmt(addressmap,0,0)).bahan[i]); printf("\n");
     }
-    PrintKata((*addressmap[0][0]).deskripsi);
+    PrintKata((*Elmt(addressmap,0,0)).deskripsi);
 
     return 0;
 }
