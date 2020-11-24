@@ -52,8 +52,8 @@ void LoadWahana(Wahana * W);
 
 void setAddressMap(Map_wahana * M, Wahana * W, POINT loc, POINT size);
     // I.S. loc adalah kordinat yang valid dan size valid, 
-    //      W adalah wahana yang akan disimpan addressnya pada PetaAddress(S)
-    // F.S. pada PetaAddress(S), akan dimasukkan address dari wahana W
+    //      W adalah wahana yang akan disimpan addressnya pada M
+    // F.S. pada M, akan dimasukkan address dari wahana W
     //      yang terletak pada titik : loc, dengan ukuran wahana : size
 
 Wahana getWahanaAt(Map_wahana * M, POINT P);
