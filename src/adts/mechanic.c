@@ -377,7 +377,7 @@ void Repair(State * S) {
         return;
     }
 
-    address_wahana_kanan = (*S).map_address[Absis(posisi_wahana)][Ordinat(posisi_wahana)];
+    address_wahana_kanan = PetaAddress(*S)[Absis(posisi_wahana)][Ordinat(posisi_wahana)];
 
     if (!(*address_wahana_kanan).broke) {
         printf("wahana di samping kanan tidak rusak!\n");
@@ -413,7 +413,7 @@ void Detail(State * S) {
         return;
     }
 
-    wahana_kanan = getWahanaAt((*S).map_address, posisi_wahana);
+    wahana_kanan = getWahanaAt(PetaAddress(*S), posisi_wahana);
 
     printDetail(&wahana_kanan);
     timeFlow(S,2); // melihat detail membutuhkan waktu 2 menit. (opsional)
