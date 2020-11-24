@@ -66,9 +66,9 @@ typedef struct {
 
 // SELEKTOR Peta yang sedang aktif
 // aktif artinya dimana pemain sedang berada
-#define Area(S) (S).area.First->info  //  area yang sedang aktif
-#define Peta(S) (S).peta[Area(S)]
-#define PetaAddress(S) (S).peta_address[Area(S)]
+#define Area(S) (S).area  //  area yang sedang aktif
+#define Peta(S) (S).peta[(S).area.First->info]
+#define PetaAddress(S) (S).peta_address[(S).area.First->info]
 
 void loading(State* S, char* filename, boolean isInput, boolean isLoad);
 

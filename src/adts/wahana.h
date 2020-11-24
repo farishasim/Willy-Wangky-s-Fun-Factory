@@ -4,7 +4,7 @@
 #include "mesinkata.h"
 #include "jam.h"
 #include "material.h"
-#include "state.h"
+#include "map.h"
 
 typedef struct twahana * address_w;  // address w adalah tipe pointer to node wahana
 
@@ -50,13 +50,13 @@ void LoadWahana(Wahana * W);
     // I.S. list[5] adalah list of material yang sudah di-load.
     // F.S. W adalah node wahana yang sudah di-load
 
-void setAddressMap(State * S, Wahana * W, POINT loc, POINT size);
+void setAddressMap(Map_wahana * M, Wahana * W, POINT loc, POINT size);
     // I.S. loc adalah kordinat yang valid dan size valid, 
     //      W adalah wahana yang akan disimpan addressnya pada PetaAddress(S)
     // F.S. pada PetaAddress(S), akan dimasukkan address dari wahana W
     //      yang terletak pada titik : loc, dengan ukuran wahana : size
 
-Wahana getWahanaAt(State * S, POINT P);
+Wahana getWahanaAt(Map_wahana * M, POINT P);
     // prekondisi : P  point yang valid
     // return value : sebuah wahana yang terletak pada P.
 
