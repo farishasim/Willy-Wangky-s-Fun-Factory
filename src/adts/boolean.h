@@ -6,5 +6,7 @@
 #define boolean unsigned char
 #define true 1
 #define false 0
+#define Nil NULL
+#define First(P) ((P).First)
 
 #endif

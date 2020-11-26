@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define Nil NULL
 typedef struct tNode *address;
 typedef struct tNode {
 int info;
@@ -25,7 +24,6 @@ address First;
 #define Left(P) (P)->left
 #define Up(P) (P)->up
 #define Down(P) (P)->down
-#define First(G) ((G).First)
 
 typedef address graph_peta[4]; 
 

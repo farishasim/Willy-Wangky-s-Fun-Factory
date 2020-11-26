@@ -8,9 +8,6 @@
 
 #include "boolean.h"
 
-#define Nil NULL
-
-
 typedef struct tCustomer { 
 	int prio; /* [1..10], prioritas dengan nilai 1..10 (1 adalah prioritas tertinggi) */
     int play[5];  
@@ -43,7 +40,6 @@ typedef struct {
 #define Playtime(P) (P)->info.time
 #define Kesabaran(P) (P)->info.kesabaran
 #define Next(P) (P)->next
-#define First(L) ((L).First)
 
 /* PROTOTYPE */
 /****************** TEST ListCustomer KOSONG ******************/
@@ -59,7 +55,7 @@ void CreateEmpty (ListCustomer *L);
 address_c Alokasi ();
 /* Mengirimkan address_c hasil alokasi sebuah elemen */
 /* Jika alokasi berhasil, maka address_c tidak nil, dan misalnya */
-/* menghasilkan P, maka info(P)=X, Next(P)=Nil */
+/* menghasilkan P, maka info(P)=siap untuk diisi, Next(P)=Nil */
 /* Jika alokasi gagal, mengirimkan Nil */
 
 void Dealokasi (address_c *P);

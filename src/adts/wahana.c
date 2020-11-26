@@ -40,11 +40,12 @@ void LoadWahana(Wahana * W){
 }
 
 
-void setAddressMap(Map_wahana * M, Wahana * W, POINT loc, POINT size) {
+void setAddressMap(Map_wahana * M, Wahana * W, POINT loc) {
     // I.S. loc adalah kordinat yang valid dan size valid
     // F.S. pada map of address, akan dimasukkan address dari wahana 
     //      yang terletak pada titik : loc, dengan ukuran wahana : size
     int firstBrs,firstKol,lastBrs,lastKol,i,j;
+    POINT size = (*W).size;
     address_w address_wahana;
     address_wahana = W;
 
@@ -53,10 +54,20 @@ void setAddressMap(Map_wahana * M, Wahana * W, POINT loc, POINT size) {
     lastBrs = firstBrs + Absis(size) - 1;
     lastKol = firstKol + Ordinat(size) - 1;
 
+    i = firstBrs-1;
+    for(j = firstKol-1; j <= lastKol+1; j++) {
+        Elmt(*M,i,j) = -1;  //  sekeliling atas menjadi forbidden
+    }
     for(i = firstBrs; i <= lastBrs; i++) {
+        Elmt(*M,i,firstKol-1) = -1;  //  sekeliling kiri menjadi forbidden
         for(j = firstKol; j <= lastKol; j++) {
             Elmt(*M,i,j) = address_wahana;
         }
+        Elmt(*M,i,lastKol+1) = -1;  //  sekeliling kanan menjadi forbidden
+    }
+    i = lastKol-1;
+    for(j = firstKol-1; j <= lastKol+1; j++) {
+        Elmt(*M,i,j) = -1;  //  sekeliling bawah menjadi forbidden
     }
 }
 
@@ -99,12 +110,52 @@ void printReport(Wahana (*W)){
     printf("Pemasukkan hari ini: %d\n", (*W).income1);
 }
 
+void printHistory1(ListHistory L){
+    if (!IsEmptyHistory(L)) {
+        PrintKata((*Info(L)).nama);
+        if (Next(L)) {
+            printF(" -> ");
+            printHistory1(Next(L));
+        }
+    }
+}
+
+void printHistory(Wahana * W) {
+    ListHistory L;
+    address_h P;
+
+    L = (*W).history;
+    
+    printHistory1(L);
+}
+
+void printNextGrade(Wahana * W) {
+    // menampilkan Upgrade = []
+    // Kamus
+    BinTree PohonUpgrade;
+    // Algoritma
+    PohonUpgrade = (*W).upgrade_tree;
+}
+
+void printNextGrade1(BinTree P, int ID) {
+    // proses rekurens untuk printNextGrade
+    if (Akar(P) == ID) {
+
+    }
+}
+
 boolean IsWahanaFull(Wahana * W){
     // true jika suatu wahana full
     // definisi full yaitu banyak orang == kapasitas
     return (*W).banyak_orang == (*W).kapasitas;
 }
 
+
+void addUpgradeHistory(Wahana * W, boolean Kiri) {
+    // mencatat history upgrade wahana jika wahana W di-upgrade
+    // Kiri = true jika W di-upgrade ke left.
+
+}
 
 
 /* &W = 8

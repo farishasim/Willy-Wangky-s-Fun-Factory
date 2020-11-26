@@ -12,8 +12,9 @@
 #include "wahana.h"
 #include "graph2.h"
 
+typedef struct State_ State;
 
-typedef struct {
+struct State_ {
   Kata username;         /* nama yg di-input oleh player */
   int money;         /* uang yang dimiliki pemain */
   int day;           /* hari ke-berapa */
@@ -36,7 +37,7 @@ typedef struct {
   address_w listWahana[5];  /* list semua wahana yang dimiliki pemain */  // [&DataWahana[1],nil,nil,nil,nil]
   Map peta[4];              /* merepresentasikan lahan wahana yang dimiliki oleh pemain */
   Map_wahana peta_address[4];  // map yang setiap elemennya merupakan address dari suatu wahana
-} State;
+};
 
 
 /* WARNING!! : Adt state ini masih mentah, */
@@ -69,6 +70,12 @@ typedef struct {
 #define Area(S) (S).area  //  area yang sedang aktif
 #define Peta(S) (S).peta[(S).area.First->info]
 #define PetaAddress(S) (S).peta_address[(S).area.First->info]
+
+// Selektor Wahana dengan ID (ada pada state S)
+#define GetWahana(S,ID) (S).data_wahana[ID]
+// untuk mendapat address-nya dapat dengan 
+/////// &GetWahana(S,ID)
+
 
 void loading(State* S, char* filename, boolean isInput, boolean isLoad);
 

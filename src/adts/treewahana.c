@@ -1,7 +1,6 @@
 
 #include "treewahana.h"
 
-#define Nil NULL
 
 address AlokasiTree (IdWahana X){
     address result;
@@ -14,7 +13,7 @@ address AlokasiTree (IdWahana X){
     return result;
 }
 
-void Dealokasi (address P){
+void DealokasiTree (address P){
     free(P);
 }
 

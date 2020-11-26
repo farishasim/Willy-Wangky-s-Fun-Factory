@@ -1,13 +1,9 @@
 #ifndef treewahana_H
 #define treewahana_H
 
-#include "wahana.h"
+#include "boolean.h"
 #include <stdlib.h>
 #include <stdio.h>
-
-#define Nil NULL
-
-
 
 typedef int IdWahana;
 typedef struct tNode *address;
@@ -32,7 +28,7 @@ address AlokasiTree (IdWahana X);
 menghasilkan P, maka Info(P)=X, Left(P)=Nil, Right(P)=Nil 
 { Jika alokasi gagal, mengirimkan Nil }*/
 
-void Dealokasi (address P);
+void DealokasiTree (address P);
 /*{ I.S. P terdefinisi }
 { F.S. P dikembalikan ke sistem }
 { Melakukan dealokasi/pengembalian address P }
