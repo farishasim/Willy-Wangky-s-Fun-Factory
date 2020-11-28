@@ -181,6 +181,15 @@ void inputManualCoba2(State *S)
         if (i == 0) {
             Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, NKolEff((*S).peta[i])-1) = '>';
             Elmt((*S).peta[i], NBrsEff((*S).peta[i])-1, NKolEff((*S).peta[i])/2) = 'V';
+        } else if (i == 1) {
+            Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, 0) = '<';
+            Elmt((*S).peta[i], NBrsEff((*S).peta[i])-1, NKolEff((*S).peta[i])/2) = 'V';
+        } else if (i == 2) {
+            Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, NKolEff((*S).peta[i])-1) = '>';
+            Elmt((*S).peta[i], 0, NKolEff((*S).peta[i])/2) = '^';
+        } else {
+            Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, 0) = '<';
+            Elmt((*S).peta[i], 0, NKolEff((*S).peta[i])/2) = '^';
         }
         TulisMATRIKS((*S).peta[i]);
     }

@@ -7,12 +7,12 @@
 POINT GateSpawnX (State *S){
     POINT P;
     if(Info(First(Area(*S)))==0 || Info(First(Area(*S)))==1){
-        Absis(P)=(GetLastIdxBrs(Peta(*S)))/2+1;
-        Ordinat(P)=GetLastIdxKol(Peta(*S))-1;
+        Absis(P)=(GetLastIdxBrs(Peta(*S)))-1;
+        Ordinat(P)=NKolEff(Peta(*S))/2;
     }
     else if(Info(First(Area(*S)))==2 || Info(First(Area(*S)))==3){
-        Absis(P)=(GetLastIdxBrs(Peta(*S)))/2+1;
-        Ordinat(P)=1;
+        Absis(P)=1;
+        Ordinat(P)=NKolEff(Peta(*S))/2;
     }
     return P;
 }
@@ -20,23 +20,32 @@ POINT GateSpawnX (State *S){
 POINT GateSpawnY (State *S){
     POINT P;
     if(Info(First(Area(*S)))==0 || Info(First(Area(*S)))==2){
-        Absis(P)=(GetLastIdxBrs(Peta(*S))-1);
-        Ordinat(P)=(GetLastIdxKol(Peta(*S)))/2+1;
+        Absis(P)=NBrsEff(Peta(*S))/2;
+        Ordinat(P)=(GetLastIdxKol(Peta(*S)))-1;
     }
     else if(Info(First(Area(*S)))==1 || Info(First(Area(*S)))==3){
-        Absis(P)=1;
-        Ordinat(P)=(GetLastIdxKol(Peta(*S)))/2+1;
+        Absis(P)=NBrsEff(Peta(*S))/2;
+        Ordinat(P)=GetFirstIdxKol(Peta(*S))+1;
     }
     return P;
 }
 
+/*
+********
+*      *
+*      *
+*      *
+*/
+
 void W(State *S){
 	POINT P1, P2, P3;
+    int lahan;
+    lahan = Info(First(Area(*S)));
 	P1=CopyP(Position(*S));
 	P2=PlusDelta(P1,-1,0);
 	P3=CopyP(Office(*S));
 
-	if(NEQPOINT(P1, P3)){
+	if(NEQPOINT(P1, P3) || lahan != 0){
 		if(Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='*' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='W' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='A'){
 			printf("a\n");
             Position(*S)=P1;
@@ -80,11 +89,13 @@ void W(State *S){
 
 void A(State *S){
 	POINT P1, P2, P3;
+    int lahan;
+    lahan = Info(First(Area(*S)));
 	P1=Position(*S);
 	P2=PlusDelta(P1,0,-1);
 	P3=Office(*S);
 
-	if(NEQPOINT(P1, P3)){
+	if(NEQPOINT(P1, P3) || lahan != 0){
 		if(Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='*' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='W' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='A'){
 			Position(*S)=P1;
 		}
@@ -122,11 +133,13 @@ void A(State *S){
 
 void Su(State *S){
 	POINT P1, P2, P3;
+    int lahan;
+    lahan = Info(First(Area(*S)));
 	P1=Position(*S);
 	P2=NextX(P1);
 	P3=Office(*S);
 
-	if(NEQPOINT(P1, P3)){
+	if(NEQPOINT(P1, P3) || lahan != 0){
 		if(Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='*' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='W' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='A'){
 			Position(*S)=P1;
 		}
@@ -165,11 +178,14 @@ void Su(State *S){
 
 void D(State *S){
 	POINT P1, P2, P3;
+    int lahan;
+    lahan = Info(First(Area(*S)));
 	P1=Position(*S);
 	P2=NextY(P1);
 	P3=Office(*S);
 
-	if(NEQPOINT(P1, P3)){
+
+	if(NEQPOINT(P1, P3) || lahan != 0){
 		if(Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='*' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='W' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='A'){
 			Position(*S)=P1;
 		}
@@ -183,6 +199,7 @@ void D(State *S){
             MoveMapRight(&Area(*S));
             P2 = GateSpawnY(S);
             Elmt(Peta(*S),Absis(P2),Ordinat(P2))='P';
+			Position(*S)=P2;
 		}
 	}
 	else{
@@ -199,6 +216,7 @@ void D(State *S){
             MoveMapRight(&Area(*S));
             P2 = GateSpawnY(S);
             Elmt(Peta(*S),Absis(P2),Ordinat(P2))='P';
+            Position(*S)=P2;
 		}
 	}
 }

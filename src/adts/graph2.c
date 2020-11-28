@@ -35,12 +35,12 @@ void MakeGraph(Graph *G){
         First(*G)=result1;
         Right(result1)=result2;
         Left(result2)=result1;
-        Down(result2)=result3;
-        Up(result3)=result2;
-        Left(result3)=result4;
-        Right(result4)=result3;
-        Up(result4)=result1;
-        Down(result1)=result4;
+        Down(result1)=result3;
+        Up(result3)=result1;
+        Left(result4)=result3;
+        Right(result3)=result4;
+        Up(result4)=result2;
+        Down(result2)=result4;
     }
 
 }
