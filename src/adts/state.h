@@ -37,6 +37,7 @@ struct State_ {
   address_w listWahana[5];  /* list semua wahana yang dimiliki pemain */  // [&DataWahana[1],nil,nil,nil,nil]
   Map peta[4];              /* merepresentasikan lahan wahana yang dimiliki oleh pemain */
   Map_wahana peta_address[4];  // map yang setiap elemennya merupakan address dari suatu wahana
+  Material Storage[5];
 };
 
 
@@ -67,9 +68,18 @@ struct State_ {
 
 // SELEKTOR Peta yang sedang aktif
 // aktif artinya dimana pemain sedang berada
-#define Area(S) (S).area  //  area yang sedang aktif
+#define Area(S) (S).area //  area yang sedang aktif
 #define Peta(S) (S).peta[(S).area.First->info]
 #define PetaAddress(S) (S).peta_address[(S).area.First->info]
+/*
+[0] -- [1]
+ |      |
+ |      |
+[2] -- [3]
+*/// di Peta(S) diganti strip
+// moveup
+
+
 
 // Selektor Wahana dengan ID (ada pada state S)
 #define GetWahana(S,ID) (S).data_wahana[ID]

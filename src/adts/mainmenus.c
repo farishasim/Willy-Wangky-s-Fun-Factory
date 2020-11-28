@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+char command[20];
 State S;
 optiontype options;
 boolean isName, isLoad, isMove, isInput, isPlaying = false;
@@ -67,9 +68,11 @@ void Exit(State S)
 }
 
 void inputPName(State* S)
-{
+{  
     fgets(Name(*S).TabKata, NMax, stdin);
     Name(*S).Length = strlen(Name(*S).TabKata)-1;
+
+    printf("aaaa");
 
     while (Name(*S).Length > 20)
     {
@@ -119,3 +122,6 @@ void validateOptions(optiontype* menu, char l, char g, boolean isMove)
     }
 }
 
+boolean cekCommand(char * command_name) {
+    return strcmp(command, command_name) == 0;
+}

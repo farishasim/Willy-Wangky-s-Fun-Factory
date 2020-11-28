@@ -41,17 +41,17 @@ void TulisJAM(JAM J)
 /* F.S. : J ditulis ke layar dengan format HH:MM:SS */
 /* Proses : Menulis ke layar */
 { 
-    printf("%d:%d",Hour(J),Minute(J));
+    printf("%02d:%02d",Hour(J),Minute(J));
 }
 
-long JAMToMenit(JAM J)
+int JAMToMenit(JAM J)
 /* Konversi Jam menjadi Menit */
 { /* Kamus Lokal */
 /* Algoritma */
     return(60 * Hour(J) + Minute(J));
 }
 
-JAM MenitToJAM(long N)
+JAM MenitToJAM(int N)
 /* Konversi Menit ke Jam */
 { /* Kamus Lokal */
     int sisa;
@@ -89,7 +89,12 @@ JAM PrevNMenit (JAM J, int N){
     return MenitToJAM(JAMToMenit(J) - (N) + 1440);}
 /* Mengirim N Menit sebelum J dalam bentuk JAM */
 /* *** Kelompok Operator Aritmetika *** */
-long Durasi (JAM JAw, JAM JAkh){
-    return((JAMToMenit(JAkh)-JAMToMenit(JAw)+1440)%1440);}
+int abs_val(int y){
+if (y<0){
+return (y*-1);}
+else{return y;}
+}
+int Durasi (JAM JAw, JAM JAkh){
+    return(abs_val(JAMToMenit(JAkh)-JAMToMenit(JAw)-1440)%1440);}
 /* Mengirim JAkh-JAw dlm Menit, dengan kalkulasi */
 /* Jika JAw > JAkh, maka JAkh adalah 1 hari setelah JAw */

@@ -64,8 +64,12 @@ POINT NextY (POINT P){
     return next;}
 /* Mengirim salinan P dengan ordinat ditambah satu */
 POINT PlusDelta (POINT P, int deltaX, int deltaY){
-    POINT next=P;
+    POINT next;
     next.X=P.X+deltaX;
     next.Y=P.Y+deltaY;
     return next;}
 /* Mengirim salinan P yang absisnya adalah Absis(P) + deltaX dan ordinatnya adalah Ordinat(P) + deltaY */
+
+POINT CopyP (POINT P) {
+    return PlusDelta(P,0,0);
+}

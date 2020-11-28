@@ -4,6 +4,14 @@
 #include "state.h"
 
 //********* Fungsi-Fungsi untuk command *************//
+void W(State *S);
+
+void A(State *S);
+
+void Su(State *S);
+
+void D(State *S);
+
 void Execute(State * S);
 /* I.S. user memberi command untuk Execute */
 /* F.S. semua aksi yang disimpan pada stack sudah dieksekusi.*/
@@ -32,6 +40,10 @@ void OFFice(State * S);
 
 
 //********* Sub-Fungsi untuk Fungsi-fungsi Command *********//
+POINT GateSpawnX (State *S);
+
+POINT GateSpawnY (State *S);
+
 void ExecuteBuy(State * S, infostack quest);
 
 void ExecuteBuild(State * S, infostack quest);
@@ -43,6 +55,7 @@ void ExecuteUpgrade(State * S, infostack quest);
 /* I.S. S Sembarang, mod(quest,10) = 3*/
 /* F.S. elemen pada ListWahana akan di ubah menjadi hasil upgradenya.
         PetaAddress(S) akan di set dengan address wahana hasil upgrade*/
+
 
 //********** Fungsi-fungsi untuk Support ************//
 boolean isBetween(int val, int lower, int upper);

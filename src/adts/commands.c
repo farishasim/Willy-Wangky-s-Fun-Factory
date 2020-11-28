@@ -170,3 +170,129 @@ void inputManual(State *S/*, Wahana *W*/)
     Time(*S) = CloseTime(*S);
     while (getc(stdin) != '\n');
 }
+
+
+void inputManualCoba2(State *S)
+{
+    int i;
+    printf("aaa");
+    for(i = 0; i<4; i++) {
+        inputManualPeta(&(*S).peta[i], &(*S).peta_address[i]);
+        if (i == 0) {
+            Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, NKolEff((*S).peta[i])-1) = '>';
+            Elmt((*S).peta[i], NBrsEff((*S).peta[i])-1, NKolEff((*S).peta[i])/2) = 'V';
+        }
+        TulisMATRIKS((*S).peta[i]);
+    }
+    MakeGraph(&Area(*S));
+    
+    printf("\nTentukan lokasi antrian (Contoh, 1 1 berada di pojok kiri atas peta): ");
+    scanf("%d", &LocAntrian(*S).X);
+    scanf("%d", &LocAntrian(*S).Y);
+    while (LocAntrian(*S).X == 1 || LocAntrian(*S).X == Peta(*S).NBrsEff || LocAntrian(*S).Y == 0 || LocAntrian(*S).Y == Peta(*S).NKolEff /*|| (LocAntrian(*S).X == Position(*S).X && LocAntrian(*S).Y == Position(*S).Y)*/)
+    {
+        if (LocAntrian(*S).X < 1 || LocAntrian(*S).X > Peta(*S).NBrsEff || LocAntrian(*S).Y < 0 || LocAntrian(*S).Y > Peta(*S).NKolEff)
+        {
+            printf("Input tidak valid.\n");
+        }
+
+        else
+        {
+            printf("Terdapat bangunan atau benda lain di sana.\n"); //minus wahana dan pemain
+        }
+        
+        printf("Tentukan lokasi antrian (Contoh, 1 1 berada di pojok kiri atas peta): ");
+        scanf("%d", &LocAntrian(*S).X);
+        scanf("%d", &LocAntrian(*S).Y);
+    }
+    SetAntrian(&Peta(*S), LocAntrian(*S));
+    printf("\nLokasi objek-objek saat ini:\n");
+    TulisMATRIKS(Peta(*S));
+
+    printf("\nTentukan lokasi office (Contoh, 1 1 berada di pojok kiri atas peta): ");
+    scanf("%d", &Office(*S).X);
+    scanf("%d", &Office(*S).Y);
+    while (Office(*S).X <= 1 || Office(*S).X >= Peta(*S).NBrsEff || Office(*S).Y <= 0 || Office(*S).Y >= Peta(*S).NKolEff || ((LocAntrian(*S).X == Office(*S).X) && (LocAntrian(*S).Y == Office(*S).Y))/*|| (LocAntrian(*S).X == Position(*S).X && LocAntrian(*S).Y == Position(*S).Y)*/)
+    {
+        if (Office(*S).X < 1 || Office(*S).X > Peta(*S).NBrsEff || Office(*S).Y < 0 || Office(*S).Y > Peta(*S).NKolEff)
+        {
+            printf("Lokasi tidak valid.\n");
+        }
+
+        else
+        {
+            printf("Terdapat bangunan atau benda lain di sana.\n"); //minus wahana dan pemain
+        }
+
+        printf("Tentukan lokasi office (Contoh, 1 1 berada di pojok kiri atas peta): ");
+        scanf("%d", &Office(*S).X);
+        scanf("%d", &Office(*S).Y);
+    }
+
+    SetOffice(&Peta(*S), Office(*S));
+    printf("\nLokasi objek-objek saat ini:\n");
+    TulisMATRIKS(Peta(*S));
+
+    printf("\nTentukan waktu taman dibuka (default-nya adalah 09 00 (sembilan pagi)): ");
+    scanf("%d", &OpenTime(*S).HH);
+    scanf("%d", &OpenTime(*S).MM);
+    while (!IsJAMValid(OpenTime(*S).HH, OpenTime(*S).MM) || OpenTime(*S).HH < 7 || OpenTime(*S).HH > 12 || ((OpenTime(*S).HH == 12) && (OpenTime(*S).MM > 0)))
+    {
+        if (!IsJAMValid(OpenTime(*S).HH, OpenTime(*S).MM))
+        {
+            printf("Jam tidak valid.\n");
+        }
+        else
+        {
+            printf("Taman bermain mulai dapat dibuka antara 07 00 -- 12 00.\n");
+            
+        }
+        
+        printf("Tentukan waktu taman dibuka (default-nya adalah 09 00 (sembilan pagi)): ");
+        scanf("%d", &OpenTime(*S).HH);
+        scanf("%d", &OpenTime(*S).MM);
+    }
+    
+    printf("\nTentukan waktu taman ditutup (default-nya adalah 21 00 (sembilan malam)): ");
+    scanf("%d", &CloseTime(*S).HH);
+    scanf("%d", &CloseTime(*S).MM);
+    while (!IsJAMValid(CloseTime(*S).HH, CloseTime(*S).MM) || CloseTime(*S).HH < 19 || ((CloseTime(*S).HH == 0) && (CloseTime(*S).MM > 0)))
+    {
+        if (!IsJAMValid(CloseTime(*S).HH, CloseTime(*S).MM))
+        {
+            printf("Jam tidak valid.\n");
+        }
+
+        else
+        {
+            printf("Taman bermain dapat dan harus sudah ditutup antara 19 00 -- 23 59.\n");
+        }
+        
+        printf("Tentukan waktu taman ditutup (default-nya adalah 21 00 (sembilan malam)): ");
+        scanf("%d", &CloseTime(*S).HH);
+        scanf("%d", &CloseTime(*S).MM);
+    }
+
+    Time(*S) = CloseTime(*S);
+    scanf("%c", &i);
+    Position(*S) = MakePOINT(Absis(Office(*S)),Ordinat(Office(*S)));
+    SetPlayer(&Peta(*S), Position(*S));
+    //while (getc(stdin) != '\n');
+}
+
+void inputManualPeta(Map * peta, Map_wahana * petaAddress)
+{
+    int ukuran;
+    printf("\nTentukan luas taman bermain (default-nya adalah 11 (11 x 11)): ");
+    scanf("%d", &ukuran);
+    while (ukuran < 5 || ukuran > 15)
+    {
+        printf("Masukkan antara 5 (untuk 5 x 5) -- 15 (untuk 15 x 15): ");
+        scanf("%d", &ukuran);
+    }
+    
+    ukuran += 2;
+    MakeMATRIKS(ukuran,ukuran,peta);
+    InitialMap(peta);
+    InitialAddressMap(petaAddress,ukuran,ukuran);
+}

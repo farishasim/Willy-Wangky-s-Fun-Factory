@@ -60,12 +60,12 @@ void TulisJAM (JAM J);
 /* ***************************************************************** */
 /* KELOMPOK KONVERSI TERHADAP TYPE                                   */
 /* ***************************************************************** */
-long JAMToMenit (JAM J);
+int JAMToMenit (JAM J);
 /* Diberikan sebuah JAM, mengkonversi menjadi jumlah Menit dari pukul 0:0:0 */
 /* Rumus : Menit = 60*HH + MM  */
 /* Nilai maksimum = 60*23+59 */
 
-JAM MenitToJAM (long N);
+JAM MenitToJAM (int N);
 /* Mengirim  konversi Menit ke JAM */
 /* Catatan: Jika N >= 86400, maka harus dikonversi dulu menjadi jumlah Menit yang
    mewakili jumlah Menit yang mungkin dalam 1 hari, yaitu dengan rumus:
@@ -93,7 +93,9 @@ JAM PrevMenit (JAM J);
 JAM PrevNMenit (JAM J, int N);
 /* Mengirim N Menit sebelum J dalam bentuk JAM */
 /* *** Kelompok Operator Aritmetika *** */
-long Durasi (JAM JAw, JAM JAkh);
+int abs_val(int y);
+
+int Durasi (JAM JAw, JAM JAkh);
 /* Mengirim JAkh-JAw dlm Menit, dengan kalkulasi */
 /* Jika JAw > JAkh, maka JAkh adalah 1 hari setelah JAw */
 

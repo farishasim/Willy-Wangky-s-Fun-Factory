@@ -70,7 +70,13 @@ void BacaMATRIKS (MATRIKS * M, int NB, int NK){
 }
 
 void TulisMATRIKS (MATRIKS M){
-    
+    int i,j;
+    for(i=0; i <= GetLastIdxBrs(M); i++){
+        for(j=0; j<= GetLastIdxKol(M); j++) {
+            printf("%c",Elmt(M,i,j));
+        } 
+        printf("\n");
+    }
 }
 
 MATRIKS TambahMATRIKS (MATRIKS M1, MATRIKS M2){

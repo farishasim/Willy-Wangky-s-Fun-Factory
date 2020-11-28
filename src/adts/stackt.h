@@ -42,7 +42,7 @@ boolean IsEmptyStackt (Stack S);
 /* Mengirim true jika Stack kosong: lihat definisi di atas */
 boolean IsFullStackt (Stack S);
 /* Mengirim true jika tabel penampung nilai elemen stack penuh */
-int NbElmt (Stack S);
+int NbElmtStackt (Stack S);
 /*Mengirim nilai jumlah elemen terisi stack */
 
 /* ************ Menambahkan sebuah elemen ke Stack ************ */

@@ -56,8 +56,14 @@ Selektor Map_Wahana sama seperti matriks, yaitu
 */
 
 void LoadWahana(Wahana * W);
-    // I.S. list[5] adalah list of material yang sudah di-load.
+    // I.S. W sembarang
     // F.S. W adalah node wahana yang sudah di-load
+
+void InitialAddressMap(Map_wahana * M, int NB, int NK);
+    // I.S. M sembarang, NB dan NK int > 0
+    // F.S. akan dibuat M sebagai Map_wahana yang baru
+
+void TulisMATRIKSW (Map_wahana M);
 
 void setAddressMap(Map_wahana * M, Wahana * W, POINT loc);
     // I.S. loc adalah kordinat yang valid dan size valid, 
@@ -91,10 +97,5 @@ void printNextGrade1(BinTree P, int ID);
 boolean IsWahanaFull(Wahana * W);
     // true jika suatu wahana full
     // definisi full yaitu banyak orang == kapasitas
-
-void addUpgradeHistory(Wahana * W, boolean Kiri);
-    // mencatat history upgrade wahana jika wahana W di-upgrade
-    // Kiri = true jika W di-upgrade ke left.
-
 
 #endif

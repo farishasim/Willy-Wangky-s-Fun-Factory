@@ -65,4 +65,6 @@ void Geser (POINT *P, int deltaX, int deltaY);
 /* I.S. P terdefinisi */
 /* F.S. P digeser, absisnya sebesar deltaX dan ordinatnya sebesar deltaY */
 
+POINT CopyP (POINT P);
+
 #endif

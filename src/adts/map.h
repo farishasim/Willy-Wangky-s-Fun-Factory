@@ -39,4 +39,5 @@ void SetOffice(Map * M, POINT P);
 
 void SetAntrian(Map * M, POINT P);
 
+void SetPlayer(Map * M, POINT P);
 #endif

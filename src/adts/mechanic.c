@@ -2,251 +2,261 @@
 #include <stdlib.h>
 #include <time.h>
 #include "mechanic.h"
+#include "string.h"
 
-//W A S D yang belum clear :
-// - Gimana caranya saat move map, titiknya pindah ke depan gerbang
-
-void W(Map *M, State *S, Graph G){
-	Point P1, P2, P3;
-	P1=Position(*S);
-	P2=	PlusDelta(P1,0,-1);
-	P3=Office(*S);
-
-	if(EQPOINT(P1, P3)){
-		if(Elmt(*M,Absis(P2),Ordinat(P2))=='*' || Elmt(*M,Absis(P2),Ordinat(P2))=='W' || Elmt(*M,Absis(P2),Ordinat(P2))=='A'){
-			Position(*S)=P1;
-		}
-		else if(Elmt(*M,Absis(P2),Ordinat(P2))=='-' || Elmt(*M,Absis(P2),Ordinat(P2))=='O'){
-			Position(*S)=P2;
-			Elmt(*M,Absis(P1),Ordinat(P1))='-';
-			Elmt(*M,Absis(P2),Ordinat(P2))='P';
-		}
-		else if((Elmt(*M,Absis(P2),Ordinat(P2))=='^')){
-			MoveMapUp(G);
-		}
-	}
-	else{
-		if(Elmt(*M,Absis(P2),Ordinat(P2))!='*' || Elmt(*M,Absis(P2),Ordinat(P2))!='A'){
-			Position(*S)=P1;
-		}
-		else if(Elmt(*M,Absis(P2),Ordinat(P2))=='-'){
-			Position(*S)=P2;
-			Elmt(*M,Absis(P1),Ordinat(P1))='O';
-			Elmt(*M,Absis(P2),Ordinat(P2))='P';
-		}
-		else if((Elmt(*M,Absis(P2),Ordinat(P2))=='^')){
-			Elmt(*M,Absis(P1),Ordinat(P1))='O';
-			MoveMapUp(G);
-		}
-	}
+POINT GateSpawnX (State *S){
+    POINT P;
+    if(Info(First(Area(*S)))==0 || Info(First(Area(*S)))==1){
+        Absis(P)=(GetLastIdxBrs(Peta(*S)))/2+1;
+        Ordinat(P)=GetLastIdxKol(Peta(*S))-1;
+    }
+    else if(Info(First(Area(*S)))==2 || Info(First(Area(*S)))==3){
+        Absis(P)=(GetLastIdxBrs(Peta(*S)))/2+1;
+        Ordinat(P)=1;
+    }
+    return P;
 }
 
-void A(Map *M, State *S, Graph G){
-	Point P1, P3, P3;
-	P1=Position(*S);
+POINT GateSpawnY (State *S){
+    POINT P;
+    if(Info(First(Area(*S)))==0 || Info(First(Area(*S)))==2){
+        Absis(P)=(GetLastIdxBrs(Peta(*S))-1);
+        Ordinat(P)=(GetLastIdxKol(Peta(*S)))/2+1;
+    }
+    else if(Info(First(Area(*S)))==1 || Info(First(Area(*S)))==3){
+        Absis(P)=1;
+        Ordinat(P)=(GetLastIdxKol(Peta(*S)))/2+1;
+    }
+    return P;
+}
+
+void W(State *S){
+	POINT P1, P2, P3;
+	P1=CopyP(Position(*S));
 	P2=PlusDelta(P1,-1,0);
-	P3=Office(*S);
+	P3=CopyP(Office(*S));
 
-	if(EQPOINT(P1, P3)){
-		if(Elmt(*M,Absis(P2),Ordinat(P2))=='*' || Elmt(*M,Absis(P2),Ordinat(P2))=='W' || Elmt(*M,Absis(P2),Ordinat(P2))=='A'){
-			Position(*S)=P1;
+	if(NEQPOINT(P1, P3)){
+		if(Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='*' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='W' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='A'){
+			printf("a\n");
+            Position(*S)=P1;
 		}
-		else if(Elmt(*M,Absis(P2),Ordinat(P2))=='-' || Elmt(*M,Absis(P2),Ordinat(P2))=='O'){
-			Position(*S)=P2;
-			Elmt(*M,Absis(P1),Ordinat(P1))='-';
-			Elmt(*M,Absis(P2),Ordinat(P2))='P';
-		}
-		else if((Elmt(*M,Absis(P2),Ordinat(P2))=='^')){
-			MoveMapUp(G);
+		else if(Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='-' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='O'){
+			printf("b\n");
+            Position(*S)=CopyP(P2);
+			Elmt(Peta(*S),Absis(P1),Ordinat(P1))='-';
+			Elmt(Peta(*S),Absis(P2),Ordinat(P2))='P';
+        }
+		else if((Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='^')){
+			Elmt(Peta(*S),Absis(P1),Ordinat(P1))='-';
+            MoveMapUp(&Area(*S)); 
+            P2=GateSpawnX(S);
+            Elmt(Peta(*S),Absis(P2),Ordinat(P2))='P';
+			Position(*S)=CopyP(P2);
+            			printf("c\n");
 		}
 	}
 	else{
-		if(Elmt(*M,Absis(P2),Ordinat(P2))!='*' || Elmt(*M,Absis(P2),Ordinat(P2))!='A'){
+		if(Elmt(Peta(*S),Absis(P2),Ordinat(P2)) =='*' || Elmt(Peta(*S),Absis(P2),Ordinat(P2)) =='A'){
 			Position(*S)=P1;
+			printf("d\n");
 		}
-		else if(Elmt(*M,Absis(P2),Ordinat(P2))=='-'){
-			Position(*S)=P2;
-			Elmt(*M,Absis(P1),Ordinat(P1))='O';
-			Elmt(*M,Absis(P2),Ordinat(P2))='P';
+		else if(Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='-'){
+			printf("e\n");
+            Position(*S)=CopyP(P2);
+			Elmt(Peta(*S),Absis(P1),Ordinat(P1))='O';
+			Elmt(Peta(*S),Absis(P2),Ordinat(P2))='P';
 		}
-		else if((Elmt(*M,Absis(P2),Ordinat(P2))=='^')){
-			Elmt(*M,Absis(P1),Ordinat(P1))='O';
-			MoveMapUp(G);
+		else if((Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='^')){
+			printf("f\n");
+            Elmt(Peta(*S),Absis(P1),Ordinat(P1))='O';
+            MoveMapUp(&Area(*S)); 
+            P2=GateSpawnX(S);
+            Elmt(Peta(*S),Absis(P2),Ordinat(P2))='P';
+			Position(*S)=CopyP(P2);
 		}
 	}
 }
 
-void S(Map *M, State *S, Graph G){
-	Point P1, P2, P3;
+void A(State *S){
+	POINT P1, P2, P3;
 	P1=Position(*S);
-	P2=NextY(P1);
+	P2=PlusDelta(P1,0,-1);
 	P3=Office(*S);
 
-	if(EQPOINT(P1, P3)){
-		if(Elmt(*M,Absis(P2),Ordinat(P2))=='*' || Elmt(*M,Absis(P2),Ordinat(P2))=='W' || Elmt(*M,Absis(P2),Ordinat(P2))=='A'){
+	if(NEQPOINT(P1, P3)){
+		if(Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='*' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='W' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='A'){
 			Position(*S)=P1;
 		}
-		else if(Elmt(*M,Absis(P2),Ordinat(P2))=='-' || Elmt(*M,Absis(P2),Ordinat(P2))=='O'){
+		else if(Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='-' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='O'){
 			Position(*S)=P2;
-			Elmt(*M,Absis(P1),Ordinat(P1))='-';
-			Elmt(*M,Absis(P2),Ordinat(P2))='P';
+			Elmt(Peta(*S),Absis(P1),Ordinat(P1))='-';
+			Elmt(Peta(*S),Absis(P2),Ordinat(P2))='P';
 		}
-		else if((Elmt(*M,Absis(P2),Ordinat(P2))=='^')){
-			MoveMapUp(G);
+		else if((Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='<')){
+			Elmt(Peta(*S),Absis(P1),Ordinat(P1))='-';
+            MoveMapLeft(&Area(*S));
+            P2 = GateSpawnY(S);
+            Elmt(Peta(*S),Absis(P2),Ordinat(P2))='P';
+            Position(*S)=P2;
 		}
 	}
 	else{
-		if(Elmt(*M,Absis(P2),Ordinat(P2))!='*' || Elmt(*M,Absis(P2),Ordinat(P2))!='A'){
+		if(Elmt(Peta(*S),Absis(P2),Ordinat(P2)) =='*' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='A'){
 			Position(*S)=P1;
 		}
-		else if(Elmt(*M,Absis(P2),Ordinat(P2))=='-'){
+		else if(Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='-'){
 			Position(*S)=P2;
-			Elmt(*M,Absis(P1),Ordinat(P1))='O';
-			Elmt(*M,Absis(P2),Ordinat(P2))='P';
+			Elmt(Peta(*S),Absis(P1),Ordinat(P1))='O';
+			Elmt(Peta(*S),Absis(P2),Ordinat(P2))='P';
 		}
-		else if((Elmt(*M,Absis(P2),Ordinat(P2))=='^')){
-			Elmt(*M,Absis(P1),Ordinat(P1))='O';
-			MoveMapUp(G);
+		else if((Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='<')){
+			Elmt(Peta(*S),Absis(P1),Ordinat(P1))='O';
+            MoveMapLeft(&Area(*S));
+            P2 = GateSpawnY(S);
+            Elmt(Peta(*S),Absis(P2),Ordinat(P2))='P';
+            Position(*S)=P2;
 		}
 	}
 }
 
-
-void D(Map *M, State *S, Graph G){
-	Point P1, P2, P3;
+void Su(State *S){
+	POINT P1, P2, P3;
 	P1=Position(*S);
 	P2=NextX(P1);
 	P3=Office(*S);
 
-	if(EQPOINT(P1, P3)){
-		if(Elmt(*M,Absis(P2),Ordinat(P2))=='*' || Elmt(*M,Absis(P2),Ordinat(P2))=='W' || Elmt(*M,Absis(P2),Ordinat(P2))=='A'){
+	if(NEQPOINT(P1, P3)){
+		if(Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='*' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='W' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='A'){
 			Position(*S)=P1;
 		}
-		else if(Elmt(*M,Absis(P2),Ordinat(P2))=='-' || Elmt(*M,Absis(P2),Ordinat(P2))=='O'){
+		else if(Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='-' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='O'){
 			Position(*S)=P2;
-			Elmt(*M,Absis(P1),Ordinat(P1))='-';
-			Elmt(*M,Absis(P2),Ordinat(P2))='P';
+			Elmt(Peta(*S),Absis(P1),Ordinat(P1))='-';
+			Elmt(Peta(*S),Absis(P2),Ordinat(P2))='P';
 		}
-		else if((Elmt(*M,Absis(P2),Ordinat(P2))=='^')){
-			MoveMapUp(G);
+		else if((Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='V')){
+			Elmt(Peta(*S),Absis(P1),Ordinat(P1))='-';
+            MoveMapDown(&Area(*S)); 
+            P2=GateSpawnX(S);
+            Elmt(Peta(*S),Absis(P2),Ordinat(P2))='P';
+            Position(*S)=P2;
 		}
 	}
 	else{
-		if(Elmt(*M,Absis(P2),Ordinat(P2))!='*' || Elmt(*M,Absis(P2),Ordinat(P2))!='A'){
+		if(Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='*' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='A'){
 			Position(*S)=P1;
 		}
-		else if(Elmt(*M,Absis(P2),Ordinat(P2))=='-'){
+		else if(Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='-'){
 			Position(*S)=P2;
-			Elmt(*M,Absis(P1),Ordinat(P1))='O';
-			Elmt(*M,Absis(P2),Ordinat(P2))='P';
+			Elmt(Peta(*S),Absis(P1),Ordinat(P1))='O';
+			Elmt(Peta(*S),Absis(P2),Ordinat(P2))='P';
 		}
-		else if((Elmt(*M,Absis(P2),Ordinat(P2))=='^')){
-			Elmt(*M,Absis(P1),Ordinat(P1))='O';
-			MoveMapUp(G);
+		else if((Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='V')){
+			Elmt(Peta(*S),Absis(P1),Ordinat(P1))='O';
+            MoveMapDown(&Area(*S)); 
+            P2=GateSpawnX(S);
+            Elmt(Peta(*S),Absis(P2),Ordinat(P2))='P';
+            Position(*S)=P2;
 		}
 	}
 }
 
-//Build yang belum clear
-// - Bentuk questnya gimana
-// - Push ke stacknya blm bisa dibuat (atribut data_wahananya masih kurang)
-void Build(Map *M, State *S, Wahana *W){
+
+void D(State *S){
+	POINT P1, P2, P3;
+	P1=Position(*S);
+	P2=NextY(P1);
+	P3=Office(*S);
+
+	if(NEQPOINT(P1, P3)){
+		if(Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='*' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='W' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='A'){
+			Position(*S)=P1;
+		}
+		else if(Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='-' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='O'){
+			Position(*S)=P2;
+			Elmt(Peta(*S),Absis(P1),Ordinat(P1))='-';
+			Elmt(Peta(*S),Absis(P2),Ordinat(P2))='P';
+		}
+		else if((Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='>')){
+			Elmt(Peta(*S),Absis(P1),Ordinat(P1))='-';
+            MoveMapRight(&Area(*S));
+            P2 = GateSpawnY(S);
+            Elmt(Peta(*S),Absis(P2),Ordinat(P2))='P';
+		}
+	}
+	else{
+		if(Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='*' || Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='A'){
+			Position(*S)=P1;
+		}
+		else if(Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='-'){
+			Position(*S)=P2;
+			Elmt(Peta(*S),Absis(P1),Ordinat(P1))='O';
+			Elmt(Peta(*S),Absis(P2),Ordinat(P2))='P';
+		}
+		else if((Elmt(Peta(*S),Absis(P2),Ordinat(P2))=='>')){
+			Elmt(Peta(*S),Absis(P1),Ordinat(P1))='O';
+            MoveMapRight(&Area(*S));
+            P2 = GateSpawnY(S);
+            Elmt(Peta(*S),Absis(P2),Ordinat(P2))='P';
+		}
+	}
+}
+
+/*
+void Build(State *S){
 	int id;
 	printf("Ingin membangun apa?\nList:\n");
-	//print list wahana;
+	for(int i=0; i<=data_wahana(*S).length; i++){
+		if(data_wahana(*S)[i].starter){
+			printf(data_wahana(*S)[i].nama);			
+			printf(" , ID : ");
+			printf(data_wahana(*S)[i].ID);
+			printf("\n");
+		}
+	}
 	scanf(&ID);
 
 	int quest;
-	quest=ID*10+1;
+	quest=ID*10+2;
 
-	// if(! time_needed < open time){
-	// 	Push(Act(*S), quest);
-	// 	MoneyNeeded(*S)+=data_wahana(*S)[ID].harga;
-	// 	TimeNeeded(*S)+=data_wahana(*S)[ID].time_needed;
-	// }
+	if(data_wahana(*S)[ID].time_needed < Durasi(OpenTime(S), CloseTime(S))){
+		Push(Act(*S), &quest);
+		MoneyNeeded(*S)+=data_wahana(*S)[ID].harga;
+		TimeNeeded(*S)+=data_wahana(*S)[ID].time_needed;		
+		printf("Proses build tersimpan ke dalam stack to-do.");
 
-	//Prasyarat build = Setiap titik pada sekeliling Position(*S) harus '-'
-	if((Absis(P1))-1=='-'&& (Absis(P1))+1=='-'&& (Ordinat(P1))+1=='-'&& (Ordinat(P1))-1=='-'){
-		SetWahana(P1);
-		Point P2;
-		if((Ordinat(P1))-1=='-'){
-			if((Absis(P1))-1=='-'){
-				Elmt(*M,(Absis(P1))-1,(Ordinat(P1))-1)='P';
-				Absis(P2)=Absis(P1)-1;
-				Absis(P2)=Absis(P1)-1;
-				Position(*S)=P2;
-			}
-			else if((Absis(P1))=='-'){
-				Elmt(*M,(Absis(P1)),(Ordinat(P1))-1)='P';
-				Absis(P2)=Absis(P1);
-				Ordinat(P2)=Ordinat(P1)-1;
-				Position(*S)=P2;
-			}
-			else if((Absis(P1))+1=='-'){
-				Elmt(*M,(Absis(P1))+1,(Ordinat(P1))-1)='P';
-				Absis(P2)=Absis(P1)+1;
-				Ordinat(P2)=Ordinat(P1)-1
-				Position(*S)=P2;
-			}
-		}
-		else if((Ordinat(P1))=='-'){
-			if((Absis(P1))-1=='-'){
-				Elmt(*M,(Absis(P1))-1,(Ordinat(P1)))='P';
-				Absis(P2)=Absis(P1)-1;
-				Ordinat(P2)=Ordinat(P1);
-				Position(*S)=P2;
-			}
-			else if((Absis(P1))+1=='-'){
-				Elmt(*M,(Absis(P1))+1,(Ordinat(P1)))='P';
-				Absis(P2)=Absis(P1)+1;
-				Ordinat(P2)=Ordinat(P1);
-				Position(*S)=P2;
-			}
-		}
-		else if((Ordinat(P1))+1=='-'){
-			if((Absis(P1))-1=='-'){
-				Elmt(*M,(Absis(P1))-1,(Ordinat(P1))+1)='P';
-				Absis(P2)=Absis(P1)-1;
-				Ordinat(P2)=Ordinat(P1)+1;
-				Position(*S)=P2;
-			}
-			else if((Absis(P1))=='-'){
-				Elmt(*M,(Absis(P1)),(Ordinat(P1))+1)='P';
-				Absis(P2)=Absis(P1);
-				Ordinat(P2)=Ordinat(P1)+1;
-				Position(*S)=P2;
-			}
-			else if((Absis(P1))+1=='-'){
-				Elmt(*M,(Absis(P1))+1,(Ordinat(P1))+1)='P';
-				Absis(P2)=Absis(P1)+1;
-				Ordinat(P2)=Ordinat(P1)+1;
-				Position(*S)=P2;
-			}
-		}
 	}
 	else{
-		printf("Anda tidak bisa membangun wahana di posisi ini");
+		printf("Anda tidak punya waktu cukup untuk menambah aksi ini\n");
+		printf("Silahkan undo beberapa action jika ingin tetap melakukan aksi ini.");
 	}
 }
 
-void Upgrade(Map *M, State *S){
+
+void Upgrade(Map Peta(*S), State *S){
 	int X;
 	int Y;
 	if(IsWahana(NextX(Position(*S)))){
-
-		printf("Ingin melakukan upgrade apa?\nList :\n");
-		scanf(up);
+	    printf("Ingin melakukan upgrade apa?\nList :\n");
+        for(int i=0; i<=data_wahana(*S).length; i++){
+		    if(!data_wahana(*S)[i].starter){
+			    printf(data_wahana(*S)[i].nama);			
+			    printf(" , ID : ");
+			    printf(data_wahana(*S)[i].ID);
+			    printf("\n");
+		    }
+	    }
+	    scanf(&ID);
 
 		//If resource<requirement, print error
 		
 		else{
 			int quest;
-
-		
-			Push(Act(*S), quest);
+            quest=ID*10+3;
+			Push(Act(*S), &quest);
 		}
 	}
-
 	else{
 		printf("Tidak ada wahana di sisi kanan anda: \n ");
 	}
@@ -268,11 +278,16 @@ void Buy(Material mat, State *S){
     
 	else{
 		Push(Act(*S),&quest);
-		MoneyNeeded(*S)+=
-		TimeNeeded(*S)+=1
+		MoneyNeeded(*S)+=;
+		TimeNeeded(*S)+=1;
 	}
 }
 
+void Undo (State *S){
+    infostack quest;
+    Pop(&Act(*S),&quest);
+}
+*/
 //********* Fungsi-Fungsi untuk command *************//
 void Execute(State * S) {
 /* I.S. user memberi command untuk Execute */
@@ -437,7 +452,7 @@ void Detail(State * S) {
         return;
     }
 
-    wahana_kanan = getWahanaAt(S, posisi_wahana);
+    wahana_kanan = getWahanaAt(&PetaAddress(*S), posisi_wahana);
 
     printDetail(&wahana_kanan);
     timeFlow(S,2); // melihat detail membutuhkan waktu 2 menit. (opsional)
@@ -449,23 +464,23 @@ void OFFice(State * S) {
 /* F.S. jika user berada pada posisi office, akan ditampilkan antarmuka office
         selama di dalam office, user dapat memberi command Details, Report, Exit
         user akan terus berada di office hingga memberi command Exit*/
-    char choice[8];
+    char choice[12];
     int choice_w;
     boolean exit;
 
     if (NEQPOINT(Position(*S), Office(*S))) {
-        printf("// Anda tidak sedang berada di Office! //");
+        printf("// Anda tidak sedang berada di Office! //\n");
         return;
     }
     
-    printf("// Memasuki office mode //");
+    printf("// Memasuki office mode //\n");
 
     exit = false;
 
     do {
         printf("Masukkan perintah (Details / Report / Exit):");
-        fgets(choice, 8, stdin);
-        if (choice == "Details") {
+        fgets(choice, 12, stdin);
+        if (strcmp(choice, "Details\n") == 0) {
             printListWahana(S); // tampilkan semua pilihan wahana
             scanf("%d", &choice_w);
             if (choice_w >= 0 && choice_w < (*S).NWahana) {
@@ -475,7 +490,7 @@ void OFFice(State * S) {
                 printf("invalid");
             }
 
-        } else if (choice == "Report") {
+        } else if (strcmp(choice, "Report\n") == 0) {
             printListWahana(S); // tampilkan semua pilihan wahana
             scanf("%d", &choice_w);
             if (choice_w >= 0 && choice_w < (*S).NWahana) {
@@ -485,12 +500,13 @@ void OFFice(State * S) {
                 printf("invalid");
             }
 
-        } else if (choice == "Exit") {
+        } else if (strcmp(choice, "Exit\n") == 0) {
+            printf("%c\n", choice[4]);
             exit = true;
 
         } else {
+            printf("%c\n", choice[4]);
             printf("Invalid Command!");
-        
         }
     } while (!exit);
 

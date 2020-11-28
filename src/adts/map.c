@@ -11,17 +11,15 @@ void InitialMap(Map * M) {
         Elmt(*M,i,j) = '*';
     }
     // isi dari baris ke i=1, hingga ke i=brsmax-1
-    for(i = i + 1; i <=GetLastIdxBrs(*M)-1; j++) {
+    for(i = i + 1; i <=GetLastIdxBrs(*M)-1; i++) {
         j = GetFirstIdxKol(*M);
         Elmt(*M,i,j) = '*';
         for (j = j+1; j <= GetLastIdxKol(*M)-1; j++) {
             Elmt(*M,i,j) = '-';
         }
-        j++;
         Elmt(*M,i,j) = '*';
     }
     // isi baris paling bawah dengan '*'
-    i++;
     for(j = 0; j <= GetLastIdxKol(*M); j++) {
         Elmt(*M,i,j) = '*';
     }
@@ -48,10 +46,15 @@ boolean IsWahana(Map M, POINT P) {
 
 void SetOffice(Map * M, POINT P)
 {
-    Elmt(*M,Absis(P)-1,Ordinat(P)-1) = 'O';
+    Elmt(*M,Absis(P),Ordinat(P)) = 'O';
 }
 
 void SetAntrian(Map * M, POINT P)
 {
-    Elmt(*M,Absis(P)-1,Ordinat(P)-1) = 'A';
+    Elmt(*M,Absis(P),Ordinat(P)) = 'A';
+}
+
+void SetPlayer(Map * M, POINT P)
+{
+    Elmt(*M,Absis(P),Ordinat(P)) = 'P';
 }

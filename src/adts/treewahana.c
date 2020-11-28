@@ -19,7 +19,7 @@ void DealokasiTree (address P){
 
 //Konstruktor
 BinTree Tree (IdWahana X , BinTree L ,BinTree R ){
-    address P ;
+    address P;
     P= AlokasiTree(X);
     if (P != Nil) {
         Left(P) = L;
@@ -164,7 +164,7 @@ void DelDaun (BinTree P ,IdWahana X ){
         if (IsOneElmt(Left(P))){
             if (Akar(Left(P))==X){
                 del=(Left(P));
-                Dealokasi(del);
+                DealokasiTree(del);
                 Left(P)=Nil;
             }
         }
@@ -176,7 +176,7 @@ void DelDaun (BinTree P ,IdWahana X ){
         if (IsOneElmt(Right(P))){
             if (Akar(Right(P))==X){
                 del=(Right(P));
-                Dealokasi(del);
+                DealokasiTree(del);
                 Right(P)=Nil;
             }
         }

@@ -39,6 +39,36 @@ void LoadWahana(Wahana * W){
     CopyKata(CKata, &(*W).deskripsi);
 }
 
+void InitialAddressMap(Map_wahana * M, int NB, int NK) {
+    // I.S. M sembarang, NB dan NK int > 0
+    // F.S. akan dibuat M sebagai Map_wahana yang baru
+    int i,j;
+    NBrsEff(*M) = NB;
+    NKolEff(*M) = NK;
+
+    i=0;
+    for(j=0; j<NK; j++) {
+        Elmt(*M,i,j) = (address_w) -1;
+    } i++;
+    for(j=0; j<NK; j++) {
+        Elmt(*M,i,j) = (address_w) -1;
+    }
+    for(i=2; i<NBrsEff(*M)-2; i++) {
+        j=0; Elmt(*M,i,j) = (address_w) -1;
+        j++; Elmt(*M,i,j) = (address_w) -1;
+        for(j=2; j<NKolEff(*M)-2; j++) {
+            Elmt(*M,i,j) = Nil;
+        }
+        Elmt(*M,i,j) = (address_w) -1;
+        j++; Elmt(*M,i,j) = (address_w) -1;
+    }
+    for(j=0; j<NK; j++) {
+        Elmt(*M,i,j) = (address_w) -1;
+    } i++;
+    for(j=0; j<NK; j++) {
+        Elmt(*M,i,j) = (address_w) -1;
+    }
+}
 
 void setAddressMap(Map_wahana * M, Wahana * W, POINT loc) {
     // I.S. loc adalah kordinat yang valid dan size valid
@@ -68,6 +98,16 @@ void setAddressMap(Map_wahana * M, Wahana * W, POINT loc) {
     i = lastKol-1;
     for(j = firstKol-1; j <= lastKol+1; j++) {
         Elmt(*M,i,j) = (address_w)-1;  //  sekeliling bawah menjadi forbidden
+    }
+}
+
+void TulisMATRIKSW (Map_wahana M){
+    int i,j;
+    for(i=0; i < NBrsEff(M); i++){
+        for(j=0; j< NKolEff(M); j++) {
+            printf("%d",Elmt(M,i,j));
+        } 
+        printf("\n");
     }
 }
 
@@ -148,13 +188,6 @@ boolean IsWahanaFull(Wahana * W){
     // true jika suatu wahana full
     // definisi full yaitu banyak orang == kapasitas
     return (*W).banyak_orang == (*W).kapasitas;
-}
-
-
-void addUpgradeHistory(Wahana * W, boolean Kiri) {
-    // mencatat history upgrade wahana jika wahana W di-upgrade
-    // Kiri = true jika W di-upgrade ke left.
-
 }
 
 

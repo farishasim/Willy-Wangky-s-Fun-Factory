@@ -1,11 +1,13 @@
 #include "phases.h"
 #include <stdio.h>
+#include <string.h>
 
 void phasesFlow(State *S)
 {
-    if (options == (int)'w' || options == (int)'W')
+    //if (options == (int)'w' || options == (int)'W')
+    if (cekCommand("W\n"))
     {
-        //w function
+        W(S);
         if (Prep(*S))
         {
             prepPhase(S);
@@ -19,9 +21,10 @@ void phasesFlow(State *S)
         phasesFlow(S);
     }
 
-    else if (options == (int)'a' || options == (int)'A')
+    //else if (options == (int)'a' || options == (int)'A')
+    else if (cekCommand("A\n"))
     {
-        //a function
+        A(S);
         if (Prep(*S))
         {
             prepPhase(S);
@@ -35,9 +38,10 @@ void phasesFlow(State *S)
         phasesFlow(S);
     }
 
-    else if (options == (int)'s' || options == (int)'S')
+    //else if (options == (int)'s' || options == (int)'S')
+    else if (cekCommand("S\n"))
     {
-        //s function
+        Su(S);
         if (Prep(*S))
         {
             prepPhase(S);
@@ -51,9 +55,10 @@ void phasesFlow(State *S)
         phasesFlow(S);
     }
 
-    else if (options == (int)'d' || options == (int)'D')
+    //else if (options == (int)'d' || options == (int)'D')
+    else if (cekCommand("D\n"))
     {
-        //d function
+        D(S);
         if (Prep(*S))
         {
             prepPhase(S);
@@ -67,51 +72,53 @@ void phasesFlow(State *S)
         phasesFlow(S);
     }
 
-    if (Prep(*S))
+    else if (Prep(*S))
     {
-        if (options == (int)'1')
+        //if (options == (int)'1')
+        if (cekCommand("build\n"))
         {
             //build
             prepPhase(S);
             phasesFlow(S);
         }
             
-        else if (options == (int)'2')
+        //else if (options == (int)'2')
+        else if (cekCommand("upgrade\n"))
         {
             //upgrade
             prepPhase(S);
             phasesFlow(S);
         }
 
-        else if (options == (int)'3')
+        else if /*(options == (int)'3')*/ (cekCommand("buy\n"))
         {
             //buy
             prepPhase(S);
             phasesFlow(S);
         }
 
-        else if (options == (int)'4')
+        else if /*(options == (int)'4')*/ (cekCommand("undo\n"))
         {
             //undo
             prepPhase(S);
             phasesFlow(S);
         }
             
-        else if (options == (int)'5')
+        else if /*(options == (int)'5')*/ (cekCommand("execute\n"))
         {
             mainPhase(S);
             Prep(*S) = false;
             phasesFlow(S);
         }
 
-        else if (options == (int)'6')
+        else if /*(options == (int)'6')*/ (cekCommand("main\n"))
         {
             mainPhase(S);
             Prep(*S) = false;
             phasesFlow(S);
         }
 
-        else if (options == (int)'0')
+        else if /*(options == (int)'0')*/ (cekCommand("info options\n"))
         {
             //info();
             listMenuPrepPhase(options);
@@ -119,18 +126,23 @@ void phasesFlow(State *S)
             validateOptions(&options, '1', '6', isMove);
             phasesFlow(S);
         }
+        else 
+        {
+            prepPhase(S);
+            phasesFlow(S);
+        }
     }
 
     else
     {
-        if (options == (int)'1')
+        if /*(options == (int)'1')*/ (cekCommand("serve\n"))
         {
             //serve
             mainPhase(S);
             phasesFlow(S);
         }
             
-        else if (options == (int)'2')
+        else if /*(options == (int)'2') */(cekCommand("repair\n"))
         {
             // repair
             Repair(S);
@@ -138,7 +150,7 @@ void phasesFlow(State *S)
             phasesFlow(S);
         }
 
-        else if (options == (int)'3')
+        else if /*(options == (int)'3')*/ (cekCommand("detail\n"))
         {
             // detail
             Detail(S);
@@ -146,7 +158,7 @@ void phasesFlow(State *S)
             phasesFlow(S);
         }
 
-        else if (options == (int)'4')
+        else if /*(options == (int)'4')*/ (cekCommand("office\n"))
         {
             // office
             OFFice(S);
@@ -154,7 +166,7 @@ void phasesFlow(State *S)
             phasesFlow(S);
         }
             
-        else if (options == (int)'5')
+        else if /*(options == (int)'5')*/ (cekCommand("prepare\n"))
         {
             //prepare
             prepPhase(S);
@@ -162,7 +174,7 @@ void phasesFlow(State *S)
             phasesFlow(S);
         }
 
-        else if (options == (int)'0')
+        else if /*(options == (int)'0')*/ (cekCommand("info options\n"))
         {
             //info();
             listMenuMainPhase(options);
@@ -170,7 +182,10 @@ void phasesFlow(State *S)
             validateOptions(&options, '1', '5', isMove);
             phasesFlow(S);
         }
-        
+        else {
+            mainPhase(S);
+            phasesFlow(S);
+        }
     }
 }
 
@@ -208,7 +223,8 @@ void prepPhase(State *S)
 
     listMenuPrepPhase(options);
     isMove = true;
-    validateOptions(&options, '1', '6', isMove);
+    //validateOptions(&options, '1', '6', isMove);
+    fgets(command, 20, stdin);
 }
 
 void mainPhase(State *S)
@@ -244,5 +260,6 @@ void mainPhase(State *S)
     printf("\n");
     listMenuMainPhase(options);
     isMove = true;
-    validateOptions(&options, '1', '5', isMove);
+    //validateOptions(&options, '1', '5', isMove);
+    fgets(command, 20, stdin);
 }
