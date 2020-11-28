@@ -19,7 +19,7 @@ void MakeEmpty (TabInt * T){
 
 /* ********** SELEKTOR (TAMBAHAN) ********** */
 /* *** Banyaknya elemen *** */
-int NbElmt (TabInt T){
+int NbElmtTab (TabInt T){
    int i;
    int j=0;
    for (i = IdxMin; i <=IdxMax ; i++) {
@@ -79,7 +79,7 @@ boolean IsIdxEff (TabInt T, IdxType i){
 /* ********** TEST KOSONG/PENUH ********** */
 /* *** Test tabel kosong *** */
 boolean IsEmpty (TabInt T){
-   if (NbElmt(T)==0) {
+   if (NbElmtTab(T)==0) {
       return true;
    }
    else {
@@ -89,7 +89,7 @@ boolean IsEmpty (TabInt T){
 /* Mengirimkan true jika tabel T kosong, mengirimkan false jika tidak */
 /* *** Test tabel penuh *** */
 boolean IsFull (TabInt T){
-   if (NbElmt(T)==MaxNbEl(T)) {
+   if (NbElmtTab(T)==MaxNbEl(T)) {
       return true;
    }
    else {
@@ -152,14 +152,14 @@ TabInt PlusMinusTab (TabInt T1, TabInt T2, boolean plus){
    int i;
    MakeEmpty(&hasil);
    for (i=GetFirstIdx(T2);i<=GetLastIdx(T2);i++){
-      if (plus==true && Elmt(T1,i)!=ValUndef && Elmt(T2,i)!=ValUndef){
-         Elmt(hasil,i) = Elmt(T1,i)+Elmt(T2,i);
+      if (plus==true && ElmtTab(T1,i)!=ValUndef && ElmtTab(T2,i)!=ValUndef){
+         ElmtTab(hasil,i) = ElmtTab(T1,i)+ElmtTab(T2,i);
       }
-      else if (plus==false && Elmt(T1,i)!=ValUndef && Elmt(T2,i)!=ValUndef){
-         Elmt(hasil,i) = Elmt(T1,i)-Elmt(T2,i);
+      else if (plus==false && ElmtTab(T1,i)!=ValUndef && ElmtTab(T2,i)!=ValUndef){
+         ElmtTab(hasil,i) = ElmtTab(T1,i)-ElmtTab(T2,i);
       }
       else {
-         Elmt(hasil,i) = 0;
+         ElmtTab(hasil,i) = 0;
       }   
    }
    return hasil;
@@ -171,9 +171,9 @@ TabInt PlusMinusTab (TabInt T1, TabInt T2, boolean plus){
 /* ********** OPERATOR RELASIONAL ********** */
 /* *** Operasi pembandingan tabel : < =, > *** */
 boolean IsEQ (TabInt T1, TabInt T2){
-   if (NbElmt(T1)==NbElmt(T2)){
+   if (NbElmtTab(T1)==NbElmtTab(T2)){
       int i;
-      while (Elmt(T1,i)==Elmt(T2,i) && i<MaxNbEl(T2)) {
+      while (ElmtTab(T1,i)==ElmtTab(T2,i) && i<MaxNbEl(T2)) {
          i++;
          return true;
       }
@@ -187,15 +187,15 @@ boolean IsEQ (TabInt T1, TabInt T2){
 
 /* ********** SEARCHING ********** */
 /* ***  Perhatian : Tabel boleh kosong!! *** */
-IdxType Search1 (TabInt T, ElType X){
+IdxType Search1 (TabInt T, ElTab X){
    if (IsEmpty(T)){
       return IdxUndef;
    }
    else {
       int i=0;
       int pos;
-      while (Elmt(T, i)!=X && i<GetLastIdx(T)){
-         if (Elmt(T, i)==X){
+      while (ElmtTab(T, i)!=X && i<GetLastIdx(T)){
+         if (ElmtTab(T, i)==X){
             pos=i;
             i++;
          }
@@ -212,15 +212,15 @@ IdxType Search1 (TabInt T, ElType X){
 /* Jika tidak ada, mengirimkan IdxUndef */
 /* Menghasilkan indeks tak terdefinisi (IdxUndef) jika tabel T kosong */
 /* Skema Searching yang digunakan bebas */
-boolean SearchB (TabInt T, ElType X){
+boolean SearchB (TabInt T, ElTab X){
    if (IsEmpty(T)){
       return false;
    }
    else {
       int i=0;
       boolean pos;
-      while (Elmt(T, i)!=X && i<GetLastIdx(T)){
-         if (Elmt(T, i)==X){
+      while (ElmtTab(T, i)!=X && i<GetLastIdx(T)){
+         if (ElmtTab(T, i)==X){
             pos=true;
             i++;
          }
@@ -237,16 +237,16 @@ boolean SearchB (TabInt T, ElType X){
 /* Skema searching yang digunakan bebas */
 
 /* ********** NILAI EKSTREM ********** */
-void MaxMin (TabInt T, ElType * Max, ElType * Min){
+void MaxMin (TabInt T, ElTab * Max, ElTab * Min){
    int nmaks,nmin,i;
-   nmaks = Elmt(T,GetFirstIdx(T));
-   nmin = Elmt(T,GetFirstIdx(T));
+   nmaks = ElmtTab(T,GetFirstIdx(T));
+   nmin = ElmtTab(T,GetFirstIdx(T));
    for (i=GetFirstIdx(T);i<=GetLastIdx(T);i++){
-      if (Elmt(T,i)>nmaks){
-         nmaks = Elmt(T,i);
+      if (ElmtTab(T,i)>nmaks){
+         nmaks = ElmtTab(T,i);
       }
-      if (Elmt(T,i)<nmin){
-         nmin = Elmt(T,i);
+      if (ElmtTab(T,i)<nmin){
+         nmin = ElmtTab(T,i);
       }
    }
    *Max = nmaks;
@@ -257,29 +257,29 @@ void MaxMin (TabInt T, ElType * Max, ElType * Min){
         Min berisi nilai minimum T */
 
 /* ********** OPERASI LAIN ********** */
-ElType SumTab (TabInt T){
+ElTab SumTab (TabInt T){
    if (IsEmpty(T)){
       return 0;
    }
    int i;
    int sum=0;
    for (i=GetFirstIdx(T);i<=GetLastIdx(T);i++){
-      if (Elmt(T,i)!= ValUndef){
-         sum = sum+ Elmt(T,i);
+      if (ElmtTab(T,i)!= ValUndef){
+         sum = sum+ ElmtTab(T,i);
       }
    }
    return sum;
 }
 /* Menghasilkan hasil penjumlahan semua elemen T */
 /* Jika T kosong menghasilkan 0 */
-int CountX (TabInt T, ElType X){
+int CountX (TabInt T, ElTab X){
    if (IsEmpty(T)){
       return 0;
    }
    int i;
    int count=0;
    for (i=GetFirstIdx(T);i<=GetLastIdx(T);i++){
-      if (Elmt(T,i)== X){
+      if (ElmtTab(T,i)== X){
          count = count + 1;
       }
    }
@@ -291,7 +291,7 @@ boolean IsAllGenap (TabInt T){
    int i=0;
    boolean genap=true;
    while (i<=GetLastIdx(T) && genap==true){
-      if (Elmt(T,i)%2!=0){
+      if (ElmtTab(T,i)%2!=0){
          genap = false;
       }
    }
@@ -303,14 +303,14 @@ boolean IsAllGenap (TabInt T){
 
 /* ********** MENAMBAH DAN MENGHAPUS ELEMEN DI AKHIR ********** */
 /* *** Menambahkan elemen terakhir *** */
-void AddAsLastEl (TabInt * T, ElType X){
+void AddAsLastEl (TabInt * T, ElTab X){
    (*T).TI[GetLastIdx(*T)+1] = X;
 }
 /* Proses: Menambahkan X sebagai elemen terakhir tabel */
 /* I.S. Tabel T boleh kosong, tetapi tidak penuh */
 /* F.S. X adalah elemen terakhir T yang baru */
 /* ********** MENGHAPUS ELEMEN ********** */
-void DelLastEl (TabInt * T, ElType * X){
+void DelLastEl (TabInt * T, ElTab * X){
    *X=(*T).TI[GetLastIdx(*T)];
    (*T).TI[GetLastIdx(*T)] =ValUndef;
 }

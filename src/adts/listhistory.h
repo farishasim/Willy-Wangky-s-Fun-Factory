@@ -28,7 +28,7 @@ typedef address_h ListHistory;
 /*                P.info menjadi Info(P); P.next menjadi Next(P) */
 
 /* Selektor */
-#define Info(L) (L)->info
+// #define Info(L) (L)->info
 // #define Next(P) (P)->next
 
 /* *** Manajemen Memori *** */

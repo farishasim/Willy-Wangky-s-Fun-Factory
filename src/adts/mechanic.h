@@ -4,6 +4,10 @@
 #include "state.h"
 
 //********* Fungsi-Fungsi untuk command *************//
+void Execute(State * S);
+/* I.S. user memberi command untuk Execute */
+/* F.S. semua aksi yang disimpan pada stack sudah dieksekusi.*/
+
 void Serve(State * S);
 /* I.S. user memberi command untuk serve */
 /* F.S. serve customer terdepan pada Antrian(S),.*/
@@ -26,6 +30,19 @@ void OFFice(State * S);
         selama di dalam office, user dapat memberi command Details, Report, Exit
         user akan terus berada di office hingga memberi command Exit*/
 
+
+//********* Sub-Fungsi untuk Fungsi-fungsi Command *********//
+void ExecuteBuy(State * S, infostack quest);
+
+void ExecuteBuild(State * S, infostack quest);
+/* I.S. S Embarang, mod(quest,10) = 2*/
+/* F.S. ListWahana(S) akan bertambah satu elemen di akhir. NWahana(S) di-increment
+        PetaAddress(S) akan di set dengan address wahana hasil build*/
+
+void ExecuteUpgrade(State * S, infostack quest);
+/* I.S. S Sembarang, mod(quest,10) = 3*/
+/* F.S. elemen pada ListWahana akan di ubah menjadi hasil upgradenya.
+        PetaAddress(S) akan di set dengan address wahana hasil upgrade*/
 
 //********** Fungsi-fungsi untuk Support ************//
 boolean isBetween(int val, int lower, int upper);

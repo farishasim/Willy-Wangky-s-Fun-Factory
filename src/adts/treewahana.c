@@ -4,7 +4,7 @@
 
 address AlokasiTree (IdWahana X){
     address result;
-    result = (address) malloc (sizeof(Node));
+    result = (address) malloc (sizeof(NodeTree));
     if (result != Nil){
         Akar(result) = X;
         Left(result) = Nil;
@@ -96,7 +96,6 @@ boolean IsBiner (BinTree T){
 mempunyai subpohon kiri dan subpohon kanan }*/
 
 
-
 boolean SearchTree (BinTree T, IdWahana X){
     if (IsOneElmt(T)){
         if (Akar(T)==X){
@@ -118,7 +117,7 @@ boolean SearchTree (BinTree T, IdWahana X){
         }
     }
 }
-/*{ Mengirimkan true jika ada node dari P yang bernilai X }
+/*{ Mengirimkan true jika ada nodeTreeNodeTree dari P yang bernilai X }
 */
 
 
@@ -190,3 +189,28 @@ void DelDaun (BinTree P ,IdWahana X ){
 }
 /*{ I.S. P tidak kosong, minimum 1 daun bernilai X }
 { F.S. Semua daun yang bernilai X dihapus dari P }*/
+
+
+//********   Fungsi-fungsi lain terkait Tree   *******//
+IdWahana SearchSubPohon(BinTree T, IdWahana X, boolean Kiri) {
+    /* Mengembalikan akar subpohon dari pohon yang memiliki Akar = X */
+    /* jika Kiri=true, Mengembalikan akar subpohon kiri */
+    /* jika Kiri=false*, Mengembalikan akar subpohon kanan */
+    /* prekondisi : jika Kiri true maka pohon harus memiliki sub-pohon kiri
+                    jika Kiri false maka pohon harus memiliki subpohon kanan
+                    setiap akar pada pohon bernilai unik. dan X ada pada pohon*/
+    if (Akar(T)==X){
+        if (Kiri){
+            return Akar(Left(T));
+        }
+        else {
+            return Akar(Right(T));
+        }
+    } else {
+        if (SearchTree(Left(T),X)) {
+            return SearchSubPohon(Left(T),X,Kiri);
+        } else {
+            return SearchSubPohon(Right(T),X,Kiri);
+        }
+    }
+}

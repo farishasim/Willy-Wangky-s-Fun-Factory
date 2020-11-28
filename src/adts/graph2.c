@@ -6,30 +6,30 @@ void CreateEmptyGraph (Graph *G){
 }
 
 
-void MakeGraph(Graph *G, graph_peta*array_of_mapaddress){
-    address result1;
-    result1 = (address) malloc (sizeof(Node));
+void MakeGraph(Graph *G, graph_peta*array_of_mapaddress_g){
+    address_g result1;
+    result1 = (address_g) malloc (sizeof(NodeGraph));
     if (result1 != Nil){
         Info(result1) = 0;
-        (*array_of_mapaddress)[0]=result1;
+        (*array_of_mapaddress_g)[0]=result1;
     }    
-    address result2;
-    result2 = (address) malloc (sizeof(Node));
+    address_g result2;
+    result2 = (address_g) malloc (sizeof(NodeGraph));
     if (result2 != Nil){
         Info(result2) = 1;
-        (*array_of_mapaddress)[1]=result2;
+        (*array_of_mapaddress_g)[1]=result2;
     }    
-    address result3;
-    result3 = (address) malloc (sizeof(Node));
+    address_g result3;
+    result3 = (address_g) malloc (sizeof(NodeGraph));
     if (result3 != Nil){
         Info(result3) = 2;
-        (*array_of_mapaddress)[2]=result3;
+        (*array_of_mapaddress_g)[2]=result3;
     }    
-    address result4;
-    result4 = (address) malloc (sizeof(Node));
+    address_g result4;
+    result4 = (address_g) malloc (sizeof(NodeGraph));
     if (result4 != Nil){
         Info(result4) = 3;
-        (*array_of_mapaddress)[3]=result4;
+        (*array_of_mapaddress_g)[3]=result4;
     }
     if (result1!=Nil && result2!=Nil && result3!=Nil && result4!=Nil){
 

@@ -5,34 +5,36 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct tNode *address;
-typedef struct tNode {
+typedef struct tNodeGraph *address_g;
+typedef struct tNodeGraph {
 int info;
-address up;
-address down;
-address right;
-address left;
-} Node;
+address_g up;
+address_g down;
+address_g right;
+address_g left;
+} NodeGraph;
 /* Definisi Graph: */
 /* Graph kosong: First(G) = Nil */
 typedef struct {
-address First;
+address_g First;
 } Graph;
 /* Selektor */
-#define Info(P) (P)->info
+
+// #define First(P) ((P).First) // ada pada boolean.h
+// #define Info(P) (P)->info  // ada pada boolean.h
 #define Right(P) (P)->right
 #define Left(P) (P)->left
 #define Up(P) (P)->up
 #define Down(P) (P)->down
 
-typedef address graph_peta[4]; 
+typedef address_g graph_peta[4]; 
 
 void CreateEmptyGraph (Graph *G);
 /*Create graph kosong First(G)=Nil*/
 
 
 
-void MakeGraph(Graph *G, graph_peta*array_of_mapaddress);
+void MakeGraph(Graph *G, graph_peta*array_of_mapaddress_g);
 /*mengembalikan graph jika alokasi map berhasil
 M1 = map 1 pojok kiri atas
 M2 = map 2 pojok kanan atas

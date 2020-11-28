@@ -274,6 +274,30 @@ void Buy(Material mat, State *S){
 }
 
 //********* Fungsi-Fungsi untuk command *************//
+void Execute(State * S) {
+/* I.S. user memberi command untuk Execute */
+/* F.S. semua aksi yang disimpan pada stack sudah dieksekusi.*/
+    Stack executable;
+    infostack quest;
+
+    while (!IsEmptyStackt(Act(*S))) {
+        Pop(&Act(*S),&quest);
+        Push(&executable,quest);
+    }
+
+    while(!IsEmptyStackt(executable)) {
+        Pop(&executable,&quest);
+        if (quest % 10 == 1) {
+            ExecuteBuy(S, quest);
+        } else if (quest % 10 == 2) {
+            ExecuteBuild(S, quest);
+        } else if (quest % 10 == 3) {
+            ExecuteUpgrade(S, quest);            
+        }
+    }
+}
+
+
 void Serve(State * S) {
 /* I.S. user memberi command untuk serve */
 /* F.S. serve customer terdepan pada Antrian(S),.*/
@@ -473,6 +497,48 @@ void OFFice(State * S) {
     printf("Anda keluar dari Office.");
 }   
 
+//********* Sub-Fungsi untuk Fungsi-fungsi Command *********//
+// ****** Sub-Fungsi Execute ****** //
+void ExecuteBuild(State * S, infostack quest) {
+
+    int ID;
+    address_w address_wahana_baru;
+
+    ID = (quest % 1000) / 10;
+    address_wahana_baru = &GetWahana(*S,ID);
+
+    ListWahana(*S)[NWahana(*S)] = address_wahana_baru;  //  add as last el
+    NWahana(*S)++;
+
+    setAddressMap(&PetaAddress(*S), address_wahana_baru, GetWahana(*S,ID).position);
+}    
+
+void ExecuteBuy(State * S, infostack quest) {
+}
+
+void ExecuteUpgrade(State * S, infostack quest) {
+    
+    int i;
+    IdWahana ID,IDnext;  //  IDnext adalah ID wahana hasil upgrade
+    address_w address_wahana;  //  address wahana hasil uprade.
+    boolean choice;
+
+    ID = (quest % 1000) / 10;
+
+    choice = quest / 1000;
+    IDnext = SearchSubPohon(GetWahana(*S,ID).upgrade_tree, ID, choice);
+
+    address_wahana = &GetWahana(*S,IDnext);
+    i = 0;
+    while (i < NWahana(*S) && ListWahana(*S)[i]->ID != ID) {
+        i++;
+    }
+    
+    ListWahana(*S)[i] = address_wahana;
+    setAddressMap(&PetaAddress(*S), address_wahana, GetWahana(*S,ID).position);
+
+    GetWahana(*S,IDnext).history = KonsB(GetWahana(*S,ID).history,address_wahana);
+}
 
 //********** Fungsi-fungsi untuk Support ************//
 boolean isBetween(int val, int lower, int upper) {
@@ -493,8 +559,6 @@ void printListWahana(State * S) {
         printf("\n");
     }
 }
-
-
 
 void incrementTime(State * S) {
 /* I.S. Sembarang */

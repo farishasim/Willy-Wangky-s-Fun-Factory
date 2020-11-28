@@ -56,18 +56,18 @@ void setAddressMap(Map_wahana * M, Wahana * W, POINT loc) {
 
     i = firstBrs-1;
     for(j = firstKol-1; j <= lastKol+1; j++) {
-        Elmt(*M,i,j) = -1;  //  sekeliling atas menjadi forbidden
+        Elmt(*M,i,j) = (address_w)-1;  //  sekeliling atas menjadi forbidden
     }
     for(i = firstBrs; i <= lastBrs; i++) {
-        Elmt(*M,i,firstKol-1) = -1;  //  sekeliling kiri menjadi forbidden
+        Elmt(*M,i,firstKol-1) = (address_w)-1;  //  sekeliling kiri menjadi forbidden
         for(j = firstKol; j <= lastKol; j++) {
             Elmt(*M,i,j) = address_wahana;
         }
-        Elmt(*M,i,lastKol+1) = -1;  //  sekeliling kanan menjadi forbidden
+        Elmt(*M,i,lastKol+1) = (address_w)-1;  //  sekeliling kanan menjadi forbidden
     }
     i = lastKol-1;
     for(j = firstKol-1; j <= lastKol+1; j++) {
-        Elmt(*M,i,j) = -1;  //  sekeliling bawah menjadi forbidden
+        Elmt(*M,i,j) = (address_w)-1;  //  sekeliling bawah menjadi forbidden
     }
 }
 
@@ -114,7 +114,7 @@ void printHistory1(ListHistory L){
     if (!IsEmptyHistory(L)) {
         PrintKata((*Info(L)).nama);
         if (Next(L)) {
-            printF(" -> ");
+            printf(" -> ");
             printHistory1(Next(L));
         }
     }

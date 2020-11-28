@@ -20,9 +20,9 @@
 
 /* Definisi elemen dan koleksi objek */
 typedef int IdxType;  /* type indeks */
-typedef int ElType;   /* type elemen tabel */
+typedef int ElTab;   /* type elemen tabel */
 typedef struct { 
-  ElType TI[IdxMax+1]; /* memori tempat penyimpan elemen (container) */
+  ElTab TI[IdxMax+1]; /* memori tempat penyimpan elemen (container) */
 } TabInt;
 /* Indeks yang digunakan [IdxMin..IdxMax] */
 /* Indeks ke-0 tidak digunakan */
@@ -35,50 +35,50 @@ typedef struct {
    Definisi elemen pertama : T[i] dengan i=1 */
   
 /* ********** SELEKTOR ********** */
-#define Elmt(T,i) (T).TI[(i)]
+#define ElmtTab(T,i) (T).TI[(i)]
 
 /* ********** KONSTRUKTOR ********** */
 /* Konstruktor : create tabel kosong  */
-void MakeEmpty (TabInt * T);
+void MakeEmptyTab (TabInt * T);
 /* I.S. T sembarang */
 /* F.S. Terbentuk tabel T kosong dengan kapasitas IdxMax-IdxMin+1 */
 /* Proses: Inisialisasi semua elemen tabel T dengan ValUndef */
 
 /* ********** SELEKTOR (TAMBAHAN) ********** */
 /* *** Banyaknya elemen *** */
-int NbElmt (TabInt T);
+int NbElmtTab (TabInt T);
 /* Mengirimkan banyaknya elemen efektif tabel */
 /* Mengirimkan nol jika tabel kosong */
 /* *** Daya tampung container *** */
-int MaxNbEl (TabInt T);
+int MaxNbElTab (TabInt T);
 /* Mengirimkan maksimum elemen yang dapat ditampung oleh tabel */
 /* *** Selektor INDEKS *** */
-IdxType GetFirstIdx (TabInt T);
+IdxType GetFirstIdxTab (TabInt T);
 /* Prekondisi : Tabel T tidak kosong */
 /* Mengirimkan indeks elemen T pertama */
-IdxType GetLastIdx (TabInt T);
+IdxType GetLastIdxTab (TabInt T);
 /* Prekondisi : Tabel T tidak kosong */
 /* Mengirimkan indeks elemen T terakhir */
 
 /* ********** Test Indeks yang valid ********** */
-boolean IsIdxValid (TabInt T, IdxType i);
+boolean IsIdxValidTab (TabInt T, IdxType i);
 /* Mengirimkan true jika i adalah indeks yang valid utk ukuran tabel */
 /* yaitu antara indeks yang terdefinisi utk container*/
-boolean IsIdxEff (TabInt T, IdxType i);
+boolean IsIdxEffTab (TabInt T, IdxType i);
 /* Mengirimkan true jika i adalah indeks yang terdefinisi utk tabel */
 /* yaitu antara FirstIdx(T)..LastIdx(T) */
 
 /* ********** TEST KOSONG/PENUH ********** */
 /* *** Test tabel kosong *** */
-boolean IsEmpty (TabInt T);
+boolean IsEmptyTab (TabInt T);
 /* Mengirimkan true jika tabel T kosong, mengirimkan false jika tidak */
 /* *** Test tabel penuh *** */
-boolean IsFull (TabInt T);
+boolean IsFullTab (TabInt T);
 /* Mengirimkan true jika tabel T penuh, mengirimkan false jika tidak */
 
 /* ********** BACA dan TULIS dengan INPUT/OUTPUT device ********** */
 /* *** Mendefinisikan isi tabel dari pembacaan *** */
-void BacaIsi (TabInt * T);
+void BacaIsiTab (TabInt * T);
 /* I.S. T sembarang */
 /* F.S. Tabel T terdefinisi */
 /* Proses : membaca banyaknya elemen T dan mengisi nilainya */
@@ -106,46 +106,46 @@ TabInt PlusMinusTab (TabInt T1, TabInt T2, boolean plus);
 
 /* ********** OPERATOR RELASIONAL ********** */
 /* *** Operasi pembandingan tabel : < =, > *** */
-boolean IsEQ (TabInt T1, TabInt T2);
+boolean IsEQTab (TabInt T1, TabInt T2);
 /* Mengirimkan true jika T1 sama dengan T2 yaitu jika ukuran T1 = T2 dan semua elemennya sama */
 
 /* ********** SEARCHING ********** */
 /* ***  Perhatian : Tabel boleh kosong!! *** */
-IdxType Search1 (TabInt T, ElType X);
+IdxType Search1Tab (TabInt T, ElTab X);
 /* Search apakah ada elemen tabel T yang bernilai X */
 /* Jika ada, menghasilkan indeks i terkecil, dengan elemen ke-i = X */
 /* Jika tidak ada, mengirimkan IdxUndef */
 /* Menghasilkan indeks tak terdefinisi (IdxUndef) jika tabel T kosong */
 /* Skema Searching yang digunakan bebas */
-boolean SearchB (TabInt T, ElType X);
+boolean SearchBTab (TabInt T, ElTab X);
 /* Search apakah ada elemen tabel T yang bernilai X */
 /* Jika ada, menghasilkan true, jika tidak ada menghasilkan false */
 /* Skema searching yang digunakan bebas */
 
 /* ********** NILAI EKSTREM ********** */
-void MaxMin (TabInt T, ElType * Max, ElType * Min);
+void MaxMinTab (TabInt T, ElTab * Max, ElTab * Min);
 /* I.S. Tabel T tidak kosong */
 /* F.S. Max berisi nilai maksimum T;
         Min berisi nilai minimum T */
 
 /* ********** OPERASI LAIN ********** */
-ElType SumTab (TabInt T);
+ElTab SumTab (TabInt T);
 /* Menghasilkan hasil penjumlahan semua elemen T */
 /* Jika T kosong menghasilkan 0 */
-int CountX (TabInt T, ElType X);
+int CountXTab (TabInt T, ElTab X);
 /* Menghasilkan berapa banyak kemunculan X di T */
 /* Jika T kosong menghasilkan 0 */
-boolean IsAllGenap (TabInt T);
+boolean IsAllGenapTab (TabInt T);
 /* Menghailkan true jika semua elemen T genap */
 
 /* ********** MENAMBAH DAN MENGHAPUS ELEMEN DI AKHIR ********** */
 /* *** Menambahkan elemen terakhir *** */
-void AddAsLastEl (TabInt * T, ElType X);
+void AddAsLastElTab (TabInt * T, ElTab X);
 /* Proses: Menambahkan X sebagai elemen terakhir tabel */
 /* I.S. Tabel T boleh kosong, tetapi tidak penuh */
 /* F.S. X adalah elemen terakhir T yang baru */
 /* ********** MENGHAPUS ELEMEN ********** */
-void DelLastEl (TabInt * T, ElType * X);
+void DelLastElTab (TabInt * T, ElTab * X);
 /* Proses : Menghapus elemen terakhir tabel */
 /* I.S. Tabel tidak kosong */
 /* F.S. X adalah nilai elemen terakhir T sebelum penghapusan, */
