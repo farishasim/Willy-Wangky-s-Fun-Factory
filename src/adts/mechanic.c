@@ -237,7 +237,7 @@ void D(State *S){
 
 
 void Build(State *S){
-    int i, ID, quest,L;
+    int i, ID, quest,L, butuh_uang, butuh_waktu;
     boolean build;
     POINT P;
     printf("Ingin membangun apa?\nList:\n");
@@ -250,9 +250,11 @@ void Build(State *S){
 		}
 	}
 
-	scanf("%d\n",&ID);
+	scanf("%d",&ID);
+    scanf("%c",&i);
 
     build=true;
+    i=0;
     while(build && i < 5){
         if(DataWahana(*S)[ID].bahan[i] > Storage(*S)[i].quantity){
             build=false;
@@ -261,15 +263,19 @@ void Build(State *S){
             i++;
         }
     }
+
+    butuh_uang = MoneyNeeded(*S)+DataWahana(*S)[ID].harga;
+    butuh_waktu = TimeNeeded(*S)+60; //TimeNeeded(*S)+=DataWahana(*S)[ID].time_needed;
+
     if (!IsPosisiEmpty(&PetaAddress(*S),Position(*S),DataWahana(*S)[ID].size)){
         printf("Tidak memungkinkan untuk membangun wahana di posisi ini.\n");
         printf("Wahana tidak boleh dibangun di-sekitar Office, Antrian, dan Dinding\n");
     
-    } else if(TimeNeeded(*S)>Durasi(OpenTime(*S), CloseTime(*S))){
+    } else if(butuh_waktu > Durasi(OpenTime(*S), CloseTime(*S))){
 		printf("Anda tidak punya waktu cukup untuk menambah aksi ini\n");
 		printf("Silahkan undo beberapa action jika ingin tetap melakukan aksi ini.");
 	
-    } else if(Money(*S) < DataWahana(*S)[ID].uang){
+    } else if(butuh_uang > Money(*S) ){
         printf("Jumlah uang tidak mencukupi. Silakan ulangi lagi!");
     
     } else if (!build) {
@@ -280,7 +286,6 @@ void Build(State *S){
         printf("Coba lagi esok hari.\n");
     
     } else if (DataWahana(*S)[ID].time_needed < Durasi(OpenTime(*S), CloseTime(*S))) {
-		quest=ID*10+2;
 
         // update Prep[3]
         MoneyNeeded(*S)+=DataWahana(*S)[ID].harga;
@@ -307,6 +312,7 @@ void Build(State *S){
         SetWahana(&Peta(*S), P, DataWahana(*S)[ID].size);
         
         // Push ke Stack
+        quest=ID*10+2;
         Push(&Act(*S), quest);	
 		printf("Proses build tersimpan ke dalam stack to-do.");
 	}
@@ -338,9 +344,12 @@ void Build(State *S){
 // // 		printf("Tidak ada wahana di sisi kanan anda: \n ");
 // // 	}
 // // } 
+void Upgrade(State * S){
+
+}
 
 void Buy(State *S){
-	int i, N, ID, quest;
+	int i, N, ID, quest,butuh_uang, butuh_waktu;
 
     printf("Storage : \n");
     for(i=0; i<5;i++){
@@ -350,26 +359,45 @@ void Buy(State *S){
 
 	printf("Ingin membeli apa?\nList :\n");
     for(i=0; i<5;i++){
-        printf("-"); PrintKata(Storage(*S)[i].nama); printf("\n");
+        printf("-"); PrintKata(Storage(*S)[i].nama); 
+        printf("(ID : %d) ( %d / item )", i,Storage(*S)[i].harga);
+        printf("\n");
     }
 
 	printf("Format input : jumlah(spasi)id material\n");
 
 	scanf("%d %d", &N, &ID);
-	quest=(N*1000)+(ID*10)+1;
-    TimeNeeded(*S) += 20;
 
-	if(Money(*S) < (N*(Storage(*S)[ID].harga))){
+    butuh_uang = MoneyNeeded(*S) + Storage(*S)[ID].harga*N;
+    butuh_waktu = TimeNeeded(*S) + 20;
+
+	if(butuh_uang > Money(*S)){
 		printf("Jumlah uang tidak mencukupi. Silakan ulangi lagi!");
 	}
-    else if(TimeNeeded(*S)>Durasi(OpenTime(*S), CloseTime(*S))){
+    else if(butuh_waktu > Durasi(OpenTime(*S), CloseTime(*S))){
         printf("Waktu tidak mencukupi. Silakan undo beberapa action jika ingin membeli item.");
-        TimeNeeded(*S) -=20;
+    } else if(IsFullStackt(Act(*S))) {
+        printf("Kamu sudah terlalu banyak melakukan aksi untuk hari ini.\n");
+        printf("Coba lagi esok hari.\n");
     }
 	else{
+        // update Temp[3]
+        TimeNeeded(*S) += 20;
+        MoneyNeeded(*S)+=Storage(*S)[ID].harga*N;
+        TempActs(*S)++;
+
+        // update player
+        Storage(*S)[ID].quantity += N;
+
+        // update stack
+        quest=(N*1000)+(ID*10)+1;
         Push(&Act(*S), quest);
-		MoneyNeeded(*S)+=Storage(*S)[ID].harga;
 	}
+    scanf("%c", &i);  // skip \n
+}
+
+void Undo(State * S){
+
 }
 
 //********* Fungsi-Fungsi untuk command *************//

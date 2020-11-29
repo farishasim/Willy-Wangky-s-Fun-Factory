@@ -112,7 +112,7 @@ void ldInfoActs(State *S);
 
 void svCurMaterial(FILE** fp, State S);
 
-void ldMaterial(State* S);
+void ldDefMaterial(State* S);
 
 void svActList(FILE** fp, State S);
 

@@ -84,21 +84,21 @@ void phasesFlow(State *S)
         else if (options == (int)'2')
         //else if (cekCommand("upgrade\n"))
         {
-            //upgrade
+            Upgrade(S);
             prepPhase(S);
             phasesFlow(S);
         }
 
         else if (options == (int)'3') // (cekCommand("buy\n"))
         {
-            //buy
+            Buy(S);
             prepPhase(S);
             phasesFlow(S);
         }
 
         else if (options == (int)'4')// (cekCommand("undo\n"))
         {
-            //undo
+            Undo(S);
             prepPhase(S);
             phasesFlow(S);
         }
@@ -192,6 +192,7 @@ void prepPhase(State *S)
 {
     printf("\n***** Preparation Phase Day %d *****\n\n", Day(*S));
     TulisMATRIKS(Peta(*S));
+    TulisMATRIKSW(PetaAddress(*S));
     printf("Legend:\n");
     printf("A = Antrian\n");
     printf("P = Player\n");
@@ -218,6 +219,7 @@ void mainPhase(State *S)
 {
     printf("\n***** Main Phase Day %d *****\n\n", Day(*S));
     TulisMATRIKS(Peta(*S));
+    TulisMATRIKSW(PetaAddress(*S));
     printf("Legend:\n");
     printf("A = Antrian\n");
     printf("P = Player\n");

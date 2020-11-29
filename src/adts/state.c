@@ -8,39 +8,29 @@ void loading(State* S, char* filename, boolean isInput, boolean isLoad)
     STARTKATA(filename, ',');
     printf("Loading player...\n");
     ldPlayerName(S, isLoad);
-    TulisMATRIKS((Peta(*S)));
     printf("Player Loaded\n\n");
     printf("Loading spacetime...\n");
     ldPos(S, isInput);    
     ldTime(S, isInput);
-    TulisMATRIKS((Peta(*S)));
     printf("Spacetime Loaded\n\n");
     printf("Loading MDP...\n");
     ldMDP("money", S);
     ldMDP("day", S);
     ldMDP("prep", S);
-        TulisMATRIKS((Peta(*S)));
     printf("MDP Loaded\n\n");
     printf("Loading Acts...\n");
     ldInfoActs(S);
-    printf("2");
-        TulisMATRIKS((Peta(*S)));
-    printf("3");
     ldActList(S);
-        TulisMATRIKS((Peta(*S)));
     printf("Acts Loaded\n\n");
     ldQueue(S);
     printf("Queeue Loaded\n");
-        TulisMATRIKS((Peta(*S)));
+    //ldWahanaPlayer(S);
     while (!EndKata)
     {
         ADVKATA(',');
     }
-    ldMaterial(S);
-    printf("material");
-        TulisMATRIKS((Peta(*S)));
+    ldDefMaterial(S);
     ldDefWahana(S);
-        TulisMATRIKS((Peta(*S)));
 }
 
 void saving(State S, char* filename)
@@ -292,15 +282,18 @@ void svCurMaterial(FILE** fp, State S)
     writeAChar(CC = '\n', fp);
 }
 
-void ldMaterial(State* S)
+void ldDefMaterial(State* S)
 {
     STARTKATA("../../file/material.txt", ',');
     int i = 0;
-    while (!EndKata)
+    for (i = 0; i < 5; ++i)
     {
-        LoadMaterial(&Storage(*S)[i++]);
+        CopyKata(CKata, &Storage(*S)[i].nama);
         ADVKATA(',');
-    } 
+        Storage(*S)[i].harga = ConvertKata(CKata);
+        ADVKATA(',');
+        Storage(*S)[i].quantity = 0;
+    }
 }   
 
 void svActList(FILE** fp, State S)
