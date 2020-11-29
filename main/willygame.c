@@ -104,5 +104,5 @@ int main()
     return 0;
 }
 
-//gcc -o willygame willygame.c mainmenus.o matriks.o point.o map.o commands.o phases.o jam.o mesinkata.c mesinkar.o state.o
+//gcc -o willygame willygame.c mainmenus.o matriks.o point.o map.o commands.o phases.o jam.o mesinkata.c mesinkar.o state.o wahana.o prioqueuechar.o material.o listcustomer.o mechanic.o 
 //Linux OS

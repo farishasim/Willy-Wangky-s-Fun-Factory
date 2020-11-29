@@ -4,6 +4,7 @@
 #include "map.h"
 #include "state.h"
 #include "wahana.h"
+#include "mechanic.h"
 #include <stdio.h>
 
 void phasesFlow(State *S)
@@ -137,28 +138,27 @@ void phasesFlow(State *S)
             
         else if (options == (int)'2')
         {
-            //repair
+            Repair(S);
             mainPhase(S);
             phasesFlow(S);
         }
 
         else if (options == (int)'3')
         {
-            //detail
+            Detail(S);
             mainPhase(S);
             phasesFlow(S);
         }
 
         else if (options == (int)'4')
         {
-            //office
+            OFFice(S);
             mainPhase(S);
             phasesFlow(S);
         }
             
         else if (options == (int)'5')
         {
-            //prepare
             prepPhase(S);
             Prep(*S) = true;
             phasesFlow(S);
@@ -188,26 +188,15 @@ void prepPhase(State *S)
     printf("^, <, v, > = Pagar\n\n");
 
     printf("Name: %s\n", Name(*S).TabKata);
-    printf("Money: \n");
+    printf("Money: %d\n", Money(*S));
     printf("Current time: ");
     TulisJAM(Time(*S));
     printf("Opening time: ");
     TulisJAM(OpenTime(*S));
-    if (MenitToJAM(Durasi(OpenTime(*S),Time(*S))).MM == 0)
-    {
-        printf("Time Remaining: %d hour(s)\n", MenitToJAM(Durasi(OpenTime(*S),Time(*S))).HH);
-    }
-
-    else
-    {
-        printf("Time Remaining: %d hour(s) %d minute(s)\n", MenitToJAM(Durasi(OpenTime(*S),Time(*S))).HH, MenitToJAM(Durasi(OpenTime(*S),Time(*S))).MM);
-    }
-    
-    
-    printf("Total aksi yang akan dilakukan: \n");
-    printf("Total waktu yang dibutuhkan: \n");
-    printf("Total uang yang dibutuhkan: \n\n");
-
+    printf("Time remaining: "); TulisDurasi(Durasi(OpenTime(*S),Time(*S)));
+    printf("Total aksi yang akan dilakukan: %d\n", TempActs(*S));
+    printf("Total waktu yang dibutuhkan: "); TulisDurasi(TimeNeeded(*S));
+    printf("Total uang yang dibutuhkan: %d\n\n", MoneyNeeded(*S));
     listMenuPrepPhase(options);
     isMove = true;
     validateOptions(&options, '1', '6', isMove);
@@ -225,22 +214,12 @@ void mainPhase(State *S)
     printf("^, <, v, > = Pagar\n\n");
 
     printf("Name: %s\n", Name(*S).TabKata);
-    printf("Money: \n");
+    printf("Money: %d\n", Money(*S));
     printf("Current time: ");
     TulisJAM(Time(*S));
     printf("Closing time: ");
     TulisJAM(CloseTime(*S));
-    if (MenitToJAM(Durasi(CloseTime(*S),Time(*S))).MM == 0)
-    {
-        printf("Time Remaining: %d hour(s)\n", MenitToJAM(Durasi(CloseTime(*S),Time(*S))).HH);
-    }
-
-    else
-    {
-        printf("Time Remaining: %d hour(s) %d minute(s)\n", MenitToJAM(Durasi(CloseTime(*S),Time(*S))).HH, MenitToJAM(Durasi(OpenTime(*S),Time(*S))).MM);
-    }
-    
-    
+    printf("Time remaining: "); TulisDurasi(Durasi(CloseTime(*S), Time(*S)));
     printf("Daftar antrian [%%d/%%d]:\n");
     //queue
     printf("\n");

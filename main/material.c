@@ -4,7 +4,6 @@ void LoadMaterial(Material * mat) {
     int i,val;
     char separator = ',';
 
-    ADVKATA(separator);
     CopyKata(CKata, &(*mat).nama);
     
     ADVKATA(separator);

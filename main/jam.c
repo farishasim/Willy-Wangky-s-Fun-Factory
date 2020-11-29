@@ -68,6 +68,24 @@ void TulisJAM(JAM J)
     }
 }
 
+void TulisDurasi(long N)
+{
+    if (MenitToJAM(N).MM == 0 && MenitToJAM(N).HH != 0)
+    {
+        printf("%d hour(s)\n", MenitToJAM(N).HH);
+    }
+
+    else if (MenitToJAM(N).MM != 0 && MenitToJAM(N).HH != 0)
+    {
+        printf("%d hour(s) %d minute(s)\n", MenitToJAM(N).HH, MenitToJAM(N).MM);
+    }
+
+    else
+    {
+        printf("%d minute(s)\n", MenitToJAM(N).MM);
+    }
+}
+
 long JAMToMenit(JAM J)
 /* Konversi Jam menjadi Menit */
 { /* Kamus Lokal */

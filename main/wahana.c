@@ -5,10 +5,9 @@ void LoadWahana(Wahana * W){
     int i;
     int x,y;
     char separator = ',';
-
-    ADVKATA(separator);
-    CopyKata(CKata, &(*W).nama);
     
+    CopyKata(CKata, &(*W).nama);
+
     (*W).position = MakePOINT(-1,-1);
 
     ADVKATA(separator);

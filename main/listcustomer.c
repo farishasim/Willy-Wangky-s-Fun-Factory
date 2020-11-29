@@ -4,13 +4,13 @@
 
 /* PROTOTYPE */
 /****************** TEST listcustomer KOSONG ******************/
-boolean IsEmpty (ListCustomer L) {
+boolean IsEmptyList (ListCustomer L) {
 /* Mengirim true jika listcustomer kosong */
     return (First(L) == Nil);
 }
 
 /****************** PEMBUATAN listcustomer KOSONG ******************/
-void CreateEmpty (ListCustomer *L) {
+void CreateEmptyList (ListCustomer *L) {
 /* I.S. sembarang             */
 /* F.S. Terbentuk listcustomer kosong */
     First(*L) = Nil;
@@ -73,7 +73,7 @@ void InsertLast (ListCustomer *L, address_c P) {
 /* F.S. P ditambahkan sebagai elemen terakhir yang baru */
     address_c Prec;
 
-    if (IsEmpty(*L)) {
+    if (IsEmptyList(*L)) {
         InsertFirst(L,P);
     } else {
     Prec = First(*L);

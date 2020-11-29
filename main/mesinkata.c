@@ -5,12 +5,28 @@
 #include "mesinkata.h"
 #include "mesinkar.h"
 
-boolean EndKata;
+boolean EndKata, counterNL, counterSC;
 Kata CKata;
 
 void IgnoreBlank(char separator){
     while (CC==separator || CC == '\n')
     {
+        if (CC == '\n')
+        {
+            counterNL = true;
+        }
+        else if (CC != '\n')
+        {
+            counterNL = false;
+        }
+        else if (CC == ';')
+        {
+            counterSC = true;
+        }
+        else if (CC != ';')
+        {
+            counterSC = false;
+        }
         ADV();
     }
 }
@@ -71,6 +87,16 @@ void SalinKata(char separator){
           CC adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
 
+void writeAString(char* str, FILE** fp)
+{
+       int i;
+       for (i = 0; i < strlen(str); ++i)
+       {
+              CC = str[i];
+              writeAChar(CC, fp);
+       }
+}
+
 void CopyKata(Kata Kin, Kata * Kout) {
     int i;
 
@@ -104,43 +130,9 @@ void convert2StrKata(char** str, int integer)
     snprintf(*str, snprintf(NULL, 0, "%d", integer) + 1, "%d", integer);
 }
 
-char* appended2Strings(char* str1, char* str2)
-{   
-    char* new;
-    if ((new = malloc((strlen(str1) + strlen(str2)))) != NULL)
-    {
-        new[0] = '\0';
-        strncat(new, str1, strlen(str1));
-        strncat(new, str2, strlen(str2));
-    }
-
-    else
-    {
-        printf("Maaf, terjadi kesalahan saat mengkonkatenasi data.\n");
-    }
-
-    return new;
-}
-
 void PrintKata(Kata K){
     int i;
     for(i = 0; i < K.Length; i++) {
         printf("%c", K.TabKata[i]);
-    }
-}
-
-boolean isKataSama(Kata K1, char* K2)
-{
-    if (K1.Length != strlen(K2)) return 0;
-
-    else
-    {
-        int i;
-        for(i = 0; i < K1.Length; ++i)
-        {
-            if (K1.TabKata[i] != K2[i]) return 0;
-        }
-
-        return 1;
     }
 }

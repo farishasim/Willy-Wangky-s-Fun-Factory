@@ -27,9 +27,10 @@ void InitialMap(Map * M) {
     for(j = 0; j < (*M).NKolEff; j++) {
         Elmt(*M,i,j) = '*';
     }
+}
 
-    //Elmt(*M,1,1) = 'A'; // set nilai matriks di (1,1) dengan antrian, pemilihan ini bebas, boleh saja dirubah
-    //Elmt(*M,1,3) = 'O'; // set nilai matriks di (1,3) dengan Office, pemilihan ini bebas, boleh saja dirubah
+boolean IsWahana(Map M, POINT P) {
+    return Elmt(M,Absis(P),Ordinat(P)) == 'W';
 }
 
 void SetWahana(Map * M, POINT P) {

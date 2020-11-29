@@ -47,11 +47,11 @@ typedef struct {
 
 /* PROTOTYPE */
 /****************** TEST ListCustomer KOSONG ******************/
-boolean IsEmpty (ListCustomer L);
+boolean IsEmptyList (ListCustomer L);
 /* Mengirim true jika ListCustomer kosong */
 
 /****************** PEMBUATAN ListCustomer KOSONG ******************/
-void CreateEmpty (ListCustomer *L);
+void CreateEmptyList (ListCustomer *L);
 /* I.S. sembarang             */
 /* F.S. Terbentuk ListCustomer kosong */
 

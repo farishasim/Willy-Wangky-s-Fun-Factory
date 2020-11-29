@@ -57,6 +57,8 @@ void TulisJAM (JAM J);
    tanpa karakter apa pun di depan atau belakangnya, termasuk spasi, enter, dll.
    Jika jam / menit / Menit hanya satu digit, tuliskan satu digit tanpa 0 di depannya. */
 
+void TulisDurasi(long N);
+
 /* ***************************************************************** */
 /* KELOMPOK KONVERSI TERHADAP TYPE                                   */
 /* ***************************************************************** */

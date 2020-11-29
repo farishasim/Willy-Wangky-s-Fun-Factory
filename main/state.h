@@ -6,35 +6,31 @@
 
 #include "mesinkata.h"
 #include "map.h"
-#include "point.h"
 #include "jam.h"
-//#include "stackt.h"
-//#include "queue.h"
+#include "stackt.h"
+#include "prioqueuechar.h"
+#include "wahana.h"
 
-typedef int infotype;
-typedef int address;   /* indeks tabel */
 
-typedef struct { 
+typedef struct {
   Kata username;         /* nama yg di-input oleh player */
   int money;         /* uang yang dimiliki pemain */
   int day;           /* hari ke-berapa */
   int NWahana;       /* banyaknya wahana yang dimiliki pemain*/
-  int tempActs;
-  int neededTime;
-  int neededMoney;
-  JAM current_time;  /* current time dari permainan */
-  JAM openTime;     /* Waktu taman bermain dibuka */
-  JAM closeTime;      /* Waktu taman bermain ditutup */
+  int infoPrep[3]; /*temp_acts, needTime, neededMoney*/
+  JAM time[3];  /*cur_time, open_time, close_time*/
   Map peta;          /* merepresentasikan lahan wahana yang dimiliki oleh pemain */
-  POINT office;     /* merepresentasikan kordinat posisi office berada*/
-  POINT position;    /* merepresentasikan kordinat posisi pemain berdiri */
-  POINT locAntrian;     /* merepresentasikan kordinat posisi office berada*/ 
+  POINT objectsLoc[3]; /*positionPlayer, office, locAntrian*/
   boolean prep_phase; /* bernilai true jika permainan sedang dalam preparation phase */
-  //Stack act_list;    /* stack untuk menyimpan aksi-aksi pada prep phase */
-  //prior_qu antrian;
-  //Wahana listWahana[5];  /* list semua wahana yang dimiliki pemain */
-  //map_wahana map_address;  // map yang setiap elemennya merupakan address dari suatu wahana
+  Stack act_list;    /* stack untuk menyimpan aksi-aksi pada prep phase */
+  Material material[5];
+  ListCustomer data_customer;
+  PrioQueueChar antrian;
+  Wahana data_wahana[10];  /* data semua wahana yang tersedia pada permainan */
+  address_w listWahana[5];  /* list semua wahana yang dimiliki pemain */  // [&DataWahana[1],nil,nil,nil,nil]
+  map_wahana map_address;  // map yang setiap elemennya merupakan address dari suatu wahana
 } State;
+
 
 /* WARNING!! : Adt state ini masih mentah, */
 /* akan banyak mengalami perubahan dan penyesuaian */
@@ -43,20 +39,25 @@ typedef struct {
 
 #define Name(S) (S).username
 #define Money(S) (S).money
-#define Time(S) (S).current_time
-#define TempActs(S) (S).tempActs
-#define MoneyNeeded(S) (S).neededMoney
-#define TimeNeeded(S) (S).neededTime
-#define OpenTime(S) (S).openTime
-#define CloseTime(S) (S).closeTime
+#define Time(S) (S).time[0]
+#define OpenTime(S) (S).time[1]
+#define CloseTime(S) (S).time[2]
+#define TempActs(S) (S).infoPrep[0]
+#define MoneyNeeded(S) (S).infoPrep[1]
+#define TimeNeeded(S) (S).infoPrep[2]
 #define Day(S) (S).day
-#define Position(S) (S).position
-#define Office(S) (S).office
-#define LocAntrian(S) (S).locAntrian
+#define Position(S) (S).objectsLoc[0]
+#define Office(S) (S).objectsLoc[1]
+#define LocAntrian(S) (S).objectsLoc[2]
 #define Peta(S) (S).peta
 #define Prep(S) (S).prep_phase
-//#define Antrian(S) (S).antrian
-//#define Act(S) (S).act_list
+#define Materials(S) (S).material
+#define Antrian(S) (S).antrian
+#define Act(S) (S).act_list
+#define ListWahana(S) (S).listWahana
+#define DataCustomers(S) (S).data_customer
+#define DataWahana(S)  (S).data_wahana
+#define NWahana(S) (S).NWahana
 
 void loading(State* S, char* filename, boolean isInput, boolean isLoad);
 
@@ -81,5 +82,19 @@ void ldTime(State *S, boolean isInput);
 void svInfoActs(FILE** fp, State S);
 
 void ldInfoActs(State *S);
+
+void svCurMaterial(FILE** fp, State S);
+
+void ldMaterial(State* S);
+
+void svActList(FILE** fp, State S);
+
+void ldActList(State* S);
+
+void svQueue(FILE** fp, State S);
+
+void ldQueue (State* S);
+
+void ldDefWahana(State* S);
 
 #endif

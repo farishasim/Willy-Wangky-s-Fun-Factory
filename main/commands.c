@@ -84,9 +84,9 @@ void inputManual(State *S/*, Wahana *W*/)
     printf("\nTentukan lokasi antrian (Contoh, 1 1 berada di pojok kiri atas peta): ");
     scanf("%d", &LocAntrian(*S).X);
     scanf("%d", &LocAntrian(*S).Y);
-    while (LocAntrian(*S).X == 1 || LocAntrian(*S).X == Peta(*S).NBrsEff || LocAntrian(*S).Y == 0 || LocAntrian(*S).Y == Peta(*S).NKolEff /*|| (LocAntrian(*S).X == Position(*S).X && LocAntrian(*S).Y == Position(*S).Y)*/)
+    while (LocAntrian(*S).X <= 1 || LocAntrian(*S).X >= Peta(*S).NBrsEff || LocAntrian(*S).Y <= 1 || LocAntrian(*S).Y >= Peta(*S).NKolEff /*|| (LocAntrian(*S).X == Position(*S).X && LocAntrian(*S).Y == Position(*S).Y)*/)
     {
-        if (LocAntrian(*S).X < 1 || LocAntrian(*S).X > Peta(*S).NBrsEff || LocAntrian(*S).Y < 0 || LocAntrian(*S).Y > Peta(*S).NKolEff)
+        if (LocAntrian(*S).X < 1 || LocAntrian(*S).X > Peta(*S).NBrsEff || LocAntrian(*S).Y < 1 || LocAntrian(*S).Y > Peta(*S).NKolEff)
         {
             printf("Input tidak valid.\n");
         }
@@ -107,9 +107,9 @@ void inputManual(State *S/*, Wahana *W*/)
     printf("\nTentukan lokasi office (Contoh, 1 1 berada di pojok kiri atas peta): ");
     scanf("%d", &Office(*S).X);
     scanf("%d", &Office(*S).Y);
-    while (Office(*S).X <= 1 || Office(*S).X >= Peta(*S).NBrsEff || Office(*S).Y <= 0 || Office(*S).Y >= Peta(*S).NKolEff || ((LocAntrian(*S).X == Office(*S).X) && (LocAntrian(*S).Y == Office(*S).Y))/*|| (LocAntrian(*S).X == Position(*S).X && LocAntrian(*S).Y == Position(*S).Y)*/)
+    while (Office(*S).X <= 1 || Office(*S).X >= Peta(*S).NBrsEff || Office(*S).Y <= 1 || Office(*S).Y >= Peta(*S).NKolEff || ((LocAntrian(*S).X == Office(*S).X) && (LocAntrian(*S).Y == Office(*S).Y))/*|| (LocAntrian(*S).X == Position(*S).X && LocAntrian(*S).Y == Position(*S).Y)*/)
     {
-        if (Office(*S).X < 1 || Office(*S).X > Peta(*S).NBrsEff || Office(*S).Y < 0 || Office(*S).Y > Peta(*S).NKolEff)
+        if (Office(*S).X < 1 || Office(*S).X > Peta(*S).NBrsEff || Office(*S).Y < 1 || Office(*S).Y > Peta(*S).NKolEff)
         {
             printf("Lokasi tidak valid.\n");
         }
@@ -141,13 +141,11 @@ void inputManual(State *S/*, Wahana *W*/)
         {
             printf("Taman bermain mulai dapat dibuka antara 07 00 -- 12 00.\n");
             
-        }
-        
+        }        
         printf("Tentukan waktu taman dibuka (default-nya adalah 09 00 (sembilan pagi)): ");
         scanf("%d", &OpenTime(*S).HH);
         scanf("%d", &OpenTime(*S).MM);
     }
-    
     printf("\nTentukan waktu taman ditutup (default-nya adalah 21 00 (sembilan malam)): ");
     scanf("%d", &CloseTime(*S).HH);
     scanf("%d", &CloseTime(*S).MM);

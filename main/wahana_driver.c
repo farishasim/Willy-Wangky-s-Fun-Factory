@@ -8,26 +8,30 @@ int main() {
     int i;
 
     // LOad material ke list material
-    START("../file/material.txt");
-    for(i = 0; i < 5; i++){
+    STARTKATA("../files/material.txt", ',');
+    while (!EndKata){
+        i = 0;
         LoadMaterial(&list_bahan[i]);
         PrintMaterial(list_bahan[i]);
     }
-    printf("%c", CC);
+    printf("\n");
 
     // Load wahana ke wahana W
-    START("../file/wahana.txt");
-    LoadWahana(&W, list_bahan);
-
-    // tampilkan hasil wahana yang di-input untuk testing
-    PrintKata(W.nama); printf("\n");
-    TulisPOINT(W.size); printf("\n");
-    for(i = 0; i < 5; i++){
-        PrintMaterial(W.bahan[i]); printf("\n");
+    STARTKATA("../files/wahana.txt", ',');
+    while (!EndKata)
+    {
+        LoadWahana(&W);
+        PrintKata(W.nama); printf("\n");
+        TulisPOINT(W.size); printf("\n");
+        for(i = 0; i < 5; i++){
+            printf("%d", W.bahan[i]); printf("\n");
+        }
+        PrintKata(W.deskripsi);
+        printf("\n");
     }
-    PrintKata(W.deskripsi);
-
-    printf("%c", CC);
-
+    
+    // tampilkan hasil wahana yang di-input untuk testing
+    
+    
     return 0;
 }
