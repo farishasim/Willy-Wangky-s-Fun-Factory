@@ -12,6 +12,7 @@ void loading(State* S, char* filename, boolean isInput, boolean isLoad)
     ldMDP("money", S);
     ldMDP("day", S);
     ldMDP("prep", S);
+    ldQuantityMaterial(S);
     ldInfoActs(S);
     ldActList(S);
     ldQueue(S);
@@ -33,12 +34,12 @@ void saving(State S, char* filename)
     svMDP("money", &fp, S);
     svMDP("day", &fp, S);
     svMDP("prep", &fp, S);
+    svQuantityMaterial(&fp, S);
     svInfoActs(&fp, S);
     svActList(&fp, S);
     svQueue(&fp, S);
-    ldWahanaPlayer(&fp, S);
-    svCurMaterial(&fp, S);
-    fputc(CC = MARK, fp);
+    svWahanaPlayer(&fp,S);
+    writeAChar(CC = MARK, &fp);
     fclose(fp);
 }
 
@@ -258,7 +259,7 @@ void ldInfoActs(State *S)
     ADVKATA(',');
 }
 
-void svCurMaterial(FILE** fp, State S)
+void svQuantityMaterial(FILE** fp, State S)
 {
     int i, j;
     char* string;
@@ -274,16 +275,15 @@ void svCurMaterial(FILE** fp, State S)
     writeAChar(CC = '\n', fp);
 }
 
-void ldMaterial(State* S)
+void ldQuantityMaterial(State* S)
 {
-    STARTKATA("../files/material.txt", ',');
-    int i = 0;
-    while (!EndKata)
+    int i;
+    for (i = 0; i < 5; ++i)
     {
-        LoadMaterial(&Storage(*S)[i++]);
+        Storage(*S)[i].quantity = ConvertKata(CKata);
         ADVKATA(',');
-    } 
-}   
+    }
+}
 
 void svActList(FILE** fp, State S)
 {
@@ -574,3 +574,16 @@ void ldDefWahana(State* S)
         ADV();   // skip '\n'
     }
 }
+
+void ldDefMaterial(State* S)
+{
+    STARTKATA("../files/material.txt", ',');
+    int i = 0;
+    for (i = 0; i < 5; ++i)
+    {
+        CopyKata(CKata, &Storage(*S)[i].nama);
+        ADVKATA(',');
+        Storage(*S)[i].harga = ConvertKata(CKata);
+        ADVKATA(',');
+    }
+}   

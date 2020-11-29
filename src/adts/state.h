@@ -106,9 +106,9 @@ void svInfoActs(FILE** fp, State S);
 
 void ldInfoActs(State *S);
 
-void svCurMaterial(FILE** fp, State S);
+void svQuantityMaterial(FILE** fp, State S);
 
-void ldMaterial(State* S);
+void ldQuantityMaterial(State* S);
 
 void svActList(FILE** fp, State S);
 
@@ -119,6 +119,8 @@ void svQueue(FILE** fp, State S);
 void ldQueue (State* S);
 
 void ldDefWahana(State* S);
+
+void ldDefMaterial(State* S);
 
 void svWahanaPlayer(FILE** fp, State S);
 

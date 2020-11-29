@@ -23,7 +23,7 @@ Misal NBrsEff = 15, NKolEff = 15
 
 */
 
-void InitialMap(Map * M);
+void InitialMap(Map * M, char* filename, boolean isInput);
 /* I.S. M sebuah map berisi karakter sembarang */
 /* F.S. M sebuah map taman wahana kosong hanya berisi office */
 /* kosong artinya belum ada satu pun wahana */

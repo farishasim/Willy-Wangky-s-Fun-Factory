@@ -1,6 +1,6 @@
 #include "material.h"
 
-void LoadMaterial(Material * mat) {
+void LoadMaterial(Material * mat[]) {
     int i,val;
     char separator = ',';
 

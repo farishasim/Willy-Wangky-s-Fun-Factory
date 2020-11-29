@@ -4,14 +4,14 @@ Dwi Kalam
 10000
 1
 1
+0,0,0,0,0
 0,0,0
 0,123
 0,0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0,0;
 0,0,0,0,0,0,0,0
 0,0,0,0,0,0,0,0;
-1
-0,0,0,0,0
+15, 1
 .
 
 #username nama_player 
@@ -20,6 +20,7 @@ Dwi Kalam
 #uang jumlah_uang 
 #day hari_ke
 #prep 1 (1= true / prep mode, 0=false/ main mode)
+#materialstorage Quantitymatbata mQuantityatbesi Quantitymatkaca Quantitymatkayu Quantitymatplastik
 #infoActs aksi_akan_dilakukan waktu_diperlukan uang_diperlukan
     //Tidak ada, 0.
 #act_list nkali, selectedActTarget[n-1], selectedAct[n] 
@@ -30,5 +31,4 @@ Dwi Kalam
                 Pembacaan terhadap antrean diakhiri oleh titik koma.
 #wahana ID posistion_x position_y count_used income count_used1hr income1hr broke 
     //wahana -1|00|00|0...|0...|0..|0..|0|
-#Lahan ke berapa
-#materialstorage matbata matbesi matkaca matkayu matplastik
+#Ukuran dan Lahan ke berapa
