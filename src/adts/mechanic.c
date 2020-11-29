@@ -239,10 +239,11 @@ void D(State *S){
 void Build(State *S){
     int i, ID, quest,L, butuh_uang, butuh_waktu;
     boolean build;
-    POINT P;
+    POINT P = MakePOINT(-1,-1);
     printf("Ingin membangun apa?\nList:\n");
 	for(i=0; i< 10/*DataWahana(*S).length*/; i++){
-		if(DataWahana(*S)[i].starter && DataWahana(*S)[i].nama.Length){
+		if(DataWahana(*S)[i].starter && DataWahana(*S)[i].nama.Length 
+                && EQPOINT(DataWahana(*S)[i].position,P)){
 			PrintKata(DataWahana(*S)[i].nama);			
 			printf(" , ID : ");
 			printf("%d",i);
@@ -251,7 +252,13 @@ void Build(State *S){
 	}
 
 	scanf("%d",&ID);
-    scanf("%c",&i);
+
+    if (!DataWahana(*S)[ID].starter || NEQPOINT(DataWahana(*S)[ID].position,P)) {
+            printf("Invalid command\n");
+            sleep(1);
+            scanf("%c",&i);
+            return;
+        }
 
     build=true;
     i=0;
@@ -285,8 +292,7 @@ void Build(State *S){
         printf("Kamu sudah terlalu banyak melakukan aksi untuk hari ini.\n");
         printf("Coba lagi esok hari.\n");
     
-    } else if (DataWahana(*S)[ID].time_needed < Durasi(OpenTime(*S), CloseTime(*S))) {
-
+    } else {
         // update Prep[3]
         MoneyNeeded(*S)+=DataWahana(*S)[ID].harga;
 		TimeNeeded(*S)+=60; //TimeNeeded(*S)+=DataWahana(*S)[ID].time_needed;
@@ -304,12 +310,16 @@ void Build(State *S){
         ListWahana(*S)[NWahana(*S)] = &DataWahana(*S)[ID];
         NWahana(*S)++;
 
+        for(i = 0; i < 5; i++) {
+            Storage(*S)[i].quantity -= DataWahana(*S)[ID].bahan[i];
+        }
+
         // gerak kiri satu langkah
         A(S);
 
         // Update pada Map
-        setAddressMap(&PetaAddress(*S), &DataWahana(*S)[ID], P);
-        SetWahana(&Peta(*S), P, DataWahana(*S)[ID].size);
+        setAddressMap(&PetaAddress(*S), &DataWahana(*S)[ID], DataWahana(*S)[ID].position);
+        SetWahana(&Peta(*S), DataWahana(*S)[ID].position, DataWahana(*S)[ID].size);
         
         // Push ke Stack
         quest=ID*10+2;
@@ -317,36 +327,124 @@ void Build(State *S){
 		printf("Proses build tersimpan ke dalam stack to-do.");
 	}
     sleep(1);
+    scanf("%c",&i);
 }
 
 
-// // void Upgrade(State *S){
-// // 	int X;
-// // 	int Y;
-// // 	if(IsWahana(NextX(Position(*S)))){
-// // 	    printf("Ingin melakukan upgrade apa?\nList :\n");
-// //         for(int i=0; i<=data_wahana(*S).length; i++){
-// // 		    if(!data_wahana(*S)[i].starter){
-// // 			    printf(data_wahana(*S)[i].nama);			
-// // 			    printf(" , ID : ");
-// // 			    printf(data_wahana(*S)[i].ID);
-// // 			    printf("\n");
-// // 		    }
-// // 	    }
-// // 	    scanf(&ID);
+void Upgrade(State *S){
+    POINT posisi_wahana;
+    int ID, ID_kiri, ID_kanan, ID_pilih, i, butuh_uang, butuh_waktu;
+    infostack quest;
+    BinTree anak_kiri, anak_kanan;
+    boolean build;
 
-// // 		//If resource<requirement, print error
-		
-// // 		else{ StoraStorage(*S).
-// // 		}
-// // 	}
-// // 	else{
-// // 		printf("Tidak ada wahana di sisi kanan anda: \n ");
-// // 	}
-// // } 
-void Upgrade(State * S){
+    posisi_wahana = NextY(Position(*S));
+    
+    if (!IsWahana(Peta(*S),posisi_wahana)) {
+        printf("Tidak ada wahana apapun di samping kanan\n");
+        sleep(1);
+        return;
+    }
 
-}
+    ID = getWahanaAt(&PetaAddress(*S),posisi_wahana).ID;
+    
+    if (IsOneElmt(DataWahana(*S)[ID].upgrade_tree)) {
+        printf("Wahana di samping tidak bisa di-upgrade ke wahana apapun\n");
+        sleep(1);
+        return;
+    }
+
+    PrintTree(DataWahana(*S)[ID].upgrade_tree, 2);
+    anak_kanan = Right(DataWahana(*S)[ID].upgrade_tree);
+    anak_kiri = Left(DataWahana(*S)[ID].upgrade_tree);
+    
+    printf("\nIngin melakukan upgrade apa?\nList :\n");
+    if (anak_kiri) {
+        ID_kiri = Akar(anak_kiri);
+        printf("- "); PrintKata(DataWahana(*S)[ID_kiri].nama);
+        printf(" (ID : %d) ", ID_kiri); printf("\n");
+    }
+    if (anak_kanan) {
+        ID_kanan = Akar(anak_kanan);
+        printf("- "); PrintKata(DataWahana(*S)[ID_kanan].nama);
+        printf(" (ID : %d) ", ID_kanan); printf("\n");
+    }
+
+    scanf("%d", &ID_pilih);
+    scanf("%c", &i); // skip \n
+
+    if (ID_pilih != ID_kiri && ID_pilih != ID_kanan) {
+        printf("Input tidak valid\n");
+        sleep(1);
+        return;
+    }
+
+    build=true;
+    i=0;
+    while(build && i < 5){
+        if(DataWahana(*S)[ID_pilih].bahan[i] > Storage(*S)[i].quantity){
+            build=false;
+        }
+        else{
+            i++;
+        }
+    }
+
+    butuh_uang = MoneyNeeded(*S)+DataWahana(*S)[ID_pilih].uang;
+    butuh_waktu = TimeNeeded(*S)+120;
+
+    if(butuh_waktu > Durasi(OpenTime(*S), CloseTime(*S))){
+		printf("Anda tidak punya waktu cukup untuk menambah aksi ini\n");
+		printf("Silahkan undo beberapa action jika ingin tetap melakukan aksi ini.");
+	
+    } else if(butuh_uang > Money(*S) ){
+        printf("Jumlah uang tidak mencukupi. Silakan ulangi lagi!");
+    
+    } else if (!build) {
+        printf("Bahan-bahan tidak cukup");
+    
+    } else if (IsFullStackt(Act(*S))) {
+        printf("Kamu sudah terlalu banyak melakukan aksi untuk hari ini.\n");
+        printf("Coba lagi esok hari.\n");
+    
+    } else {
+
+        // update Prep[3]
+        MoneyNeeded(*S)+=DataWahana(*S)[ID_pilih].harga;
+		TimeNeeded(*S)+=120; //TimeNeeded(*S)+=DataWahana(*S)[ID].time_needed;
+        TempActs(*S)++;
+
+        // Update Data Wahana
+        DataWahana(*S)[ID_pilih].history = KonsB(DataWahana(*S)[ID].history, &DataWahana(*S)[ID_pilih]);
+        DataWahana(*S)[ID_pilih].position = DataWahana(*S)[ID].position;
+        DataWahana(*S)[ID_pilih].income = DataWahana(*S)[ID].income;
+        DataWahana(*S)[ID_pilih].income1 = DataWahana(*S)[ID].income1;
+        DataWahana(*S)[ID_pilih].count_used = DataWahana(*S)[ID].income;
+        DataWahana(*S)[ID_pilih].count_used1 = DataWahana(*S)[ID].income1;
+        DataWahana(*S)[ID_pilih].broke = false;
+
+        for(i = 0; i < 5; i++) {
+            if (ListWahana(*S)[i]) {
+                if ((*ListWahana(*S)[i]).ID == ID) {
+                    ListWahana(*S)[i] = &DataWahana(*S)[ID_pilih];
+                }
+            }
+        }
+
+        for(i = 0; i < 5; i++) {
+            Storage(*S)[i].quantity -= DataWahana(*S)[ID_pilih].bahan[i];
+        }
+
+        // Update pada Map
+        setAddressMap(&PetaAddress(*S), &DataWahana(*S)[ID_pilih], DataWahana(*S)[ID].position);
+        
+        // Push ke Stack
+        quest= ID_pilih*1000 + ID*10 + 3;
+        Push(&Act(*S), quest);	
+		printf("Proses upgrade tersimpan ke dalam stack to-do.");
+    }
+    sleep(1);
+} 
 
 void Buy(State *S){
 	int i, N, ID, quest,butuh_uang, butuh_waktu;
@@ -354,33 +452,38 @@ void Buy(State *S){
     printf("Storage : \n");
     for(i=0; i<5;i++){
         PrintKata(Storage(*S)[i].nama); printf(" : ");
-        printf("%d", Storage(*S)[i].quantity);
+        printf("%d ", Storage(*S)[i].quantity);
     }
 
-	printf("Ingin membeli apa?\nList :\n");
+	printf("\nIngin membeli apa?\nList :\n");
     for(i=0; i<5;i++){
-        printf("-"); PrintKata(Storage(*S)[i].nama); 
-        printf("(ID : %d) ( %d / item )", i,Storage(*S)[i].harga);
+        printf("- "); PrintKata(Storage(*S)[i].nama); 
+        printf(" (ID : %d) (%d / item)", i,Storage(*S)[i].harga);
         printf("\n");
     }
 
 	printf("Format input : jumlah(spasi)id material\n");
 
-	scanf("%d %d", &N, &ID);
+	scanf("%d", &N);
+    scanf("%d",&ID);
+
+    if (ID > 4 || ID < 0) {
+        printf("Invalid command\n");
+        sleep(1);
+        return;
+    }
 
     butuh_uang = MoneyNeeded(*S) + Storage(*S)[ID].harga*N;
     butuh_waktu = TimeNeeded(*S) + 20;
 
-	if(butuh_uang > Money(*S)){
+	if (butuh_uang > Money(*S)){
 		printf("Jumlah uang tidak mencukupi. Silakan ulangi lagi!");
-	}
-    else if(butuh_waktu > Durasi(OpenTime(*S), CloseTime(*S))){
+	} else if (butuh_waktu > Durasi(OpenTime(*S), CloseTime(*S))){
         printf("Waktu tidak mencukupi. Silakan undo beberapa action jika ingin membeli item.");
     } else if(IsFullStackt(Act(*S))) {
         printf("Kamu sudah terlalu banyak melakukan aksi untuk hari ini.\n");
         printf("Coba lagi esok hari.\n");
-    }
-	else{
+    } else{
         // update Temp[3]
         TimeNeeded(*S) += 20;
         MoneyNeeded(*S)+=Storage(*S)[ID].harga*N;
@@ -392,12 +495,29 @@ void Buy(State *S){
         // update stack
         quest=(N*1000)+(ID*10)+1;
         Push(&Act(*S), quest);
+        printf("Proses buy tersimpan dalam stack\n");
 	}
     scanf("%c", &i);  // skip \n
+    sleep(1);
 }
 
 void Undo(State * S){
+    int quest;
 
+    if (IsEmptyStackt(Act(*S))) {
+        printf("Kamu belum melakukan apa-apa hari ini\n");
+        return;
+    }
+
+    Pop(&Act(*S), &quest);
+    if (quest % 10 == 1) {
+        UnBuy(S,quest);
+    } else if (quest % 10 == 2) {
+        UnBuild(S,quest);
+    } else if (quest % 10 == 3) {
+        UnUpgrade(S,quest);
+    }
+    sleep(1);
 }
 
 //********* Fungsi-Fungsi untuk command *************//
@@ -520,7 +640,7 @@ void Repair(State * S) {
     POINT posisi_wahana;
     address_w address_wahana_kanan;
 
-    posisi_wahana = NextX(Position(*S));
+    posisi_wahana = NextY(Position(*S));
     
     if (!IsWahana(Peta(*S),posisi_wahana)) {
         printf("Tidak ada wahana apapun di samping kanan\n");
@@ -556,7 +676,7 @@ void Detail(State * S) {
     POINT posisi_wahana;
     Wahana wahana_kanan;
 
-    posisi_wahana = NextX(Position(*S));
+    posisi_wahana = NextY(Position(*S));
     
     if (!IsWahana(Peta(*S),posisi_wahana)) {
         printf("Tidak ada wahana apapun di samping kanan");
@@ -566,7 +686,7 @@ void Detail(State * S) {
     wahana_kanan = getWahanaAt(&PetaAddress(*S), posisi_wahana);
 
     printDetail(&wahana_kanan);
-    timeFlow(S,2); // melihat detail membutuhkan waktu 2 menit. (opsional)
+    timeFlow(S,5); // melihat detail membutuhkan waktu 2 menit. (opsional)
 }
 
 
@@ -596,7 +716,7 @@ void OFFice(State * S) {
             scanf("%d", &choice_w);
             if (choice_w >= 0 && choice_w < (*S).NWahana) {
                 printDetail(ListWahana(*S)[choice_w]);
-                timeFlow(S,2); // melihat detail membutuhkan waktu 2 menit.
+                timeFlow(S,5); // melihat detail membutuhkan waktu 2 menit.
             } else {
                 printf("invalid");
             }
@@ -606,7 +726,7 @@ void OFFice(State * S) {
             scanf("%d", &choice_w);
             if (choice_w >= 0 && choice_w < (*S).NWahana) {
                 printReport(ListWahana(*S)[choice_w]);
-                timeFlow(S,2); // melihat report membutuhkan waktu 2 menit.
+                timeFlow(S,5); // melihat report membutuhkan waktu 2 menit.
             } else {
                 printf("invalid");
             }
@@ -625,6 +745,44 @@ void OFFice(State * S) {
 }   
 
 //********* Sub-Fungsi untuk Fungsi-fungsi Command *********//
+// ****** Sub-Fungsi Undo ****** //
+void UnBuy(State * S, infostack quest) {
+    int ID;
+    int N;
+
+    ID = (quest / 10) % 100;
+    N = quest / 1000;
+
+    Storage(*S)[ID].quantity -= N;
+    TempActs(*S)--;
+    MoneyNeeded(*S) -= Storage(*S)[ID].harga * N;
+    TimeNeeded(*S) -= 20;
+}
+
+void UnBuild(State * S, infostack quest) {
+    int ID,i;
+    
+    ID = (quest / 10) % 100;
+
+    RemoveWahana(&Peta(*S), DataWahana(*S)[ID].position, DataWahana(*S)[ID].size);
+    RemoveAddress(&PetaAddress(*S), &DataWahana(*S)[ID]);
+
+    DealokasiH(DataWahana(*S)[ID].history);
+    DataWahana(*S)[ID].position = MakePOINT(-1,-1);
+
+    for(i = 0; i < 5; i++) {
+        Storage(*S)[i].quantity -= DataWahana(*S)[ID].bahan[i];
+    }
+
+    TempActs(*S)--;
+    MoneyNeeded(*S) -= DataWahana(*S)[ID].uang;
+    TimeNeeded(*S) -= 60;
+}
+
+void UnUpgrade(State * S, infostack quest) {
+
+}
+
 // ****** Sub-Fungsi Execute ****** //
 void ExecuteBuild(State * S, infostack quest) {
 

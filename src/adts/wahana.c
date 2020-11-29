@@ -160,7 +160,7 @@ void setAddressMap(Map_wahana * M, Wahana * W, POINT loc) {
         }
         SetTemporer(M,i,lastKol+1);  //  sekeliling kanan menjadi forbidden
     }
-    i = lastKol-1;
+    i = lastBrs+1;
     for(j = firstKol-1; j <= lastKol+1; j++) {
         SetTemporer(M,i,j);  //  sekeliling bawah menjadi forbidden
     }

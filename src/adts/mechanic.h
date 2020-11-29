@@ -50,6 +50,13 @@ void OFFice(State * S);
 
 
 //********* Sub-Fungsi untuk Fungsi-fungsi Command *********//
+// ****** Sub-Fungsi Undo ****** //
+void UnBuy(State * S, infostack quest);
+
+void UnBuild(State * S, infostack quest);
+
+void UnUpgrade(State * S, infostack quest);
+
 POINT GateSpawnX (State *S);
 
 POINT GateSpawnY (State *S);
@@ -66,6 +73,12 @@ void ExecuteUpgrade(State * S, infostack quest);
 /* F.S. elemen pada ListWahana akan di ubah menjadi hasil upgradenya.
         PetaAddress(S) akan di set dengan address wahana hasil upgrade*/
 
+// ****** Sub-Fungsi Undo ****** //
+void UnBuy(State * S, infostack quest);
+
+void UnBuild(State * S, infostack quest);
+
+void UnUpgrade(State * S, infostack quest);
 
 //********** Fungsi-fungsi untuk Support ************//
 boolean isBetween(int val, int lower, int upper);

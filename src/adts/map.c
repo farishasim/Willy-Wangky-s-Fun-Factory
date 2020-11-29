@@ -40,6 +40,16 @@ void SetWahana(Map * M, POINT P, POINT Size) {
     }
 }
 
+void RemoveWahana(Map * M, POINT P, POINT Size){
+    int i,j;
+    
+    for(i = Absis(P); i < Absis(P) + Absis(Size); i++) {
+        for(j = Ordinat(P); j < Ordinat(P) + Ordinat(Size); j++) {
+            Elmt(*M,i,j) = '-';
+        }
+    }
+}
+
 boolean IsWahana(Map M, POINT P) {
     return Elmt(M,Absis(P),Ordinat(P)) == 'W';
 }

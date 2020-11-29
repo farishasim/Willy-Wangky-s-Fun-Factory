@@ -6,24 +6,16 @@
 void loading(State* S, char* filename, boolean isInput, boolean isLoad)
 {
     STARTKATA(filename, ',');
-    printf("Loading player...\n");
     ldPlayerName(S, isLoad);
-    printf("Player Loaded\n\n");
-    printf("Loading spacetime...\n");
     ldPos(S, isInput);    
     ldTime(S, isInput);
-    printf("Spacetime Loaded\n\n");
-    printf("Loading MDP...\n");
     ldMDP("money", S);
     ldMDP("day", S);
     ldMDP("prep", S);
-    printf("MDP Loaded\n\n");
-    printf("Loading Acts...\n");
+    ldQuantityMaterial(S);
     ldInfoActs(S);
     ldActList(S);
-    printf("Acts Loaded\n\n");
     ldQueue(S);
-    printf("Queeue Loaded\n");
     //ldWahanaPlayer(S);
     while (!EndKata)
     {
@@ -42,8 +34,11 @@ void saving(State S, char* filename)
     svMDP("money", &fp, S);
     svMDP("day", &fp, S);
     svMDP("prep", &fp, S);
+    svQuantityMaterial(&fp, S);
     svInfoActs(&fp, S);
-    fputc(CC = MARK, fp);
+    svQueue(&fp, S);
+    svWahanaPlayer(&fp,S);
+    writeAChar(CC = MARK, &fp);
     fclose(fp);
 }
 
@@ -266,7 +261,7 @@ void ldInfoActs(State *S)
     ADVKATA(',');
 }
 
-void svCurMaterial(FILE** fp, State S)
+void svQuantityMaterial(FILE** fp, State S)
 {
     int i, j;
     char* string;
@@ -282,6 +277,16 @@ void svCurMaterial(FILE** fp, State S)
     writeAChar(CC = '\n', fp);
 }
 
+void ldQuantityMaterial(State* S)
+{
+    int i;
+    for (i = 0; i < 5; ++i)
+    {
+        Storage(*S)[i].quantity = ConvertKata(CKata);
+        ADVKATA(',');
+    }
+}
+
 void ldDefMaterial(State* S)
 {
     STARTKATA("../../file/material.txt", ',');
@@ -292,7 +297,6 @@ void ldDefMaterial(State* S)
         ADVKATA(',');
         Storage(*S)[i].harga = ConvertKata(CKata);
         ADVKATA(',');
-        Storage(*S)[i].quantity = 0;
     }
 }   
 
@@ -576,6 +580,11 @@ void svWahanaPlayer(FILE** fp, State S)
         }
         ++j;
     }
+}
+
+void ldMap(State* S, boolean isInput)
+{
+
 }
 
 void ldDefWahana(State* S)

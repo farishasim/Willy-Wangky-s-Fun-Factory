@@ -304,7 +304,6 @@ void inputManualPeta(Map * peta, Map_wahana * petaAddress)
         printf("Masukkan antara 5 (untuk 5 x 5) -- 15 (untuk 15 x 15): ");
         scanf("%d", &ukuran);
     }
-    
     ukuran += 2;
     MakeMATRIKS(ukuran,ukuran,peta);
     InitialMap(peta);
