@@ -6,13 +6,13 @@ void tampilPrioQueueChar(PrioQueueChar Q);
 int main() {
     int Max = 10;
     int i;
-    infotype X;
+    infoqueue X;
     PrioQueueChar Q;
     boolean stop;
     int choice;
 
     MakeEmpty(&Q,Max);
-    if (IsEmpty(Q)) {
+    if (IsEmptyQueue(Q)) {
         printf("PrioQueueChar masih kosong.\n");
     }
     PrintPrioQueueChar(Q);
@@ -24,10 +24,10 @@ int main() {
         if (choice == 1) {
             if (!IsFull(Q)) {
             printf("input prio: ");
-            scanf("%d", &(X.prio));
+            scanf("%d", &(Prio(X)));
             printf("input info: ");
-            scanf("%c", &(X.info));
-            scanf("%c", &(X.info));
+            scanf("%c", &(Info(X)));
+            scanf("%c", &(Info(X)));
             Enqueue(&Q,X);
             PrintPrioQueueChar(Q);
             printf("head,tail : %d %d\n", Head(Q), Tail(Q));

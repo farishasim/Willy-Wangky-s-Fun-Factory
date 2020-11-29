@@ -1,26 +1,34 @@
-player player 
-uang 10000 
-jam 540 
-day 1
-playerpos 3 3
-prep 1
-materialstorage 0 0 0 0 0
-officepos 5 5
-antripos 7 7 
-wahana uWuCoaster 2 7 0 0 0 0
-actlist 0 0 0 0 0 0 0 0
-antrian 0
+Dwi Kalam
+3,3,5,5,7,7
+1260,540,1260
+10000
+1
+1
+0,0,0
+0,123
+0,0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0;
+0,0,0,0,0,0,0,0
+0,0,0,0,0,0,0,0;
+1
+0,0,0,0,0
 .
 
-#player nama_player 
+#username nama_player 
+#pos pos_x_player pos_y_player pos_x_office pos_y_player pos_x_antrian pos_y_antrian
+#jam currenttime opentime closetime {jam_dalam_menit (540 = jam 09.00)}
 #uang jumlah_uang 
-#jam jam_dalam_menit (540 = jam 09.00)
 #day hari_ke
-#playerpos pos_x_player pos_y_player 
 #prep 1 (1= true / prep mode, 0=false/ main mode)
-#materialstorage matbata matbesi matkaca matkayu matplastik 
-#office pos_x_office pos_y_office
-#antripos pos_x_antri pos_y_antri
-#wahana nama_wahana pos_x_wahana pos_y_wahana count_used income count_used1 income1
-#act_list banyak_aksi total_waktu_diperlukan total_uang_diperlukan matbata matbesi matkaca matkayu matplastik aksi1 aksi2 ... ( if in prep mode )
-#antrian banyak_antrian customer1 wahana1 wahana2 ... jumlah_kesabaran customer2 wahana1 ... jumlah_kesabaran ... ( if in main mode )
+#infoActs aksi_akan_dilakukan waktu_diperlukan uang_diperlukan
+    //Tidak ada, 0.
+#act_list nkali, selectedActTarget[n-1], selectedAct[n] 
+    //stack: 000,100033,50505022,0000000000
+#Antrian prio, id1, id2, id3, id4, id5, loc, time, kesabaran (diakhiri ;)
+    //prior_qu: 00|00000|0|0..,000000000.
+                -1 artinya tidak ada antrian.
+                Pembacaan terhadap antrean diakhiri oleh titik koma.
+#wahana ID posistion_x position_y count_used income count_used1 income1 broke 
+    //wahana -1|00|00|0...|0...|0..|0..|0|
+#Lahan ke berapa
+#materialstorage matbata matbesi matkaca matkayu matplastik

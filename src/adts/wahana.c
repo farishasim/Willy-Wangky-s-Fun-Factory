@@ -1,5 +1,5 @@
-#include "wahana.h"
 #include <stdio.h>
+#include "state.h"
 
 void LoadWahana(Wahana * W){
     int i;
@@ -37,6 +37,56 @@ void LoadWahana(Wahana * W){
 
     ADVKATA(separator);
     CopyKata(CKata, &(*W).deskripsi);
+
+    ADVKATA(separator);
+    (*W).durasi_repair = ConvertKata(CKata);
+}
+
+void SetPohonWahana(State * S, Wahana * W) {
+    // I.S. setelah LoadWahana(W), CC = ID wahana
+    char separator = ',';
+    int ID_next_kiri;
+    int ID_next_kanan;
+    int ID_prev;
+    BinTree parent;
+
+    ADVKATA(separator);
+    (*W).ID = ConvertKata(CKata);
+
+    ADVKATA(separator);
+    (*W).starter = ConvertKata(CKata);
+
+    ADVKATA(separator);
+    ID_next_kiri = ConvertKata(CKata);
+
+    ADVKATA(separator);
+    ID_next_kanan = ConvertKata(CKata);
+
+    ADVKATA(separator);
+    ID_prev = ConvertKata(CKata);
+
+    if ((*W).starter) {
+        (*W).upgrade_tree = AlokasiTree((*W).ID);
+        if (ID_next_kiri != -1) {
+            Left((*W).upgrade_tree) = AlokasiTree(ID_next_kiri);
+            if (ID_next_kanan != -1) {    
+                Right((*W).upgrade_tree) = AlokasiTree(ID_next_kanan);
+            }   
+        }
+    } else {
+        parent = GetWahana(*S,ID_prev).upgrade_tree;
+        if (Info(Left(parent)) == (*W).ID) {  //  jika wahana merupakan anak kiri
+            (*W).upgrade_tree = Left(parent);
+        } else {             //    jika wahana merupakan anak kanan
+            (*W).upgrade_tree = Right(parent);
+        }
+        if (ID_next_kiri != -1) {
+            Left((*W).upgrade_tree) = AlokasiTree(ID_next_kiri);
+            if (ID_next_kanan != -1) {    
+                Right((*W).upgrade_tree) = AlokasiTree(ID_next_kanan);
+            }   
+        }
+    }
 }
 
 void InitialAddressMap(Map_wahana * M, int NB, int NK) {
@@ -48,25 +98,40 @@ void InitialAddressMap(Map_wahana * M, int NB, int NK) {
 
     i=0;
     for(j=0; j<NK; j++) {
-        Elmt(*M,i,j) = (address_w) -1;
+        Elmt(*M,i,j) = (address_w) -2;
     } i++;
     for(j=0; j<NK; j++) {
-        Elmt(*M,i,j) = (address_w) -1;
+        Elmt(*M,i,j) = (address_w) -2;
     }
     for(i=2; i<NBrsEff(*M)-2; i++) {
-        j=0; Elmt(*M,i,j) = (address_w) -1;
-        j++; Elmt(*M,i,j) = (address_w) -1;
+        j=0; Elmt(*M,i,j) = (address_w) -2;
+        j++; Elmt(*M,i,j) = (address_w) -2;
         for(j=2; j<NKolEff(*M)-2; j++) {
             Elmt(*M,i,j) = Nil;
         }
-        Elmt(*M,i,j) = (address_w) -1;
-        j++; Elmt(*M,i,j) = (address_w) -1;
+        Elmt(*M,i,j) = (address_w) -2;
+        j++; Elmt(*M,i,j) = (address_w) -2;
     }
     for(j=0; j<NK; j++) {
-        Elmt(*M,i,j) = (address_w) -1;
+        Elmt(*M,i,j) = (address_w) -2;
     } i++;
     for(j=0; j<NK; j++) {
-        Elmt(*M,i,j) = (address_w) -1;
+        Elmt(*M,i,j) = (address_w) -2;
+    }
+}
+
+void SetForbiddenAddress(Map_wahana * M, POINT loc) {
+    int firstBrs,firstKol,lastBrs,lastKol,i,j;
+
+    firstBrs = Absis(loc)-1;
+    firstKol = Ordinat(loc)-1;
+    lastBrs = firstBrs + 3;
+    lastKol = firstKol + 3;
+
+    for(i = firstBrs; i < lastBrs; i++) {
+        for(j = firstKol; j < lastKol; j++) {
+            Elmt(*M,i,j) = (address_w) -2;
+        }
     }
 }
 
@@ -86,18 +151,18 @@ void setAddressMap(Map_wahana * M, Wahana * W, POINT loc) {
 
     i = firstBrs-1;
     for(j = firstKol-1; j <= lastKol+1; j++) {
-        Elmt(*M,i,j) = (address_w)-1;  //  sekeliling atas menjadi forbidden
+        SetTemporer(M,i,j);  //  sekeliling atas menjadi forbidden
     }
     for(i = firstBrs; i <= lastBrs; i++) {
-        Elmt(*M,i,firstKol-1) = (address_w)-1;  //  sekeliling kiri menjadi forbidden
+        SetTemporer(M,i,firstKol-1);  //  sekeliling kiri menjadi forbidden
         for(j = firstKol; j <= lastKol; j++) {
             Elmt(*M,i,j) = address_wahana;
         }
-        Elmt(*M,i,lastKol+1) = (address_w)-1;  //  sekeliling kanan menjadi forbidden
+        SetTemporer(M,i,lastKol+1);  //  sekeliling kanan menjadi forbidden
     }
     i = lastKol-1;
     for(j = firstKol-1; j <= lastKol+1; j++) {
-        Elmt(*M,i,j) = (address_w)-1;  //  sekeliling bawah menjadi forbidden
+        SetTemporer(M,i,j);  //  sekeliling bawah menjadi forbidden
     }
 }
 
@@ -190,6 +255,76 @@ boolean IsWahanaFull(Wahana * W){
     return (*W).banyak_orang == (*W).kapasitas;
 }
 
+boolean IsPosisiEmpty(Map_wahana * M, POINT P, POINT size) {
+    // true jika wahana bisa dibangun di titik P
+    boolean build;
+    int firstBrs,firstKol,lastBrs,lastKol,i,j;
+
+    firstBrs = Absis(P);
+    firstKol = Ordinat(P);
+    lastBrs = Absis(P) + Absis(size);
+    lastKol = Ordinat(P) + Ordinat(size);
+
+    build = true;
+    i = firstBrs;
+    while(i < lastBrs && build) {
+        j = firstKol;
+        while (j < lastKol && build){
+            if (Elmt(*M,i,j) != Nil) {
+                build = false;
+            }
+            j++;
+        }        
+        i++;
+    }
+
+    return build;
+}
+
+void SetPermanentAddress(Map_wahana * M) {
+    int i,j;
+
+    for(i=0; i < NBrsEff(*M); i++) {
+        for(j=0; j < NKolEff(*M); j++) {
+            if (Elmt(*M,i,j) == (address_w) -1) {
+                Elmt(*M,i,j) = (address_w) -2;
+            }
+        }
+    }
+}
+
+void RemoveAddress(Map_wahana * M, address_w W) {
+    int firstBrs,firstKol,lastBrs,lastKol,i,j;
+
+    firstBrs = Absis((*W).position)-1;
+    firstKol = Ordinat((*W).position)-1;
+    lastBrs = Absis((*W).position) + Absis((*W).size)+1;
+    lastKol = Ordinat((*W).position) + Ordinat((*W).size)+1;
+
+    for(i = firstBrs; i < lastBrs; i++) {
+        for(j = firstKol; j < lastKol; j++) {
+            if (Elmt(*M,i,j) != (address_w)-2) {
+                Elmt(*M,i,j) = Nil;
+            } 
+        }
+    }
+}
+
+void SetTemporer(Map_wahana *M, int i, int j) {
+    if (!Elmt(*M,i,j)){
+        Elmt(*M,i,j) = (address_w) -1;
+    }
+}
+
+int idxWahanaEQbyID(int ID, Wahana W[10])
+{
+    int idx = 0;
+    while (ID != W[idx].ID && idx < 10)
+    {
+        ++idx;
+    }
+    return idx;
+}
 
 /* &W = 8
 MAP                     MATRIK ADDress -2

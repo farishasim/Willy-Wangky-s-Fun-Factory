@@ -24,7 +24,7 @@ address_c Alokasi () {
 /* Jika alokasi gagal, mengirimkan Nil */
     address_c P;
     P = Nil;
-    P = (address_c) malloc(sizeof(Customer));
+    P = (address_c) malloc(sizeof(NodeCustomer));
     if (P) {
         Next(P) = Nil;
     }

@@ -98,4 +98,20 @@ boolean IsWahanaFull(Wahana * W);
     // true jika suatu wahana full
     // definisi full yaitu banyak orang == kapasitas
 
+boolean IsPosisiEmpty(Map_wahana * M, POINT P, POINT size);
+    // true jika wahana bisa dibangun di titik P
+
+void SetPohonWahana(State * S, Wahana * W);
+
+void SetForbiddenAddress(Map_wahana * M, POINT loc);
+
+void SetPermanentAddress(Map_wahana * M);
+    // proses : mengubah semua -1 menjadi -2;
+
+void RemoveAddress(Map_wahana * M, address_w W);
+
+void SetTemporer(Map_wahana *M, int i, int j);
+
+int idxWahanaEQbyID(int ID, Wahana W[10]);
+
 #endif

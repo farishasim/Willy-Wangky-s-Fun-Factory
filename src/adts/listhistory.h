@@ -10,7 +10,7 @@
 #include "listcustomer.h"
 
 /* Definisi Type */
-typedef struct twahana * infohistory; // infotype berupa id dari wahana
+typedef struct twahana * infohistory; // infotype berupa address dari wahana
 typedef struct tElmtlistHistory * address_h;
 typedef struct tElmtlistHistory { 
 	infohistory info;

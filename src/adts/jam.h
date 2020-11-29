@@ -71,6 +71,8 @@ JAM MenitToJAM (int N);
    mewakili jumlah Menit yang mungkin dalam 1 hari, yaitu dengan rumus:
    N1 = N mod 86400, baru N1 dikonversi menjadi JAM */
 
+void TulisDurasi(long N);
+
 /* ***************************************************************** */
 /* KELOMPOK OPERASI TERHADAP TYPE                                    */
 /* ***************************************************************** */

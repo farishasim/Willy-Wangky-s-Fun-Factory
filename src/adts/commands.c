@@ -175,7 +175,7 @@ void inputManual(State *S/*, Wahana *W*/)
 void inputManualCoba2(State *S)
 {
     int i;
-    printf("aaa");
+
     for(i = 0; i<4; i++) {
         inputManualPeta(&(*S).peta[i], &(*S).peta_address[i]);
         if (i == 0) {
@@ -215,8 +215,10 @@ void inputManualCoba2(State *S)
         scanf("%d", &LocAntrian(*S).Y);
     }
     SetAntrian(&Peta(*S), LocAntrian(*S));
+    SetForbiddenAddress(&PetaAddress(*S), LocAntrian(*S));
     printf("\nLokasi objek-objek saat ini:\n");
     TulisMATRIKS(Peta(*S));
+    TulisMATRIKSW(PetaAddress(*S));
 
     printf("\nTentukan lokasi office (Contoh, 1 1 berada di pojok kiri atas peta): ");
     scanf("%d", &Office(*S).X);
@@ -239,8 +241,10 @@ void inputManualCoba2(State *S)
     }
 
     SetOffice(&Peta(*S), Office(*S));
+    SetForbiddenAddress(&PetaAddress(*S), Office(*S));
     printf("\nLokasi objek-objek saat ini:\n");
     TulisMATRIKS(Peta(*S));
+    TulisMATRIKSW(PetaAddress(*S));
 
     printf("\nTentukan waktu taman dibuka (default-nya adalah 09 00 (sembilan pagi)): ");
     scanf("%d", &OpenTime(*S).HH);
@@ -281,11 +285,12 @@ void inputManualCoba2(State *S)
         scanf("%d", &CloseTime(*S).HH);
         scanf("%d", &CloseTime(*S).MM);
     }
-
+    TulisMATRIKS((Peta(*S)));
     Time(*S) = CloseTime(*S);
     scanf("%c", &i);
     Position(*S) = MakePOINT(Absis(Office(*S)),Ordinat(Office(*S)));
     SetPlayer(&Peta(*S), Position(*S));
+    TulisMATRIKS((Peta(*S)));
     //while (getc(stdin) != '\n');
 }
 

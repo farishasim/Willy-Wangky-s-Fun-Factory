@@ -81,6 +81,10 @@ boolean SearchTree (BinTree T, IdWahana X);
 /*{ Mengirimkan true jika ada nodeTree dari P yang bernilai X }
 */
 
+void PrintTree1(BinTree P, int h, int acch);
+
+void PrintTree(BinTree P, int h);
+
 void AddDaun (BinTree P ,IdWahana X, IdWahana Y,boolean Kiri);
 /*{ I.S. P tidak kosong, X adalah daun Pohon Biner P }
 { F.S. P bertambah simpulnya, dengan Y sebagai anak kiri X (jika

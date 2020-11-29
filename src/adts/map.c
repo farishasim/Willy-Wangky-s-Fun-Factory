@@ -33,8 +33,8 @@ void SetWahana(Map * M, POINT P, POINT Size) {
 /* F.S. M sebuah map yang berisi n+1 buah wahana, dengan wahana baru terletak pada koordinat P*/
     int i,j;
     
-    for(i = Absis(P); i < Absis(Size); i++) {
-        for(j = Ordinat(P); j < Ordinat(Size); j++) {
+    for(i = Absis(P); i < Absis(P) + Absis(Size); i++) {
+        for(j = Ordinat(P); j < Ordinat(P) + Ordinat(Size); j++) {
             Elmt(*M,i,j) = 'W';
         }
     }

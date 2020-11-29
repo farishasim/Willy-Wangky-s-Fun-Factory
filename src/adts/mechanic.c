@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 #include "mechanic.h"
 #include "string.h"
 
@@ -85,6 +86,10 @@ void W(State *S){
 			Position(*S)=CopyP(P2);
 		}
 	}
+
+    if (!Prep(*S)) {
+        timeFlow(S,1);
+    }
 }
 
 void A(State *S){
@@ -129,6 +134,9 @@ void A(State *S){
             Position(*S)=P2;
 		}
 	}
+    if (!Prep(*S)) {
+        timeFlow(S,1);
+    }
 }
 
 void Su(State *S){
@@ -173,6 +181,9 @@ void Su(State *S){
             Position(*S)=P2;
 		}
 	}
+    if (!Prep(*S)) {
+        timeFlow(S,1);
+    }
 }
 
 
@@ -219,93 +230,148 @@ void D(State *S){
             Position(*S)=P2;
 		}
 	}
+    if (!Prep(*S)) {
+        timeFlow(S,1);
+    }
 }
 
-/*
+
 void Build(State *S){
-	int id;
-	printf("Ingin membangun apa?\nList:\n");
-	for(int i=0; i<=data_wahana(*S).length; i++){
-		if(data_wahana(*S)[i].starter){
-			printf(data_wahana(*S)[i].nama);			
+    int i, ID, quest,L;
+    boolean build;
+    POINT P;
+    printf("Ingin membangun apa?\nList:\n");
+	for(i=0; i< 10/*DataWahana(*S).length*/; i++){
+		if(DataWahana(*S)[i].starter && DataWahana(*S)[i].nama.Length){
+			PrintKata(DataWahana(*S)[i].nama);			
 			printf(" , ID : ");
-			printf(data_wahana(*S)[i].ID);
+			printf("%d",i);
 			printf("\n");
 		}
 	}
-	scanf(&ID);
 
-	int quest;
-	quest=ID*10+2;
+	scanf("%d\n",&ID);
 
-	if(data_wahana(*S)[ID].time_needed < Durasi(OpenTime(S), CloseTime(S))){
-		Push(Act(*S), &quest);
-		MoneyNeeded(*S)+=data_wahana(*S)[ID].harga;
-		TimeNeeded(*S)+=data_wahana(*S)[ID].time_needed;		
-		printf("Proses build tersimpan ke dalam stack to-do.");
-
-	}
-	else{
+    build=true;
+    while(build && i < 5){
+        if(DataWahana(*S)[ID].bahan[i] > Storage(*S)[i].quantity){
+            build=false;
+        }
+        else{
+            i++;
+        }
+    }
+    if (!IsPosisiEmpty(&PetaAddress(*S),Position(*S),DataWahana(*S)[ID].size)){
+        printf("Tidak memungkinkan untuk membangun wahana di posisi ini.\n");
+        printf("Wahana tidak boleh dibangun di-sekitar Office, Antrian, dan Dinding\n");
+    
+    } else if(TimeNeeded(*S)>Durasi(OpenTime(*S), CloseTime(*S))){
 		printf("Anda tidak punya waktu cukup untuk menambah aksi ini\n");
 		printf("Silahkan undo beberapa action jika ingin tetap melakukan aksi ini.");
+	
+    } else if(Money(*S) < DataWahana(*S)[ID].uang){
+        printf("Jumlah uang tidak mencukupi. Silakan ulangi lagi!");
+    
+    } else if (!build) {
+        printf("Bahan-bahan tidak cukup");
+    
+    } else if (IsFullStackt(Act(*S))) {
+        printf("Kamu sudah terlalu banyak melakukan aksi untuk hari ini.\n");
+        printf("Coba lagi esok hari.\n");
+    
+    } else if (DataWahana(*S)[ID].time_needed < Durasi(OpenTime(*S), CloseTime(*S))) {
+		quest=ID*10+2;
+
+        // update Prep[3]
+        MoneyNeeded(*S)+=DataWahana(*S)[ID].harga;
+		TimeNeeded(*S)+=60; //TimeNeeded(*S)+=DataWahana(*S)[ID].time_needed;
+        TempActs(*S)++;
+
+        // Update Data Wahana
+        DataWahana(*S)[ID].history = AlokasiH(&DataWahana(*S)[ID]);
+        DataWahana(*S)[ID].position = Position(*S);
+        DataWahana(*S)[ID].income = 0;
+        DataWahana(*S)[ID].income1 = 0;
+        DataWahana(*S)[ID].count_used = 0;
+        DataWahana(*S)[ID].count_used1 = 0;
+        DataWahana(*S)[ID].broke = false;
+
+        ListWahana(*S)[NWahana(*S)] = &DataWahana(*S)[ID];
+        NWahana(*S)++;
+
+        // gerak kiri satu langkah
+        A(S);
+
+        // Update pada Map
+        setAddressMap(&PetaAddress(*S), &DataWahana(*S)[ID], P);
+        SetWahana(&Peta(*S), P, DataWahana(*S)[ID].size);
+        
+        // Push ke Stack
+        Push(&Act(*S), quest);	
+		printf("Proses build tersimpan ke dalam stack to-do.");
 	}
+    sleep(1);
 }
 
 
-void Upgrade(Map Peta(*S), State *S){
-	int X;
-	int Y;
-	if(IsWahana(NextX(Position(*S)))){
-	    printf("Ingin melakukan upgrade apa?\nList :\n");
-        for(int i=0; i<=data_wahana(*S).length; i++){
-		    if(!data_wahana(*S)[i].starter){
-			    printf(data_wahana(*S)[i].nama);			
-			    printf(" , ID : ");
-			    printf(data_wahana(*S)[i].ID);
-			    printf("\n");
-		    }
-	    }
-	    scanf(&ID);
+// // void Upgrade(State *S){
+// // 	int X;
+// // 	int Y;
+// // 	if(IsWahana(NextX(Position(*S)))){
+// // 	    printf("Ingin melakukan upgrade apa?\nList :\n");
+// //         for(int i=0; i<=data_wahana(*S).length; i++){
+// // 		    if(!data_wahana(*S)[i].starter){
+// // 			    printf(data_wahana(*S)[i].nama);			
+// // 			    printf(" , ID : ");
+// // 			    printf(data_wahana(*S)[i].ID);
+// // 			    printf("\n");
+// // 		    }
+// // 	    }
+// // 	    scanf(&ID);
 
-		//If resource<requirement, print error
+// // 		//If resource<requirement, print error
 		
-		else{
-			int quest;
-            quest=ID*10+3;
-			Push(Act(*S), &quest);
-		}
-	}
-	else{
-		printf("Tidak ada wahana di sisi kanan anda: \n ");
-	}
-}
+// // 		else{ StoraStorage(*S).
+// // 		}
+// // 	}
+// // 	else{
+// // 		printf("Tidak ada wahana di sisi kanan anda: \n ");
+// // 	}
+// // } 
 
-void Buy(Material mat, State *S){
-	int n, id, quest;
+void Buy(State *S){
+	int i, N, ID, quest;
+
+    printf("Storage : \n");
+    for(i=0; i<5;i++){
+        PrintKata(Storage(*S)[i].nama); printf(" : ");
+        printf("%d", Storage(*S)[i].quantity);
+    }
 
 	printf("Ingin membeli apa?\nList :\n");
-	//PrintMaterial(mat);
+    for(i=0; i<5;i++){
+        printf("-"); PrintKata(Storage(*S)[i].nama); printf("\n");
+    }
+
 	printf("Format input : jumlah(spasi)id material\n");
 
-	scanf("%d %d", &n, &id);
-	quest=n*100+id*10+1;
+	scanf("%d %d", &N, &ID);
+	quest=(N*1000)+(ID*10)+1;
+    TimeNeeded(*S) += 20;
 
-// 	if(Money(*S) < n*hargamaterial){
-// 		printf("Jumlah uang tidak mencukupi. Silahkan ulangi lagi!");
-// 	}
-    
+	if(Money(*S) < (N*(Storage(*S)[ID].harga))){
+		printf("Jumlah uang tidak mencukupi. Silakan ulangi lagi!");
+	}
+    else if(TimeNeeded(*S)>Durasi(OpenTime(*S), CloseTime(*S))){
+        printf("Waktu tidak mencukupi. Silakan undo beberapa action jika ingin membeli item.");
+        TimeNeeded(*S) -=20;
+    }
 	else{
-		Push(Act(*S),&quest);
-		MoneyNeeded(*S)+=;
-		TimeNeeded(*S)+=1;
+        Push(&Act(*S), quest);
+		MoneyNeeded(*S)+=Storage(*S)[ID].harga;
 	}
 }
 
-void Undo (State *S){
-    infostack quest;
-    Pop(&Act(*S),&quest);
-}
-*/
 //********* Fungsi-Fungsi untuk command *************//
 void Execute(State * S) {
 /* I.S. user memberi command untuk Execute */
@@ -329,7 +395,6 @@ void Execute(State * S) {
         }
     }
 }
-
 
 void Serve(State * S) {
 /* I.S. user memberi command untuk serve */
@@ -535,16 +600,16 @@ void OFFice(State * S) {
 // ****** Sub-Fungsi Execute ****** //
 void ExecuteBuild(State * S, infostack quest) {
 
-    int ID;
-    address_w address_wahana_baru;
+    // int ID;
+    // address_w address_wahana_baru;
 
-    ID = (quest % 1000) / 10;
-    address_wahana_baru = &GetWahana(*S,ID);
+    // ID = (quest % 1000) / 10;
+    // address_wahana_baru = &GetWahana(*S,ID);
 
-    ListWahana(*S)[NWahana(*S)] = address_wahana_baru;  //  add as last el
-    NWahana(*S)++;
+    // ListWahana(*S)[NWahana(*S)] = address_wahana_baru;  //  add as last el
+    // NWahana(*S)++;
 
-    setAddressMap(&PetaAddress(*S), address_wahana_baru, GetWahana(*S,ID).position);
+    // setAddressMap(&PetaAddress(*S), address_wahana_baru, GetWahana(*S,ID).position);
 }    
 
 void ExecuteBuy(State * S, infostack quest) {
@@ -629,7 +694,7 @@ void ProcessAllCustomers(State * S) {
     boolean quit,masuk_antrian;
     
     // CEK SETIAP CUSTOMER
-    P = First(DataCustomers(*S));
+    P = First(DataCustomers(*S)); Prec = Nil;
     while (P != Nil) {
         quit = false;
         Playtime(P) -= 1;
@@ -684,11 +749,19 @@ void ProcessAllCustomers(State * S) {
     //  PADA KONDISI INI, P = Nil, Prec menunjukkan customer terakhir
     rand_num = Randomize(0,6);
     if (rand_num < 1) {  //  16.7 % chance for generate customer
+        printf("BOOM!");
         P = generateCustomer(S);
+        printf("BOOM!");
         if (P) {  //  if generate customer succes
-            InsertAfter(&DataCustomers(*S), P, Prec);  // masukkan customer setelah Prec ke data
-            Enqueue(&Antrian(*S), P);   //  masukkan customer ke antrian
+            if (!IsEmpty(DataCustomers(*S))) {  //  jika list tidak kosong
+                InsertAfter(&DataCustomers(*S), P, Prec);  // masukkan customer setelah Prec ke data
+                Enqueue(&Antrian(*S), P);   //  masukkan customer ke antrian
+            } else {
+                InsertFirst(&DataCustomers(*S),P);
+                Enqueue(&Antrian(*S),P);
+            }
         }
+        printf("BOOM!");
     }
 }
 
@@ -730,7 +803,7 @@ address_c generateCustomer(State * S) {
         P = Nil;
         return P;
     }
-
+    printf("Generating...\n");
     Prio(P) = 15;  //  priority default = 15 (opsional)
     Kesabaran(P) = 5;  //  kesabaran default = 5 (opsional)
     Loc(P) = -1;  //  langsung masuk antrian
@@ -807,7 +880,7 @@ void RandomPlay(address_c P, State * S) {
     int rand_num,i,nplay,j;
     boolean found;
     rand_num = Randomize(0,100);
-
+    printf("test\n");
     // 50 % chance 1 wahana, 25 % chance 2 wahana
     // 13 % chance 3 wahana, 7 % chance 4 wahana
     // 5 % chance 5 wahana (opsional)
@@ -822,10 +895,12 @@ void RandomPlay(address_c P, State * S) {
     } else {
         nplay = 5;
     }
+    printf("test\n");
 
     if (nplay > NWahana(*S)) { 
         nplay = NWahana(*S);
     }
+    printf("test\n");
 
     i = 0;
     while (i < nplay) {
@@ -843,4 +918,6 @@ void RandomPlay(address_c P, State * S) {
             i++;
         }
     }
+        printf("test\n");
+
 }

@@ -33,15 +33,14 @@ int main()
 
         if (options == (int)'1') //pilih manual
         {
-            printf("aaa");
             inputManualCoba2(&S);
             isInput = true;
         }
         isLoad = false;
-        //loading(&S, "state.txt", isInput, isLoad);
+        loading(&S, "../../file/state.txt", isInput, isLoad);
         isLoad = true;
         Prep(S) = true;
-        options = -100;
+        TulisMATRIKS((Peta(S)));
         prepPhase(&S);
         phasesFlow(&S);
 

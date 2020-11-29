@@ -6,18 +6,41 @@
 void loading(State* S, char* filename, boolean isInput, boolean isLoad)
 {
     STARTKATA(filename, ',');
+    printf("Loading player...\n");
     ldPlayerName(S, isLoad);
+    TulisMATRIKS((Peta(*S)));
+    printf("Player Loaded\n\n");
+    printf("Loading spacetime...\n");
     ldPos(S, isInput);    
     ldTime(S, isInput);
+    TulisMATRIKS((Peta(*S)));
+    printf("Spacetime Loaded\n\n");
+    printf("Loading MDP...\n");
     ldMDP("money", S);
     ldMDP("day", S);
     ldMDP("prep", S);
+        TulisMATRIKS((Peta(*S)));
+    printf("MDP Loaded\n\n");
+    printf("Loading Acts...\n");
     ldInfoActs(S);
-
+    printf("2");
+        TulisMATRIKS((Peta(*S)));
+    printf("3");
+    ldActList(S);
+        TulisMATRIKS((Peta(*S)));
+    printf("Acts Loaded\n\n");
+    ldQueue(S);
+    printf("Queeue Loaded\n");
+        TulisMATRIKS((Peta(*S)));
     while (!EndKata)
     {
         ADVKATA(',');
     }
+    ldMaterial(S);
+    printf("material");
+        TulisMATRIKS((Peta(*S)));
+    ldDefWahana(S);
+        TulisMATRIKS((Peta(*S)));
 }
 
 void saving(State S, char* filename)
@@ -75,11 +98,8 @@ void svMDP(char* mdp, FILE** fp, State S)
         convert2StrKata(&string, Prep(S)); 
     }
     
-    for (i = 0; i < strlen(string); ++i)
-    {
-        fputc(CC = string[i], *fp);
-    }
-    fputc(CC = '\n', *fp);
+    writeAString(string, fp);
+    writeAChar(CC = '\n', fp);
 }
 
 void ldMDP(char* mdp, State *S)
@@ -130,16 +150,13 @@ void svPos(FILE** fp, State S)
             convert2StrKata(&string, LocAntrian(S).Y);
         }
 
-        for (j = 0; j < strlen(string); ++j)
-        {
-            fputc(CC = string[j], *fp);
-        }
+        writeAString(string, fp);
         if (i != 5)
         {
-            fputc(CC = ',', *fp);
+            writeAChar(CC = ',', fp);
         }
     }
-    fputc(CC = '\n', *fp);
+    writeAChar(CC = '\n', fp);
 }
 
 void ldPos(State* S, boolean isInput)
@@ -240,16 +257,13 @@ void svInfoActs(FILE** fp, State S)
             convert2StrKata(&string, MoneyNeeded(S));
         }
 
-        for (j = 0; j < strlen(string); ++j)
-        {
-            fputc(CC = string[j], *fp);
-        }
+        writeAString(string, fp);
         if (i != 2)
         {
-            fputc(CC = ',', *fp);
+            writeAChar(CC = ',', fp);
         }
     }
-    fputc(CC = '\n', *fp);
+    writeAChar(CC = '\n', fp);
 }
 
 void ldInfoActs(State *S)
@@ -260,4 +274,325 @@ void ldInfoActs(State *S)
     ADVKATA(',');
     MoneyNeeded(*S) = ConvertKata(CKata);
     ADVKATA(',');
+}
+
+void svCurMaterial(FILE** fp, State S)
+{
+    int i, j;
+    char* string;
+    for (i = 0; i < 5; ++i)
+    {
+        convert2StrKata(&string, Storage(S)[i].quantity);
+        writeAString(string, fp);
+        if (i != 4)
+        {
+            writeAChar(CC = ',', fp);
+        }
+    }
+    writeAChar(CC = '\n', fp);
+}
+
+void ldMaterial(State* S)
+{
+    STARTKATA("../../file/material.txt", ',');
+    int i = 0;
+    while (!EndKata)
+    {
+        LoadMaterial(&Storage(*S)[i++]);
+        ADVKATA(',');
+    } 
+}   
+
+void svActList(FILE** fp, State S)
+{
+    int i = 0, j;
+    char* string;
+    while (i != (Top(Act(S)) + 1))
+    {
+        convert2StrKata(&string, Act(S).T[i++]);
+        writeAString(string, fp);
+        if (i != (Top(Act(S)) + 1))
+        {
+            writeAChar(CC = ',', fp);
+        }
+    }
+    writeAChar(CC = '\n', fp);
+}
+
+void ldActList(State* S)
+{
+    int i = 0, j = 0;
+    while (j != -1)
+    {
+        TulisMATRIKS((Peta(*S)));
+        printf("sesudah actlist : %d kali\n",i);
+        Act(*S).T[i++] = ConvertKata(CKata);
+        if (counterNL)
+        {   
+            TulisMATRIKS((Peta(*S)));
+            printf("sesudah counter");
+            --j; 
+            counterNL = false;
+        }
+        ADVKATA(',');
+    }
+    Top(Act(*S)) = i - 1;
+}
+
+void svQueue(FILE** fp, State S)
+{
+    if (First(DataCustomers(S)) == Nil)
+    {
+        char* string = "-1;\n";
+        writeAString(string, fp);
+    }
+    else
+    {
+        int j, i = 0;;
+        /* int i sebagai index suatu elemen pada infoqueue T (antrean ke-n) */
+        /* int j sebagai index suatu elemen pada array of integer play (banyaknya wanna play wahana tiap pengantre) */
+        /* int halt penanda bahwa semicolon is found sehingga looping berhenti */
+        char* string;
+        address_c P = First(DataCustomers(S));
+        while (P != Nil)
+        {
+            for (j = 0; j < 9; ++j)
+            {
+                if (j == 0)
+                {
+                    convert2StrKata(&string, Prio(P));
+                }
+                else if (j > 0 && j < 6)
+                {
+                    convert2StrKata(&string, Play(P, i));
+                    ++i;
+                }
+                else if (j == 6)
+                {
+                    convert2StrKata(&string, Loc(P));
+                }
+                else if (j == 7)
+                {
+                    convert2StrKata(&string, Playtime(P));
+                }
+                else
+                {
+                    convert2StrKata(&string, Kesabaran(P));
+                }
+
+                writeAString(string, fp);
+
+                if (j != 8)
+                {
+                    writeAChar(CC = ',', fp);
+                }
+            }
+            i = 0;
+            if (Next(P) == Nil)
+            {
+                writeAChar(CC = ';', fp);
+            }
+            P = Next(P);
+            writeAChar(CC = '\n', fp);
+        }
+        writeAChar(CC = '\n', fp);
+    }   
+}
+
+void ldQueue(State* S)
+{
+    int i, j = 0, k = 0, halt = 0;
+    /* int i sebagai penunjuk komponen-komponen infolist */
+    /* int j sebagai index suatu elemen pada infoqueue T (antrean ke-n) */
+    /* int k sebagai index suatu elemen pada array of integer play (banyaknya wanna play wahana tiap pengantre) */
+    /* int halt penanda bahwa semicolon is found sehingga looping berhenti */
+    address_c P;
+    CreateEmpty(&DataCustomers(*S));
+    MakeEmptyQueue(&Antrian(*S), 10);
+    if (MaxEl(Antrian(*S)) != 0)
+    {
+        if (CKata.TabKata[0] == '-')
+        {
+            First(DataCustomers(*S)) = Nil;
+        }
+
+        else
+        {
+            while (halt != -1)
+            {
+                P = Alokasi();
+                if (P != Nil)
+                {
+                    for (i = 0; i < 9; ++i)
+                    {   
+                        if (i == 0)
+                        {
+                            Prio(P) = ConvertKata(CKata);
+                        }
+                        else if (i > 0 && i < 6)
+                        {
+                            Play(P, k) = ConvertKata(CKata);
+                            ++k;
+                        }
+                        else if (i == 6)
+                        {
+                            Loc(P) = ConvertKata(CKata);
+                            if(Loc(P) == -1)
+                            {
+                                Enqueue(&Antrian(*S), ElmtQueue(Antrian(*S), j));
+                            }
+                        }
+                        else if (i == 7)
+                        {
+                            Playtime(P) = ConvertKata(CKata);
+                        }
+                        else if (i == 8)
+                        {
+                            if (counterSC)
+                            {
+                                --CKata.Length;
+                                --halt;
+                                counterSC = false;
+                            }
+                            Kesabaran(P) = ConvertKata(CKata);
+                        }
+                        ADVKATA(',');
+                    }
+                    InsertLast(&DataCustomers(*S), P);
+                    k = 0;
+                }
+                else
+                {
+                    break;
+                }   
+                ++j;
+            }
+        }
+    }
+}
+
+void ldWahanaPlayer(State* S)
+{
+    /* Search wahana yang dimiliki pemain terhadap data wahana yang tersedia berdasarkan ID-nya */
+    int halt = 0, i, j = 0, posX, posY, idWahana, idxWahana;
+    while (halt != -1)
+    {
+        idWahana = ConvertKata(CKata);
+        idxWahana = idxWahanaEQbyID(idWahana, DataWahana(*S));
+        ListWahana(*S)[j] = &DataWahana(*S)[idxWahana];
+        for (int i = 0; i < 8; i++)
+        {
+            if (i == 0)
+            {
+                ListWahana(*S)[j++]->ID = idWahana;
+            }
+            else if (i == 1)
+            {
+                posX = ConvertKata(CKata);
+            }
+            else if (i == 2)
+            {
+                posY = ConvertKata(CKata);
+                ListWahana(*S)[j++]->position = MakePOINT(posX, posY);
+            }
+            else if (i == 3)
+            {
+                ListWahana(*S)[j++]->count_used = ConvertKata(CKata);
+            }
+            else if (i == 4)
+            {
+                ListWahana(*S)[j++]->income = ConvertKata(CKata);
+            }
+            else if (i == 5)
+            {
+                ListWahana(*S)[j++]->count_used1 = ConvertKata(CKata);
+            }
+            else if (i == 6)
+            {
+                ListWahana(*S)[j++]->income1 = ConvertKata(CKata);
+            }
+            else if (i == 7)
+            {
+                if (counterSC)
+                {
+                    --CKata.Length;
+                    --halt;
+                    counterSC = false;
+                }
+                ListWahana(*S)[j++]->broke = ConvertKata(CKata);
+            }
+            ADVKATA(',');
+        }
+
+    }
+}
+
+void svWahanaPlayer(FILE** fp, State S)
+{
+    char* str; 
+    int i, j, halt = 0;
+    while (j < NWahana(S))
+    {
+        for (i = 0; i < 8; ++i)
+        {
+            if (i == 0)
+            {
+                convert2StrKata(&str, ListWahana(S)[i]->ID);
+            }
+            else if (i == 1)
+            {
+                convert2StrKata(&str, ListWahana(S)[i]->position.X);
+            }
+            else if (i == 2)
+            {
+                convert2StrKata(&str, ListWahana(S)[i]->position.Y);
+            }
+            else if (i == 3)
+            {
+                convert2StrKata(&str, ListWahana(S)[i]->count_used);
+            }
+            else if (i == 4)
+            {
+                convert2StrKata(&str, ListWahana(S)[i]->income);
+            }
+            else if (i == 5)
+            {
+                convert2StrKata(&str, ListWahana(S)[i]->count_used1);
+            }
+            else if (i == 6)
+            {
+                convert2StrKata(&str, ListWahana(S)[i]->income1);
+            }
+            else if (i == 7)
+            {
+                convert2StrKata(&str, ListWahana(S)[i]->broke);
+            }
+            writeAString(str, fp);
+            if (i != 7)
+            {
+                writeAChar(CC = ',', fp);
+            }
+        }
+        if (j == NWahana(S)-1)
+        {
+            writeAChar(CC = ';', fp);
+        }
+        else
+        {
+            writeAChar(CC = '\n', fp);
+        }
+        ++j;
+    }
+}
+
+void ldDefWahana(State* S)
+{
+    START("../../file/wahana.txt");
+    int i = 0;
+    while (!EOP)
+    {
+        LoadWahana(&DataWahana(*S)[i]);
+        SetPohonWahana(S,&DataWahana(*S)[i++]);
+        //ADVKATA(',');
+    }
 }
