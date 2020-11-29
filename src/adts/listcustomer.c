@@ -24,7 +24,7 @@ address_c Alokasi () {
 /* Jika alokasi gagal, mengirimkan Nil */
     address_c P;
     P = Nil;
-    P = (address_c) malloc(sizeof(Customer));
+    P = (address_c) malloc(sizeof(NodeCustomer));
     if (P) {
         Next(P) = Nil;
     }
@@ -160,6 +160,17 @@ int NbElmtList (ListCustomer L) {
     }
 
     return count;
+}
+
+/****************** PROSES TERHADAP LIST ******************/
+void DelAll (ListCustomer *L) {
+/* Delete semua elemen list dan alamat elemen di-dealokasi */
+    address_c P;
+
+    while (!IsEmpty(*L)) {
+        DelFirst(L,&P);
+        Dealokasi(&P);
+    }
 }
 
 //***************** PROSES-PROSES LAIN UNTUK CUSTOMER ********************//

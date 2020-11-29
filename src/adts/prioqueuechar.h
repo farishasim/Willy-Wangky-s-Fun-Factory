@@ -68,7 +68,7 @@ void Enqueue (PrioQueueChar * Q, infoqueue X);
 /* I.S. Q mungkin kosong, tabel penampung elemen Q TIDAK penuh */
 /* F.S. X disisipkan pada posisi yang tepat sesuai dengan prioritas,
         TAIL "maju" dengan mekanisme circular buffer; */
-void Dequeue (PrioQueueChar * Q, infoqueue * X);
+void Dequeue (PrioQueueChar * Q, infoqueue * X);   //  <---- eror kenapa ya?
 /* Proses: Menghapus X pada Q dengan aturan FIFO */
 /* I.S. Q tidak mungkin kosong */
 /* F.S. X = nilai elemen HEAD pd I.S., HEAD "maju" dengan mekanisme circular buffer;

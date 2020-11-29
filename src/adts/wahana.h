@@ -59,6 +59,8 @@ void LoadWahana(Wahana * W);
     // I.S. W sembarang
     // F.S. W adalah node wahana yang sudah di-load
 
+void SetPohonWahana(State * S, Wahana * W);
+
 void InitialAddressMap(Map_wahana * M, int NB, int NK);
     // I.S. M sembarang, NB dan NK int > 0
     // F.S. akan dibuat M sebagai Map_wahana yang baru
@@ -97,5 +99,13 @@ void printNextGrade1(BinTree P, int ID);
 boolean IsWahanaFull(Wahana * W);
     // true jika suatu wahana full
     // definisi full yaitu banyak orang == kapasitas
+
+boolean IsPosisiEmpty(Map_wahana * M, POINT P);
+    // true jika wahana bisa dibangun di titik P
+
+void SetForbiddenAddress(Map_wahana * M, POINT loc);
+    // KHUSUS untuk Office and Antrian
+
+int idxWahanaEQbyID(int ID, Wahana W[10]);
 
 #endif

@@ -1,0 +1,33 @@
+TO-DO
+
+-- save and load yg belum apa aja (?)
+---> wahana pemain
+---> 
+-- build, upgrade
+-- laporan
+-- driver2
+-- testing (yg udah baru move w,a,s,d sama pindah lahan)
+
+
+initialisasi state
+
+struct State_ {
+  Kata username;
+  POINT objectsLoc[3];      /*positionPlayer, office, locAntrian*/
+  JAM time[3];              /*cur_time, open_time, close_time*/
+  int money;         
+  int day;          
+  boolean prep_phase;
+  int infoPrep[3];          /*temp_acts, neededTime, neededMoney*/
+  Stack act_list;           --->  Perlu di CreateEmpty  
+  PrioQueueChar antrian;
+  int NWahana;     
+  Graph area;               --->   perlu ada make graph
+  ListCustomer data_customer;   -->  perlu ada CreateEmpty
+  Wahana data_wahana[10];  
+  address_w listWahana[5];   
+  Map peta[4];              --->   mungkin pake input manual peta? cuma bikin lebih general
+                            --->   sama ukuran perlu disimpan
+  Map_wahana peta_address[4];  
+  Material Storage[5];
+};

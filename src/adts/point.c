@@ -26,15 +26,15 @@ void BacaPOINT (POINT * P)
 { /* KAMUS */
     int x, y;
 /* ALGORITMA */
-    scanf("%f", &x);
-    scanf("%f", &y);
+    scanf("%d", &x);
+    scanf("%d", &y);
     *P = MakePOINT(x,y);
 }
 
     void TulisPOINT (POINT P)
 /* Nilai P ditulis ke layar dg format "(X,Y)" */
 { /* ALGORITMA */
-    printf("(%.2f,%.2f)", Absis(P), Ordinat(P));
+    printf("(%.2d,%.2d)", Absis(P), Ordinat(P));
 }
 /**** Fungsi/Operasi lain terhadap POINT ****/
     void Geser (POINT *P, int deltaX, int deltaY)
@@ -64,7 +64,7 @@ POINT NextY (POINT P){
     return next;}
 /* Mengirim salinan P dengan ordinat ditambah satu */
 POINT PlusDelta (POINT P, int deltaX, int deltaY){
-    POINT next;
+    POINT next=P;
     next.X=P.X+deltaX;
     next.Y=P.Y+deltaY;
     return next;}

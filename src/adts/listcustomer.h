@@ -110,6 +110,7 @@ void PrintInfo (ListCustomer L);
 int NbElmtList (ListCustomer L);
 /* Mengirimkan banyaknya elemen ListCustomer; mengirimkan 0 jika ListCustomer kosong */
 
+void DelAll (ListCustomer *L);
 
 //***************** PROSES-PROSES LAIN UNTUK CUSTOMER ********************//
 int PlayCount(address_c P);

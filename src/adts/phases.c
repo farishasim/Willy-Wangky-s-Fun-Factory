@@ -4,8 +4,7 @@
 
 void phasesFlow(State *S)
 {
-    //if (options == (int)'w' || options == (int)'W')
-    if (cekCommand("W\n"))
+    if (options == (int)'w' || options == (int)'W')
     {
         W(S);
         if (Prep(*S))
@@ -21,8 +20,7 @@ void phasesFlow(State *S)
         phasesFlow(S);
     }
 
-    //else if (options == (int)'a' || options == (int)'A')
-    else if (cekCommand("A\n"))
+    else if (options == (int)'a' || options == (int)'A')
     {
         A(S);
         if (Prep(*S))
@@ -38,8 +36,7 @@ void phasesFlow(State *S)
         phasesFlow(S);
     }
 
-    //else if (options == (int)'s' || options == (int)'S')
-    else if (cekCommand("S\n"))
+    else if (options == (int)'s' || options == (int)'S')
     {
         Su(S);
         if (Prep(*S))
@@ -55,8 +52,7 @@ void phasesFlow(State *S)
         phasesFlow(S);
     }
 
-    //else if (options == (int)'d' || options == (int)'D')
-    else if (cekCommand("D\n"))
+    else if (options == (int)'d' || options == (int)'D')
     {
         D(S);
         if (Prep(*S))
@@ -74,51 +70,49 @@ void phasesFlow(State *S)
 
     else if (Prep(*S))
     {
-        //if (options == (int)'1')
-        if (cekCommand("build\n"))
+        if (options == (int)'1')
         {
             //build
             prepPhase(S);
             phasesFlow(S);
         }
             
-        //else if (options == (int)'2')
-        else if (cekCommand("upgrade\n"))
+        else if (options == (int)'2')
         {
             //upgrade
             prepPhase(S);
             phasesFlow(S);
         }
 
-        else if /*(options == (int)'3')*/ (cekCommand("buy\n"))
+        else if (options == (int)'3')
         {
             //buy
             prepPhase(S);
             phasesFlow(S);
         }
 
-        else if /*(options == (int)'4')*/ (cekCommand("undo\n"))
+        else if (options == (int)'4')
         {
             //undo
             prepPhase(S);
             phasesFlow(S);
         }
             
-        else if /*(options == (int)'5')*/ (cekCommand("execute\n"))
+        else if (options == (int)'5')
         {
             mainPhase(S);
             Prep(*S) = false;
             phasesFlow(S);
         }
 
-        else if /*(options == (int)'6')*/ (cekCommand("main\n"))
+        else if (options == (int)'6')
         {
             mainPhase(S);
             Prep(*S) = false;
             phasesFlow(S);
         }
 
-        else if /*(options == (int)'0')*/ (cekCommand("info options\n"))
+        else if (options == (int)'0')
         {
             //info();
             listMenuPrepPhase(options);
@@ -135,46 +129,42 @@ void phasesFlow(State *S)
 
     else
     {
-        if /*(options == (int)'1')*/ (cekCommand("serve\n"))
+        if (options == (int)'1')
         {
-            //serve
+            Serve(S);
             mainPhase(S);
             phasesFlow(S);
         }
             
-        else if /*(options == (int)'2') */(cekCommand("repair\n"))
+        else if (options == (int)'2')
         {
-            // repair
             Repair(S);
             mainPhase(S);
             phasesFlow(S);
         }
 
-        else if /*(options == (int)'3')*/ (cekCommand("detail\n"))
+        else if (options == (int)'3')
         {
-            // detail
             Detail(S);
             mainPhase(S);
             phasesFlow(S);
         }
 
-        else if /*(options == (int)'4')*/ (cekCommand("office\n"))
+        else if (options == (int)'4')
         {
-            // office
             OFFice(S);
             mainPhase(S);
             phasesFlow(S);
         }
             
-        else if /*(options == (int)'5')*/ (cekCommand("prepare\n"))
+        else if (options == (int)'5')
         {
-            //prepare
             prepPhase(S);
             Prep(*S) = true;
             phasesFlow(S);
         }
 
-        else if /*(options == (int)'0')*/ (cekCommand("info options\n"))
+        else if (options == (int)'0')
         {
             //info();
             listMenuMainPhase(options);
@@ -201,30 +191,18 @@ void prepPhase(State *S)
     printf("^, <, v, > = Pagar\n\n");
 
     printf("Name: %s\n", Name(*S).TabKata);
-    printf("Money: \n");
+    printf("Money: %d\n", Money(*S));
     printf("Current time: ");
     TulisJAM(Time(*S));
     printf("Opening time: ");
     TulisJAM(OpenTime(*S));
-    if (MenitToJAM(Durasi(OpenTime(*S),Time(*S))).MM == 0)
-    {
-        printf("Time Remaining: %d hour(s)\n", MenitToJAM(Durasi(OpenTime(*S),Time(*S))).HH);
-    }
-
-    else
-    {
-        printf("Time Remaining: %d hour(s) %d minute(s)\n", MenitToJAM(Durasi(OpenTime(*S),Time(*S))).HH, MenitToJAM(Durasi(OpenTime(*S),Time(*S))).MM);
-    }
-    
-    
-    printf("Total aksi yang akan dilakukan: \n");
-    printf("Total waktu yang dibutuhkan: \n");
-    printf("Total uang yang dibutuhkan: \n\n");
-
+    printf("Time remaining: "); TulisDurasi(Durasi(OpenTime(*S),Time(*S)));
+    printf("Total aksi yang akan dilakukan: %d\n", TempActs(*S));
+    printf("Total waktu yang dibutuhkan: "); TulisDurasi(TimeNeeded(*S));
+    printf("Total uang yang dibutuhkan: %d\n\n", MoneyNeeded(*S));
     listMenuPrepPhase(options);
     isMove = true;
-    //validateOptions(&options, '1', '6', isMove);
-    fgets(command, 20, stdin);
+    validateOptions(&options, '1', '6', isMove);
 }
 
 void mainPhase(State *S)
@@ -239,27 +217,16 @@ void mainPhase(State *S)
     printf("^, <, v, > = Pagar\n\n");
 
     printf("Name: %s\n", Name(*S).TabKata);
-    printf("Money: \n");
+    printf("Money: %d\n", Money(*S));
     printf("Current time: ");
     TulisJAM(Time(*S));
     printf("Closing time: ");
     TulisJAM(CloseTime(*S));
-    if (MenitToJAM(Durasi(CloseTime(*S),Time(*S))).MM == 0)
-    {
-        printf("Time Remaining: %d hour(s)\n", MenitToJAM(Durasi(CloseTime(*S),Time(*S))).HH);
-    }
-
-    else
-    {
-        printf("Time Remaining: %d hour(s) %d minute(s)\n", MenitToJAM(Durasi(CloseTime(*S),Time(*S))).HH, MenitToJAM(Durasi(OpenTime(*S),Time(*S))).MM);
-    }
-    
-    
+    printf("Time remaining: "); TulisDurasi(Durasi(CloseTime(*S), Time(*S)));
     printf("Daftar antrian [%%d/%%d]:\n");
     //queue
     printf("\n");
     listMenuMainPhase(options);
     isMove = true;
-    //validateOptions(&options, '1', '5', isMove);
-    fgets(command, 20, stdin);
+    validateOptions(&options, '1', '5', isMove);
 }

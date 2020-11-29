@@ -33,15 +33,13 @@ int main()
 
         if (options == (int)'1') //pilih manual
         {
-            printf("aaa");
-            inputManualCoba2(&S);
+            inputManual(&S);
             isInput = true;
         }
         isLoad = false;
-        //loading(&S, "state.txt", isInput, isLoad);
+        loading(&S, "../files/state.txt", isInput, isLoad);
         isLoad = true;
         Prep(S) = true;
-        options = -100;
         prepPhase(&S);
         phasesFlow(&S);
 
@@ -110,8 +108,8 @@ int main()
 //Linux OS
 
 // compile header :
-// gcc -c commands.c matriks.c graph2.c map.c jam.c listcustomer.c listhistory.c mainmenus.c material.c mechanic.c mesinkar.c mesinkata.c phases.c point.c prioqueuechar.c stackt.c state.c treewahana.c wahana.c
+/*gcc -c commands.c matriks.c graph2.c jam.c listcustomer.c listhistory.c mainmenus.c material.c mesinkar.c mesinkata.c phases.c point.c prioqueuechar.c stackt.c state.c treewahana.c wahana.c map.c mechanic.c*/
 
 // compile main:
-//gcc -o willygame willygame.c mainmenus.o matriks.o point.o map.o commands.o phases.o jam.o mesinkata.c mesinkar.o state.o mechanic.o listcustomer.o prioqueuechar.o wahana.o stackt.o listhistory.o treewahana.o
+//gcc -o willygame willygame.c mainmenus.o matriks.o point.o map.o commands.o phases.o jam.o mesinkata.c mesinkar.o state.o mechanic.o listcustomer.o prioqueuechar.o wahana.o stackt.o listhistory.o treewahana.o graph2.o
 //Windows os -hehe

@@ -1,3 +1,5 @@
+/*Maap dihapus dulu, kepenuhan wkwk*/
+
 
 #include "boolean.h"
 #include "prioqueuechar.h"

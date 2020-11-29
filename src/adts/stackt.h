@@ -8,7 +8,7 @@
 #include "boolean.h"
 
 #define NilStackt -1
-#define MaxElStack 10
+#define MaxElStack 12
 /* Nil adalah stack dengan elemen kosong . */
 
 typedef int infostack;

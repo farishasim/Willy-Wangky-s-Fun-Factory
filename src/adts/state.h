@@ -8,7 +8,7 @@
 #include "map.h"
 #include "jam.h"
 #include "stackt.h"
-#include "PrioQueueChar.h"
+#include "prioqueuechar.h"
 #include "wahana.h"
 #include "graph2.h"
 
@@ -16,23 +16,17 @@ typedef struct State_ State;
 
 struct State_ {
   Kata username;         /* nama yg di-input oleh player */
+  POINT objectsLoc[3]; /*positionPlayer, office, locAntrian*/
+  JAM time[3];    /*cur_time, open_time, close_time*/
   int money;         /* uang yang dimiliki pemain */
   int day;           /* hari ke-berapa */
-  int NWahana;       /* banyaknya wahana yang dimiliki pemain*/
-  int tempActs;
-  int neededTime;
-  int neededMoney;
-  JAM current_time;  /* current time dari permainan */
-  JAM openTime;       /* Waktu taman bermain dibuka */
-  JAM closeTime;      /* Waktu taman bermain ditutup */
-  Graph area;          /* lahan yang sedang diinjak pemain */
-  POINT office;     /* merepresentasikan kordinat posisi office berada*/
-  POINT position;    /* merepresentasikan kordinat posisi pemain berdiri */
-  POINT locAntrian;     /* merepresentasikan kordinat posisi antrian berada*/ 
   boolean prep_phase; /* bernilai true jika permainan sedang dalam preparation phase */
+  int infoPrep[3]; /*temp_acts, neededTime, neededMoney*/
   Stack act_list;    /* stack untuk menyimpan aksi-aksi pada prep phase */
-  ListCustomer data_customer;
   PrioQueueChar antrian;
+  int NWahana;       /* banyaknya wahana yang dimiliki pemain*/
+  Graph area;          /* lahan yang sedang diinjak pemain */
+  ListCustomer data_customer;
   Wahana data_wahana[10];  /* data semua wahana yang tersedia pada permainan */
   address_w listWahana[5];  /* list semua wahana yang dimiliki pemain */  // [&DataWahana[1],nil,nil,nil,nil]
   Map peta[4];              /* merepresentasikan lahan wahana yang dimiliki oleh pemain */
@@ -48,17 +42,18 @@ struct State_ {
 
 #define Name(S) (S).username
 #define Money(S) (S).money
-#define Time(S) (S).current_time
-#define TempActs(S) (S).tempActs
-#define MoneyNeeded(S) (S).neededMoney
-#define TimeNeeded(S) (S).neededTime
-#define OpenTime(S) (S).openTime
-#define CloseTime(S) (S).closeTime
 #define Day(S) (S).day
-#define Position(S) (S).position
-#define Office(S) (S).office
-#define LocAntrian(S) (S).locAntrian
+#define Time(S) (S).time[0]
+#define OpenTime(S) (S).time[1]
+#define CloseTime(S) (S).time[2]
+#define TempActs(S) (S).infoPrep[0]
+#define MoneyNeeded(S) (S).infoPrep[1]
+#define TimeNeeded(S) (S).infoPrep[2]
+#define Position(S) (S).objectsLoc[0]
+#define Office(S) (S).objectsLoc[1]
+#define LocAntrian(S) (S).objectsLoc[2]
 #define Prep(S) (S).prep_phase
+#define Storage(S) (S).Storage
 #define Antrian(S) (S).antrian
 #define Act(S) (S).act_list
 #define ListWahana(S) (S).listWahana
@@ -110,5 +105,23 @@ void ldTime(State *S, boolean isInput);
 void svInfoActs(FILE** fp, State S);
 
 void ldInfoActs(State *S);
+
+void svCurMaterial(FILE** fp, State S);
+
+void ldMaterial(State* S);
+
+void svActList(FILE** fp, State S);
+
+void ldActList(State* S);
+
+void svQueue(FILE** fp, State S);
+
+void ldQueue (State* S);
+
+void ldDefWahana(State* S);
+
+void svWahanaPlayer(FILE** fp, State S);
+
+void ldWahanaPlayer(State* S);
 
 #endif

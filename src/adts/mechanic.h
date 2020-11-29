@@ -12,6 +12,16 @@ void Su(State *S);
 
 void D(State *S);
 
+void Buy(State * S);
+
+void Build(State * S);
+
+void Upgrade(State * S);
+
+void Undo(State * S);
+
+void Main(State * S);
+
 void Execute(State * S);
 /* I.S. user memberi command untuk Execute */
 /* F.S. semua aksi yang disimpan pada stack sudah dieksekusi.*/
@@ -38,6 +48,7 @@ void OFFice(State * S);
         selama di dalam office, user dapat memberi command Details, Report, Exit
         user akan terus berada di office hingga memberi command Exit*/
 
+void Prepare(State * S);
 
 //********* Sub-Fungsi untuk Fungsi-fungsi Command *********//
 POINT GateSpawnX (State *S);

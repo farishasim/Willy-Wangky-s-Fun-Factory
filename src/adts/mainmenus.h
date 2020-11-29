@@ -24,6 +24,4 @@ void validateOptions(optiontype* menu, char l, char g, boolean isMove);
 
 void inputPName(State* S);
 
-boolean cekCommand(char * command_name);
-
 #endif

@@ -7,7 +7,7 @@
 #include "boolean.h"
 #include "mesinkar.h"
 
-#define NMax 50
+#define NMax 100
 #define BLANK ' '
 
 typedef struct {
@@ -16,7 +16,7 @@ typedef struct {
 } Kata;
 
 /* State Mesin Kata */
-extern boolean EndKata;
+extern boolean EndKata, counterNL, counterSC;
 extern Kata CKata;
 
 void IgnoreBlank(char separator);
@@ -45,16 +45,14 @@ void SalinKata(char separator);
           CC adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
 
+void writeAString(char* str, FILE** fp);
+
 void CopyKata(Kata Kin, Kata * Kout);
 
 int ConvertKata(Kata Kin);
 
 void convert2StrKata(char** str, int integer);
 
-char* appended2Strings(char* str1, char* str2);
-
 void PrintKata(Kata K);
-
-boolean isKataSama(Kata K1, char* K2);
 
 #endif
