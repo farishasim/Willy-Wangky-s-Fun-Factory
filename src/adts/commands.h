@@ -18,6 +18,6 @@ void inputManual(State *S);
 
 void inputManualCoba2(State * S);
 
-void inputManualPeta(Map * peta, Map_wahana * petaAddress);
+void inputManualPeta(Map * peta, Map_wahana * petaAddress, boolean isInput);
 
 #endif

@@ -130,6 +130,6 @@ void ldDefMaterial(State* S);
 
 void ldDefWahana(State* S);
 
-void ldMap(State* S, boolean isInput);
+void ldMap(State* S, boolean isLoad);
 
 #endif

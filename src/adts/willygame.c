@@ -33,7 +33,7 @@ int main()
 
         if (options == (int)'1') //pilih manual
         {
-            inputManualCoba2(&S);
+            inputManual(&S);
             isInput = true;
         }
         isLoad = false;

@@ -506,6 +506,7 @@ void Undo(State * S){
 
     if (IsEmptyStackt(Act(*S))) {
         printf("Kamu belum melakukan apa-apa hari ini\n");
+        sleep(1);
         return;
     }
 
@@ -517,31 +518,29 @@ void Undo(State * S){
     } else if (quest % 10 == 3) {
         UnUpgrade(S,quest);
     }
-    sleep(1);
+
 }
+
+void Main(State * S){
+
+    while(!IsEmptyStackt(Act(*S))) {
+        Undo(S);
+    }
+    printf("\nEntering main phase...");
+    sleep(1);
+    Time(*S) = OpenTime(*S);
+}
+
 
 //********* Fungsi-Fungsi untuk command *************//
 void Execute(State * S) {
 /* I.S. user memberi command untuk Execute */
 /* F.S. semua aksi yang disimpan pada stack sudah dieksekusi.*/
-    Stack executable;
-    infostack quest;
+    Money(*S) -= MoneyNeeded(*S);
+    Time(*S) = OpenTime(*S);
 
-    while (!IsEmptyStackt(Act(*S))) {
-        Pop(&Act(*S),&quest);
-        Push(&executable,quest);
-    }
-
-    while(!IsEmptyStackt(executable)) {
-        Pop(&executable,&quest);
-        if (quest % 10 == 1) {
-            ExecuteBuy(S, quest);
-        } else if (quest % 10 == 2) {
-            ExecuteBuild(S, quest);
-        } else if (quest % 10 == 3) {
-            ExecuteUpgrade(S, quest);            
-        }
-    }
+    printf("\nEntering main phase...");
+    sleep(1);
 }
 
 void Serve(State * S) {
@@ -771,7 +770,7 @@ void UnBuild(State * S, infostack quest) {
     DataWahana(*S)[ID].position = MakePOINT(-1,-1);
 
     for(i = 0; i < 5; i++) {
-        Storage(*S)[i].quantity -= DataWahana(*S)[ID].bahan[i];
+        Storage(*S)[i].quantity += DataWahana(*S)[ID].bahan[i];
     }
 
     TempActs(*S)--;
@@ -780,7 +779,34 @@ void UnBuild(State * S, infostack quest) {
 }
 
 void UnUpgrade(State * S, infostack quest) {
+    int ID,i;
+    address_h L;
+    address_w address_wahana;
 
+    ID = (quest / 10) % 100;
+
+    L = DataWahana(*S)[ID].history;
+
+    while (Next(Next(L)) != Nil) {
+        L = Next(L);
+    }
+    // berhenti ketika Next(L) = node terakhir
+
+    DealokasiH(Next(L));
+
+    address_wahana = Info(L);
+
+    setAddressMap(&PetaAddress(*S), address_wahana, address_wahana->position);
+
+    DataWahana(*S)[ID].position = MakePOINT(-1,-1);
+
+    for(i = 0; i < 5; i++) {
+        Storage(*S)[i].quantity += DataWahana(*S)[ID].bahan[i];
+    }
+
+    TempActs(*S)--;
+    MoneyNeeded(*S) -= DataWahana(*S)[ID].uang;
+    TimeNeeded(*S) -= 120;
 }
 
 // ****** Sub-Fungsi Execute ****** //
@@ -1052,6 +1078,24 @@ void triggerBroke(address_w W, State * S) {
     }
 }
 
+void PrintAntrian(State * S) {
+    int i = Head(Antrian(*S)),j,ID;
+
+    while (i != Tail(Antrian(*S))) {
+        printf("(");
+        for(j = 0; j < 5; j++) {
+            ID = Play(Antrian(*S).T[i],j);
+            if (ID != -1) {
+                PrintKata(DataWahana(*S)[ID].nama);
+            }
+        }
+        printf(")");
+        printf(" kesabaran : ");
+        printf("%d", Kesabaran(Antrian(*S).T[i]));
+    }
+}
+
+
 //********** Fungsi-fungsi RNG ***********//
 int Randomize(int lower_bound, int upper_bound) {
 // menghasilkan bilangan random antara lower_bound dan upper_bound
@@ -1107,3 +1151,4 @@ void RandomPlay(address_c P, State * S) {
         printf("test\n");
 
 }
+

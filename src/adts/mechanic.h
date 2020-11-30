@@ -128,4 +128,6 @@ void RandomPlay(address_c P, State * State);
 // I.S. Sembarang
 /* F.S. RNG for Play(P)*/
 
+void PrintAntrian(State * S);
+
 #endif

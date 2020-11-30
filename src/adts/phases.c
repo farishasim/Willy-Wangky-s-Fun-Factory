@@ -105,6 +105,7 @@ void phasesFlow(State *S)
             
         else if (options == (int)'5')// (cekCommand("execute\n"))
         {
+            Execute(S);
             mainPhase(S);
             Prep(*S) = false;
             phasesFlow(S);
@@ -112,6 +113,7 @@ void phasesFlow(State *S)
 
         else if (options == (int)'6')//(cekCommand("main\n"))
         {
+            Main(S);
             mainPhase(S);
             Prep(*S) = false;
             phasesFlow(S);
@@ -137,6 +139,7 @@ void phasesFlow(State *S)
         if (options == (int)'1')// (cekCommand("serve\n"))
         {
             //serve
+            Serve(S);
             mainPhase(S);
             phasesFlow(S);
         }
@@ -168,6 +171,7 @@ void phasesFlow(State *S)
         else if (options == (int)'5')// (cekCommand("prepare\n"))
         {
             //prepare
+            //Prepare(S);
             prepPhase(S);
             Prep(*S) = true;
             phasesFlow(S);
@@ -235,7 +239,7 @@ void mainPhase(State *S)
     TulisJAM(CloseTime(*S)); printf("\n");
     printf("Time remaining: "); TulisDurasi(Durasi(CloseTime(*S), Time(*S)));
     printf("Daftar antrian [%%d/%%d]:\n");
-    //queue
+    PrintAntrian(S);
     printf("\n");
     listMenuMainPhase(options);
     isMove = true;

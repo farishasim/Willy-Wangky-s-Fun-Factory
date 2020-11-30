@@ -41,7 +41,31 @@ void TulisJAM(JAM J)
 /* F.S. : J ditulis ke layar dengan format HH:MM:SS */
 /* Proses : Menulis ke layar */
 { 
-    printf("%02d:%02d",Hour(J),Minute(J));
+    if (J.HH < 10)
+    {
+        if (J.MM < 10)
+        {
+            printf("0%d.0%d\n", J.HH, J.MM);
+        }
+
+        else
+        {
+            printf("0%d.%d\n", J.HH, J.MM);
+        }
+    } 
+
+    else
+    {
+        if (J.MM < 10)
+        {
+            printf("%d.0%d\n", J.HH, J.MM);
+        }
+
+        else
+        {
+            printf("%d.%d\n", J.HH, J.MM);
+        }
+    }
 }
 
 int JAMToMenit(JAM J)

@@ -2,9 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "commands.h"
 
 void loading(State* S, char* filename, boolean isInput, boolean isLoad)
 {
+    ldDefMaterial(S);
+    ldDefWahana(S);
     STARTKATA(filename, ',');
     ldPlayerName(S, isLoad);
     ldPos(S, isInput);    
@@ -17,12 +20,11 @@ void loading(State* S, char* filename, boolean isInput, boolean isLoad)
     ldActList(S);
     ldQueue(S);
     //ldWahanaPlayer(S);
+    ldMap(S, isInput);
     while (!EndKata)
     {
         ADVKATA(',');
     }
-    ldDefMaterial(S);
-    ldDefWahana(S);
 }
 
 void saving(State S, char* filename)
@@ -321,13 +323,9 @@ void ldActList(State* S)
     int i = 0, j = 0;
     while (j != -1)
     {
-        TulisMATRIKS((Peta(*S)));
-        printf("sesudah actlist : %d kali\n",i);
         Act(*S).T[i++] = ConvertKata(CKata);
         if (counterNL)
         {   
-            TulisMATRIKS((Peta(*S)));
-            printf("sesudah counter");
             --j; 
             counterNL = false;
         }
@@ -481,7 +479,7 @@ void ldWahanaPlayer(State* S)
         {
             if (i == 0)
             {
-                ListWahana(*S)[j++]->ID = idWahana;
+                ListWahana(*S)[j]->ID = idWahana;
             }
             else if (i == 1)
             {
@@ -490,23 +488,23 @@ void ldWahanaPlayer(State* S)
             else if (i == 2)
             {
                 posY = ConvertKata(CKata);
-                ListWahana(*S)[j++]->position = MakePOINT(posX, posY);
+                ListWahana(*S)[j]->position = MakePOINT(posX, posY);
             }
             else if (i == 3)
             {
-                ListWahana(*S)[j++]->count_used = ConvertKata(CKata);
+                ListWahana(*S)[j]->count_used = ConvertKata(CKata);
             }
             else if (i == 4)
             {
-                ListWahana(*S)[j++]->income = ConvertKata(CKata);
+                ListWahana(*S)[j]->income = ConvertKata(CKata);
             }
             else if (i == 5)
             {
-                ListWahana(*S)[j++]->count_used1 = ConvertKata(CKata);
+                ListWahana(*S)[j]->count_used1 = ConvertKata(CKata);
             }
             else if (i == 6)
             {
-                ListWahana(*S)[j++]->income1 = ConvertKata(CKata);
+                ListWahana(*S)[j]->income1 = ConvertKata(CKata);
             }
             else if (i == 7)
             {
@@ -516,14 +514,13 @@ void ldWahanaPlayer(State* S)
                     --halt;
                     counterSC = false;
                 }
-                ListWahana(*S)[j++]->broke = ConvertKata(CKata);
+                ListWahana(*S)[j]->broke = ConvertKata(CKata);
             }
             ADVKATA(',');
         }
-
+        ++j;
     }
 }
-
 void svWahanaPlayer(FILE** fp, State S)
 {
     char* str; 
@@ -584,8 +581,32 @@ void svWahanaPlayer(FILE** fp, State S)
 
 void ldMap(State* S, boolean isInput)
 {
-
+    for(int i = 0; i<4; i++) 
+    {
+        inputManualPeta(&(*S).peta[i], &(*S).peta_address[i], isInput);
+        if (i == 0) {
+            Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, NKolEff((*S).peta[i])-1) = '>';
+            Elmt((*S).peta[i], NBrsEff((*S).peta[i])-1, NKolEff((*S).peta[i])/2) = 'V';
+        } else if (i == 1) {
+            Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, 0) = '<';
+            Elmt((*S).peta[i], NBrsEff((*S).peta[i])-1, NKolEff((*S).peta[i])/2) = 'V';
+        } else if (i == 2) {
+            Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, NKolEff((*S).peta[i])-1) = '>';
+            Elmt((*S).peta[i], 0, NKolEff((*S).peta[i])/2) = '^';
+        } else {
+            Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, 0) = '<';
+            Elmt((*S).peta[i], 0, NKolEff((*S).peta[i])/2) = '^';
+        }
+    }
+    MakeGraph(&Area(*S));
+    SetAntrian(&Peta(*S), LocAntrian(*S));
+    SetForbiddenAddress(&PetaAddress(*S), LocAntrian(*S));
+    SetOffice(&Peta(*S), Office(*S));
+    SetForbiddenAddress(&PetaAddress(*S), Office(*S));
+    Position(*S) = MakePOINT(Absis(Office(*S)),Ordinat(Office(*S)));
+    SetPlayer(&Peta(*S), Position(*S));
 }
+
 
 void ldDefWahana(State* S)
 {
