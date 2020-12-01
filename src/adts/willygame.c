@@ -33,8 +33,8 @@ int main()
 
         if (options == (int)'1') //pilih manual
         {
-            inputManual(&S);
             isInput = true;
+            inputManual(&S);
         }
         isLoad = false;
         loading(&S, "../../file/state.txt", isInput, isLoad);
@@ -112,5 +112,5 @@ int main()
 // gcc -c commands.c matriks.c graph2.c map.c jam.c listcustomer.c listhistory.c mainmenus.c material.c mechanic.c mesinkar.c mesinkata.c phases.c point.c prioqueuechar.c stackt.c state.c treewahana.c wahana.c
 
 // compile main:
-//gcc -o willygame willygame.c mainmenus.o matriks.o point.o map.o commands.o phases.o jam.o mesinkata.c mesinkar.o state.o mechanic.o listcustomer.o prioqueuechar.o wahana.o stackt.o listhistory.o treewahana.o
+//gcc -o willygame willygame.c mainmenus.o matriks.o point.o map.o commands.o phases.o jam.o mesinkata.c mesinkar.o state.o mechanic.o listcustomer.o prioqueuechar.o wahana.o stackt.o listhistory.o treewahana.o graph2.o
 //Windows os -hehe

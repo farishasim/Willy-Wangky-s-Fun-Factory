@@ -19,8 +19,8 @@ void loading(State* S, char* filename, boolean isInput, boolean isLoad)
     ldInfoActs(S);
     ldActList(S);
     ldQueue(S);
-    //ldWahanaPlayer(S);
     ldMap(S, isInput);
+    ldWahanaPlayer(S);
     while (!EndKata)
     {
         ADVKATA(',');
@@ -38,6 +38,7 @@ void saving(State S, char* filename)
     svMDP("prep", &fp, S);
     svQuantityMaterial(&fp, S);
     svInfoActs(&fp, S);
+    svActList(&fp, S);
     svQueue(&fp, S);
     svWahanaPlayer(&fp,S);
     writeAChar(CC = MARK, &fp);
@@ -306,32 +307,48 @@ void svActList(FILE** fp, State S)
 {
     int i = 0, j;
     char* string;
-    while (i != (Top(Act(S)) + 1))
+    if (IsEmptyStackt(Act(S)))
     {
-        convert2StrKata(&string, Act(S).T[i++]);
+        string = "-1\n";
         writeAString(string, fp);
-        if (i != (Top(Act(S)) + 1))
-        {
-            writeAChar(CC = ',', fp);
-        }
     }
-    writeAChar(CC = '\n', fp);
+    else
+    {
+        while (i != (Top(Act(S)) + 1))
+        {
+            convert2StrKata(&string, Act(S).T[i++]);
+            writeAString(string, fp);
+            if (i != (Top(Act(S)) + 1))
+            {
+                writeAChar(CC = ',', fp);
+            }
+        }
+        writeAChar(CC = '\n', fp);
+    }
 }
 
 void ldActList(State* S)
 {
     int i = 0, j = 0;
-    while (j != -1)
+    if (CKata.TabKata[0] != '-')
     {
-        Act(*S).T[i++] = ConvertKata(CKata);
-        if (counterNL)
-        {   
-            --j; 
-            counterNL = false;
-        }
+        CreateEmptyStackt(&Act(*S));
         ADVKATA(',');
     }
-    Top(Act(*S)) = i - 1;
+    else
+    {
+        while (j != -1)
+        {
+            Act(*S).T[i++] = ConvertKata(CKata);
+            if (counterNL)
+            {   
+                --j; 
+                counterNL = false;
+            }
+            ADVKATA(',');
+        }
+        Top(Act(*S)) = i - 1;
+    }
 }
 
 void svQueue(FILE** fp, State S)
@@ -409,6 +426,7 @@ void ldQueue(State* S)
         if (CKata.TabKata[0] == '-')
         {
             First(DataCustomers(*S)) = Nil;
+            ADVKATA(',');
         }
 
         else
@@ -469,13 +487,15 @@ void ldQueue(State* S)
 void ldWahanaPlayer(State* S)
 {
     /* Search wahana yang dimiliki pemain terhadap data wahana yang tersedia berdasarkan ID-nya */
-    int halt = 0, i, j = 0, posX, posY, idWahana, idxWahana;
+    int halt = 0, i, j = 0, posX, posY, idWahana, idxWahana, lahan;
     while (halt != -1)
     {
         idWahana = ConvertKata(CKata);
+        PrintKata(CKata);
         idxWahana = idxWahanaEQbyID(idWahana, DataWahana(*S));
+        printf("%d", idxWahana);
         ListWahana(*S)[j] = &DataWahana(*S)[idxWahana];
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 9; i++)
         {
             if (i == 0)
             {
@@ -508,19 +528,31 @@ void ldWahanaPlayer(State* S)
             }
             else if (i == 7)
             {
+                ListWahana(*S)[j]->broke = ConvertKata(CKata);
+            }
+            else if (i == 8)
+            {
                 if (counterSC)
                 {
                     --CKata.Length;
                     --halt;
                     counterSC = false;
                 }
-                ListWahana(*S)[j]->broke = ConvertKata(CKata);
+                ListWahana(*S)[j]->lahan = ConvertKata(CKata);
+                lahan = ListWahana(*S)[j]->lahan;
             }
             ADVKATA(',');
         }
+        SetWahana(&(*S).peta[lahan],(*ListWahana(*S)[j]).position,(*ListWahana(*S)[j]).size);
+        setAddressMap(&(*S).peta_address[lahan], ListWahana(*S)[j], (*ListWahana(*S)[j]).position);
+        if (!((*ListWahana(*S)[j]).broke && ListWahana(*S)[j]->count_used == 0 )) {
+            SetPermanentAddress(&(*S).peta_address[lahan]);
+        }
         ++j;
     }
+    NWahana(*S) = j;
 }
+
 void svWahanaPlayer(FILE** fp, State S)
 {
     char* str; 
@@ -581,30 +613,33 @@ void svWahanaPlayer(FILE** fp, State S)
 
 void ldMap(State* S, boolean isInput)
 {
-    for(int i = 0; i<4; i++) 
-    {
-        inputManualPeta(&(*S).peta[i], &(*S).peta_address[i], isInput);
-        if (i == 0) {
-            Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, NKolEff((*S).peta[i])-1) = '>';
-            Elmt((*S).peta[i], NBrsEff((*S).peta[i])-1, NKolEff((*S).peta[i])/2) = 'V';
-        } else if (i == 1) {
-            Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, 0) = '<';
-            Elmt((*S).peta[i], NBrsEff((*S).peta[i])-1, NKolEff((*S).peta[i])/2) = 'V';
-        } else if (i == 2) {
-            Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, NKolEff((*S).peta[i])-1) = '>';
-            Elmt((*S).peta[i], 0, NKolEff((*S).peta[i])/2) = '^';
-        } else {
-            Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, 0) = '<';
-            Elmt((*S).peta[i], 0, NKolEff((*S).peta[i])/2) = '^';
+    if (!isInput) {
+        for(int i = 0; i<4; i++) 
+        {
+            inputManualPeta(&(*S).peta[i], &(*S).peta_address[i], isInput);
+            if (i == 0) {
+                Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, NKolEff((*S).peta[i])-1) = '>';
+                Elmt((*S).peta[i], NBrsEff((*S).peta[i])-1, NKolEff((*S).peta[i])/2) = 'V';
+            } else if (i == 1) {
+                Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, 0) = '<';
+                Elmt((*S).peta[i], NBrsEff((*S).peta[i])-1, NKolEff((*S).peta[i])/2) = 'V';
+            } else if (i == 2) {
+                Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, NKolEff((*S).peta[i])-1) = '>';
+                Elmt((*S).peta[i], 0, NKolEff((*S).peta[i])/2) = '^';
+            } else {
+                Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, 0) = '<';
+                Elmt((*S).peta[i], 0, NKolEff((*S).peta[i])/2) = '^';
+            }
         }
+        printf("booyeahh!!!\n");
+        MakeGraph(&Area(*S));
+        SetAntrian(&Peta(*S), LocAntrian(*S));
+        SetForbiddenAddress(&PetaAddress(*S), LocAntrian(*S));
+        SetOffice(&Peta(*S), Office(*S));
+        SetForbiddenAddress(&PetaAddress(*S), Office(*S));
+        Position(*S) = MakePOINT(Absis(Office(*S)),Ordinat(Office(*S)));
+        SetPlayer(&Peta(*S), Position(*S));
     }
-    MakeGraph(&Area(*S));
-    SetAntrian(&Peta(*S), LocAntrian(*S));
-    SetForbiddenAddress(&PetaAddress(*S), LocAntrian(*S));
-    SetOffice(&Peta(*S), Office(*S));
-    SetForbiddenAddress(&PetaAddress(*S), Office(*S));
-    Position(*S) = MakePOINT(Absis(Office(*S)),Ordinat(Office(*S)));
-    SetPlayer(&Peta(*S), Position(*S));
 }
 
 

@@ -35,6 +35,7 @@ struct twahana {
     int income;
     int count_used1;
     int income1;
+    int lahan;  //  lahan dimana wahana ini berada
     boolean starter;  // rencananya starter ini buat menunjukkan kalo suatu wahana itu wahana starter atau hasil upgrade
     boolean broke;
 };

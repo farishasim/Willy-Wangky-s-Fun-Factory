@@ -1,0 +1,9 @@
+ld n sv actlist pk -1 kek customer kalo act kosong
+
+ld player wahana ditambahin nwahan di akhir, sama setiap wahana di-map,
+tapi baru di lahan 0 aja soalnya msh belum tau di lahan lain biar bs harus gmn,
+apa mungkin perlu ditambah komponen baru di wahananya? [clear]
+
+di fungsi loading, ld map sama load wahana player aku tuker urutannya
+biar bisa set wahana di map.
+

@@ -4,16 +4,15 @@ Dwi Kalam
 10000
 1
 1
-10,10,10,10,10
+50,50,50,50,50
 0,0,0
-0,123
+-1
 -1;
 15,13,11,9
-0,2,2,0,0,0,0,0;
-15,13,11,9
+0,5,7,0,0,0,0,0,0
+4,2,7,0,0,0,0,0,1;
 1
 .
-
 #username nama_player 
 #pos pos_x_player pos_y_player pos_x_office pos_y_player pos_x_antrian pos_y_antrian
 #jam currenttime opentime closetime {jam_dalam_menit (540 = jam 09.00)}

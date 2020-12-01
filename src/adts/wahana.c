@@ -319,7 +319,7 @@ void SetTemporer(Map_wahana *M, int i, int j) {
 int idxWahanaEQbyID(int ID, Wahana W[10])
 {
     int idx = 0;
-    while (ID != W[idx].ID && idx < 10)
+    while (ID != W[idx].ID && idx < 7)
     {
         ++idx;
     }

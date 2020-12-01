@@ -207,9 +207,9 @@ void prepPhase(State *S)
     printf("Name: %s\n", Name(*S).TabKata);
     printf("Money: %d\n", Money(*S));
     printf("Current time: ");
-    TulisJAM(Time(*S)); printf("\n");
+    TulisJAM(Time(*S));
     printf("Opening time: ");
-    TulisJAM(OpenTime(*S)); printf("\n");
+    TulisJAM(OpenTime(*S));
     printf("Time remaining: "); TulisDurasi(Durasi(OpenTime(*S),Time(*S)));
     printf("Total aksi yang akan dilakukan: %d\n", TempActs(*S));
     printf("Total waktu yang dibutuhkan: "); TulisDurasi(TimeNeeded(*S));
@@ -234,11 +234,11 @@ void mainPhase(State *S)
     printf("Name: %s\n", Name(*S).TabKata);
     printf("Money: %d\n", Money(*S));
     printf("Current time: ");
-    TulisJAM(Time(*S)); printf("\n");
+    TulisJAM(Time(*S));
     printf("Closing time: ");
-    TulisJAM(CloseTime(*S)); printf("\n");
+    TulisJAM(CloseTime(*S));
     printf("Time remaining: "); TulisDurasi(Durasi(CloseTime(*S), Time(*S)));
-    printf("Daftar antrian [%%d/%%d]:\n");
+    printf("Daftar antrian [%d/%d]:\n", NBElmtQueue(Antrian(*S)), MaxEl(Antrian(*S)));
     PrintAntrian(S);
     printf("\n");
     listMenuMainPhase(options);
