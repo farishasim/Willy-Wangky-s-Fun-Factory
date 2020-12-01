@@ -104,4 +104,5 @@ IdWahana SearchSubPohon(BinTree T, IdWahana X, boolean Kiri);
                     jika Kiri false maka pohon harus memiliki subpohon kanan
                     setiap akar pada pohon bernilai unik. dan X ada pada pohon*/
 
+
 #endif

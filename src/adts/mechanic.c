@@ -422,7 +422,7 @@ void Upgrade(State *S){
         DataWahana(*S)[ID_pilih].income1 = DataWahana(*S)[ID].income1;
         DataWahana(*S)[ID_pilih].count_used = DataWahana(*S)[ID].income;
         DataWahana(*S)[ID_pilih].count_used1 = DataWahana(*S)[ID].income1;
-        DataWahana(*S)[ID_pilih].broke = true;
+        DataWahana(*S)[ID_pilih].broke = false;
         DataWahana(*S)[ID].lahan = Info(First(Area(*S)));
 
         for(i = 0; i < 5; i++) {
@@ -536,6 +536,7 @@ void Main(State * S){
     InsertFirst(&DataCustomers(*S), P);
     Enqueue(&Antrian(*S), P);
 
+    Prep(*S) = false;
     printf("\nEntering main phase...\n");
     sleep(1);
 }
@@ -587,6 +588,7 @@ void Serve(State * S) {
     
     printf("Masukkan pilihan: ");
     scanf("%d", &choice);
+    scanf("%c", &i); // skip \n
 
     if (!isBetween(choice,1,num)) {
         printf("\nInvalid command. \n");
@@ -702,8 +704,8 @@ void Detail(State * S) {
 
     wahana_kanan = getWahanaAt(&PetaAddress(*S), posisi_wahana);
 
-    printDetail(&wahana_kanan);
-    timeFlow(S,5); // melihat detail membutuhkan waktu 2 menit. (opsional)
+    printDetail(S,&wahana_kanan);
+    timeFlow(S,5); // melihat detail membutuhkan waktu 5 menit. (opsional)
     sleep(1);
 }
 
@@ -734,36 +736,69 @@ void OFFice(State * S) {
         if (strcmp(choice, "Details\n") == 0) {
             printListWahana(S); // tampilkan semua pilihan wahana
             scanf("%d", &choice_w);
-            if (choice_w >= 0 && choice_w < (*S).NWahana) {
-                printDetail(ListWahana(*S)[choice_w]);
+            if (ListWahana(*S)[choice_w]) {
+                printDetail(S,ListWahana(*S)[choice_w]);
                 timeFlow(S,5); // melihat detail membutuhkan waktu 2 menit.
             } else {
-                printf("invalid");
+                printf("Invalid Command.");
             }
 
         } else if (strcmp(choice, "Report\n") == 0) {
             printListWahana(S); // tampilkan semua pilihan wahana
             scanf("%d", &choice_w);
-            if (choice_w >= 0 && choice_w < (*S).NWahana) {
+            if (ListWahana(*S)[choice_w]) {
                 printReport(ListWahana(*S)[choice_w]);
                 timeFlow(S,5); // melihat report membutuhkan waktu 2 menit.
             } else {
-                printf("invalid");
+                printf("Invalid Command.");
             }
 
         } else if (strcmp(choice, "Exit\n") == 0) {
-            printf("%c\n", choice[4]);
             exit = true;
 
         } else {
-            printf("%c\n", choice[4]);
             printf("Invalid Command!");
         }
     } while (!exit);
 
     printf("Anda keluar dari Office.");
     sleep(1);
+    scanf("%c", &choice); // skip \n
 }   
+
+
+void PrepP(State * S) {
+    address_c P;
+    int i;
+    
+    Day(*S)++;
+    Time(*S) = CloseTime(*S);
+
+    TempActs(*S) = 0;
+    MoneyNeeded(*S) = 0;
+    TimeNeeded(*S) = 0;
+
+    // Reset harian wahana
+    for(i = 0; i < NWahana(*S); i++){
+        (*ListWahana(*S)[i]).banyak_orang = 0;
+        (*ListWahana(*S)[i]).income1 = 0;
+        (*ListWahana(*S)[i]).count_used1 = 0;
+    }
+
+    // Reset All Cutomer
+    while (!IsEmpty(DataCustomers(*S))){
+        DelFirst(&(DataCustomers(*S)), &P);
+        Dealokasi(&P);
+    }
+    while (!IsEmptyQueue(Antrian(*S))){
+        Dequeue(&Antrian(*S), &P);
+    }
+
+    Prep(*S) = true;
+    printf("\nEntering Preparation phase...\n");
+    sleep(1);
+}
+
 
 //********* Sub-Fungsi untuk Fungsi-fungsi Command *********//
 // ****** Sub-Fungsi Undo ****** //
@@ -793,6 +828,13 @@ void UnBuild(State * S, infostack quest) {
 
     for(i = 0; i < 5; i++) {
         Storage(*S)[i].quantity += DataWahana(*S)[ID].bahan[i];
+
+        if (ListWahana(*S)[i]) {
+            if ((*ListWahana(*S)[i]).ID == ID) {
+                ListWahana(*S)[i] = Nil;
+                NWahana(*S)--;
+            }
+        }
     }
 
     TempActs(*S)--;
@@ -802,10 +844,10 @@ void UnBuild(State * S, infostack quest) {
 
 void UnUpgrade(State * S, infostack quest) {
     int ID,i;
-    address_h L;
+    ListHistory L;
     address_w address_wahana;
 
-    ID = (quest / 10) % 100;
+    ID = quest / 1000;
 
     L = DataWahana(*S)[ID].history;
 
@@ -815,6 +857,7 @@ void UnUpgrade(State * S, infostack quest) {
     // berhenti ketika Next(L) = node terakhir
 
     DealokasiH(Next(L));
+    Next(L) = Nil;
 
     address_wahana = Info(L);
 
@@ -824,6 +867,12 @@ void UnUpgrade(State * S, infostack quest) {
 
     for(i = 0; i < 5; i++) {
         Storage(*S)[i].quantity += DataWahana(*S)[ID].bahan[i];
+
+        if (ListWahana(*S)[i]) {
+            if ((*ListWahana(*S)[i]).ID == ID) {
+                ListWahana(*S)[i] = address_wahana;
+            }
+        }
     }
 
     TempActs(*S)--;
@@ -888,7 +937,8 @@ void printListWahana(State * S) {
     
     for(i = 0; i < ((*S).NWahana); i++) {
         printf("%d. ", i+1);
-        PrintKata(((*ListWahana(*S)[i])).nama);
+        PrintKata(((*ListWahana(*S)[i])).nama); 
+        printf(" ( ID : %d )", (*ListWahana(*S)[i]).ID); 
         printf("\n");
     }
 }
@@ -923,7 +973,7 @@ void ProcessAllCustomers(State * S) {
         sehingga seolah-olah proses paralel 
         setelah proses semua cutomer, ada 16.7% chance generate customer*/
     // KAMUS
-    int rand_num,count_play;
+    int rand_num,count_play,chance;
     address_c P,Prec;
     boolean quit,masuk_antrian;
     
@@ -984,8 +1034,12 @@ void ProcessAllCustomers(State * S) {
     }
 
     //  PADA KONDISI INI, P = Nil, Prec menunjukkan customer terakhir
-    rand_num = Randomize(0,6);
-    if (rand_num < 1) {  //  16.7 % chance for generate customer
+    rand_num = Randomize(0,100);
+    chance = 5 + Day(*S);
+    if (chance > 16) {chance = 16;}
+
+    printf("%d\n",rand_num);
+    if (rand_num < chance) {  //  16.7 % chance for generate customer
         printf("BOOM!\n");
         P = generateCustomer(S);
         printf("BOOM!\n");
@@ -1064,15 +1118,13 @@ void triggerBroke(address_w W, State * S) {
     address_c P,Prec;
 
     rand_num = Randomize(0,10);
-
     if (rand_num < 1) { // 10% chance wahana broke
         (*W).broke = true;
+        printf("\nPerhatian : Wahana ");
+        PrintKata((*W).nama);
+        printf(" rusak, harap segera perbaiki.\n");
+        sleep(1);
     }
-
-    printf("\nPerhatian : Wahana ");
-    PrintKata((*W).nama);
-    printf("rusak, harap segera perbaiki.\n");
-    sleep(1);
 
     if ((*W).broke) {
         //  Jika wahana rusak, maka akan dilakukan proses setiap customer
@@ -1093,9 +1145,11 @@ void triggerBroke(address_w W, State * S) {
                 } else {  //  jika antrian penuh, customer pulang.
                     if (P == First(DataCustomers(*S))) {
                         DelFirst(&DataCustomers(*S),&P);
+                        Dealokasi(&P);
                         P = First(DataCustomers(*S));
                     } else {
                         DelAfter(&DataCustomers(*S),&P,Prec);
+                        Dealokasi(&P);
                         Prec = P;
                         P = Next(P);
                     }
@@ -1164,7 +1218,6 @@ printf("  (");
 //********** Fungsi-fungsi RNG ***********//
 int Randomize(int lower_bound, int upper_bound) {
 // menghasilkan bilangan random antara lower_bound dan upper_bound
-    srand(time(NULL));
     return ((rand() % (upper_bound - lower_bound)) + lower_bound);
 }
 
@@ -1200,17 +1253,21 @@ void RandomPlay(address_c P, State * S) {
     i = 0;
     while (i < nplay) {
         rand_num = Randomize(0,NWahana(*S));
-        found = false;
-        j = 0;
-        while (Play(P,j) != -1 && !found) {
-            if (Play(P,j) == (*ListWahana(*S)[rand_num]).ID) {
-                found = true;
+        if (ListWahana(*S)[rand_num]) 
+        {
+            found = false;
+            j = 0;
+            while (Play(P,j) != -1 && !found) 
+            {
+                if (Play(P,j) == (*ListWahana(*S)[rand_num]).ID) {
+                    found = true;
+                }
+                j++;
             }
-            j++;
-        }
-        if (!found){
-            Play(P,j) = (*ListWahana(*S)[rand_num]).ID;
-            i++;
+            if (!found){
+                Play(P,j) = (*ListWahana(*S)[rand_num]).ID;
+                i++;
+            }
         }
     }
     printf("test\n");

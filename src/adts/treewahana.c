@@ -96,29 +96,14 @@ boolean IsBiner (BinTree T){
 mempunyai subpohon kiri dan subpohon kanan }*/
 
 
-boolean SearchTree (BinTree T, IdWahana X){
-    if (IsOneElmt(T)){
-        if (Akar(T)==X){
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    else {
-        if (IsUnerLeft(T)){
-            return SearchTree(Left(T),X);
-        }
-        else if (IsUnerRight(T)){
-            return SearchTree(Right(T),X);
-        }
-        else if (IsBiner(T)){
-            return (SearchTree(Left(T),X) || SearchTree(Right(T),X));
-        }
+boolean SearchTree (BinTree P, IdWahana X) {
+/* Mengirimkan true jika ada node dari P yang bernilai X */
+    if (IsTreeEmpty(P)) {
+        return false;
+    } else {
+        return (Akar(P) == X) || SearchTree(Left(P),X) || SearchTree(Right(P),X);
     }
 }
-/*{ Mengirimkan true jika ada nodeTreeNodeTree dari P yang bernilai X }
-*/
 
 void PrintTree(BinTree P, int h) {
 /* I.S. P terdefinisi, h adalah jarak indentasi (spasi) */

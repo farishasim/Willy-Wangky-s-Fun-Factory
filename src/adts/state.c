@@ -487,7 +487,7 @@ void ldQueue(State* S)
 void ldWahanaPlayer(State* S)
 {
     /* Search wahana yang dimiliki pemain terhadap data wahana yang tersedia berdasarkan ID-nya */
-    int halt = 0, i, j = 0, posX, posY, idWahana, idxWahana, lahan;
+    int halt = 0, i, j = 0, posX, posY, idWahana, idxWahana, lahan, id_prev;
     while (halt != -1)
     {
         idWahana = ConvertKata(CKata);
@@ -543,11 +543,7 @@ void ldWahanaPlayer(State* S)
             }
             ADVKATA(',');
         }
-        SetWahana(&(*S).peta[lahan],(*ListWahana(*S)[j]).position,(*ListWahana(*S)[j]).size);
-        setAddressMap(&(*S).peta_address[lahan], ListWahana(*S)[j], (*ListWahana(*S)[j]).position);
-        if (!((*ListWahana(*S)[j]).broke && ListWahana(*S)[j]->count_used == 0 )) {
-            SetPermanentAddress(&(*S).peta_address[lahan]);
-        }
+        SetStateWahana(S, ListWahana(*S)[j]);
         ++j;
     }
     NWahana(*S) = j;

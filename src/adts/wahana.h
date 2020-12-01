@@ -21,12 +21,12 @@ struct twahana {
     ListHistory history;  //  list yang mencatat upgrade history wahana
     BinTree upgrade_tree;
     int ID;
-    int harga;
+    int uang;
     int kapasitas;
     int banyak_orang;
     int durasi;
     int bahan[5];
-    int uang;
+    int harga;
     int time_needed;
     int harga_repair;
     int durasi_repair;  // waktu yang diperlukan untuk repair
@@ -76,7 +76,7 @@ Wahana getWahanaAt(Map_wahana * M, POINT P);
     // prekondisi : P  point yang valid
     // return value : sebuah wahana yang terletak pada P.
 
-void printDetail(Wahana * W);
+void printDetail(State * S,Wahana * W);
     // menampilkan detail wahana ke layar.
 
 void printReport(Wahana * W);
@@ -88,10 +88,10 @@ void printHistory(Wahana * W);
 void printHistory1(ListHistory L);
     // proses rekursif untuk printHistory
 
-void printNextGrade(Wahana * W);
+void printNextGrade(State * S, Wahana * W);
     // menampilkan Upgrade = []
 
-void printNextGrade1(BinTree P, int ID);
+void printNextGrade1(State * S, BinTree P, int ID);
     // proses rekurens untuk printNextGrade
     // mencari dan menampilkan semua pilihan upgrade
 
@@ -114,5 +114,11 @@ void RemoveAddress(Map_wahana * M, address_w W);
 void SetTemporer(Map_wahana *M, int i, int j);
 
 int idxWahanaEQbyID(int ID, Wahana W[10]);
+
+int GetParentID(State * S, int ID);
+
+void SetStateWahana(State * S, Wahana * W);
+
+ListHistory TreeToHistory(BinTree P, infohistory W);
 
 #endif

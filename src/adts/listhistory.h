@@ -8,6 +8,7 @@
 
 #include "boolean.h"
 #include "listcustomer.h"
+#include "treewahana.h"
 
 /* Definisi Type */
 typedef struct twahana * infohistory; // infotype berupa address dari wahana
@@ -87,6 +88,5 @@ int NbElmtListHistory (ListHistory L);
 /* Mengirimkan banyaknya elemen listHistory L, Nol jika L kosong */
 boolean Search (ListHistory L, infohistory X);
 /* Mengirim true jika X adalah anggota listHistory, false jika tidak */
-
 
 #endif

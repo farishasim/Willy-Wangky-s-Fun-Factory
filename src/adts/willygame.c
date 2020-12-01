@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 int main()
 {
@@ -18,7 +19,7 @@ int main()
         isLoad = false;
         isName = false;
     }
-
+    srand(time(NULL));
     isPlaying = true;
     isInput = false;
     isMove = false;

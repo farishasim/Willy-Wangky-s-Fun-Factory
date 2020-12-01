@@ -19,7 +19,7 @@ void LoadWahana(Wahana * W){
     (*W).size = MakePOINT(x,y);
 
     ADVKATA(separator);
-    (*W).harga = ConvertKata(CKata);
+    (*W).uang = ConvertKata(CKata);
     
     ADVKATA(separator);
     (*W).kapasitas = ConvertKata(CKata);
@@ -33,7 +33,7 @@ void LoadWahana(Wahana * W){
     }
 
     ADVKATA(separator);
-    (*W).uang = ConvertKata(CKata);
+    (*W).harga = ConvertKata(CKata);
 
     ADVKATA(separator);
     CopyKata(CKata, &(*W).deskripsi);
@@ -183,9 +183,9 @@ Wahana getWahanaAt(Map_wahana * M, POINT P) {
     return *Elmt(*M,Absis(P),Ordinat(P));
 }
 
-void printDetail(Wahana * W) {
+void printDetail(State * S, Wahana * W) {
     // menampilkan detail wahana ke layar.
-    printf("// Melihat detail wahana //");
+    printf("\n// Melihat detail wahana //\n");
 
     printf("\nNama : ");
     PrintKata((*W).nama);
@@ -193,16 +193,21 @@ void printDetail(Wahana * W) {
     printf("\nLokasi : ");
     TulisPOINT((*W).position);
     
-    printf("\nUpgrade(s) : []");  // untuk sementara kosong dulu
+    printf("\nUpgrade(s) : ");  // untuk sementara kosong dulu
+    printNextGrade(S, W);
 
     printf("\nHistory : ");   // untuk sementara kosong dulu
-    
+    printHistory(W);
+
     printf("\nStatus : ");
     if ((*W).broke) {
         printf("Tidak Berfungsi\n");
     } else {
         printf("berfungsi\n");
     }
+
+    printf("Tekan Enter untuk melanjutkan");
+    scanf("%c");
 }
 
 
@@ -234,19 +239,23 @@ void printHistory(Wahana * W) {
     printHistory1(L);
 }
 
-void printNextGrade(Wahana * W) {
+void printNextGrade(State * S, Wahana * W) {
     // menampilkan Upgrade = []
     // Kamus
     BinTree PohonUpgrade;
     // Algoritma
     PohonUpgrade = (*W).upgrade_tree;
-}
-
-void printNextGrade1(BinTree P, int ID) {
-    // proses rekurens untuk printNextGrade
-    if (Akar(P) == ID) {
-
+    
+    printf("[");
+    if (IsBiner(PohonUpgrade)) {
+        PrintKata(DataWahana(*S)[Akar(Left(PohonUpgrade))].nama); printf(", "); 
+        PrintKata(DataWahana(*S)[Akar(Right(PohonUpgrade))].nama);
+    } else if (IsUnerLeft(PohonUpgrade)) {
+        PrintKata(DataWahana(*S)[Akar(Left(PohonUpgrade))].nama);
+    } else if (IsUnerRight(PohonUpgrade)) {
+        PrintKata(DataWahana(*S)[Akar(Right(PohonUpgrade))].nama);
     }
+    printf("]");
 }
 
 boolean IsWahanaFull(Wahana * W){
@@ -324,6 +333,45 @@ int idxWahanaEQbyID(int ID, Wahana W[10])
         ++idx;
     }
     return idx;
+}
+
+int GetParentID(State * S, int ID) {
+    int i;
+    i = 0;
+    while (!SearchTree(DataWahana(*S)[i].upgrade_tree, ID)){
+        printf("%d", i);
+        i++;
+    }
+    return i;
+}
+
+void SetStateWahana(State * S, Wahana * W) {
+    int lahan,ID,id_prev;
+
+    lahan = (*W).lahan;
+    ID = (*W).ID;
+    printf("test");
+    id_prev = GetParentID(S,ID);
+    printf("%d", id_prev);
+
+    SetWahana(&(*S).peta[lahan],(*W).position,(*W).size);
+    setAddressMap(&(*S).peta_address[lahan], W, (*W).position);
+    if (!((*W).broke && W->count_used == 0 )) {
+        SetPermanentAddress(&(*S).peta_address[lahan]);
+    }
+    (*W).history = TreeToHistory(DataWahana(*S)[id_prev].upgrade_tree, W);
+}
+
+ListHistory TreeToHistory(BinTree P, infohistory W) {
+    if (Akar(P) == (*W).ID) {
+        return AlokasiH(W);
+    } else {
+        if (SearchTree(Left(P),(*W).ID)) {
+            return Konso(W, TreeToHistory(Left(P),W));
+        } else {   //  asumsi (W).ID ada pada P 
+            return Konso(W, TreeToHistory(Right(P),W));
+        }
+    }
 }
 
 /* &W = 8
