@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include "mechanic.h"
 #include "string.h"
+#include "phases.h"
 
 POINT GateSpawnX (State *S){
     POINT P;
@@ -618,6 +619,9 @@ void Serve(State * S) {
     // jika wahana rusak
     if (DataWahana(*S)[idwahana].broke) {
         printf("\n// Gagal melayani pengunjung, wahana sedang rusak //\n");
+        if (DataWahana(*S)[idwahana].time_reparation > 0) {
+            printf("// Wahana sedang dalam perbaikan, tunggu %d menit lagi! //", DataWahana(*S)[idwahana].time_reparation);
+        }
         sleep(1);
         return;
     }
@@ -685,6 +689,12 @@ void Repair(State * S) {
         sleep(1);
         return;
     } 
+
+    if ((*address_wahana_kanan).time_reparation > 0) {
+        printf("\nwahana di samping sedang diperbaiki, tunggu %d menit lagi!\n", (*address_wahana_kanan).time_reparation);
+        sleep(1);
+        return;
+    }
 
     if (Money(*S) < (*address_wahana_kanan).harga_repair) {
         printf("\nUang tidak cukup!\n");
@@ -968,11 +978,15 @@ void incrementTime(State * S) {
     // waktu bertambah satu menit
     Time(*S) = NextMenit(Time(*S));
 
-    // Proses SETIAP CUSTOMER
-    ProcessAllCustomers(S);
+    if (JEQ(Time(*S),CloseTime(*S))){
+        Prepare(S);
+    } else {
+        // Proses SETIAP CUSTOMER
+        ProcessAllCustomers(S);
 
-    // Proses SETIAP WAHANA
-    ProcessAllWahanas(S);
+        // Proses SETIAP WAHANA
+        ProcessAllWahanas(S);    
+    }  
 }
 
 
@@ -980,8 +994,14 @@ void timeFlow(State * S, int N) {
     // I.S. Sembarang
     // F.S. Time(S) akan bertambah sebanyak N menit
     int i;
-    for(i=0; i<N; i++) {
+    i = 0;
+    while(i < N && !Prep(*S)) {
         incrementTime(S);
+        i++;
+    }
+    if (Prep(*S)) {
+        prepPhase(S);
+        phasesFlow(S);
     }
 }
 
@@ -1159,7 +1179,8 @@ void triggerBroke(address_w W, State * S) {
                 Loc(P) = -1;
                 Prio(P)--;
                 Playtime(P) = 10;
-                if (!IsFullQueue(Antrian(*S))) {
+                (*W).banyak_orang--;
+                if (!IsFullQueue(Antrian(*S)) && PlayCount(P) > 0) {
                     Enqueue(&Antrian(*S),P);
                     Prec = P;
                     P = Next(P);

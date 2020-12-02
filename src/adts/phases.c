@@ -119,6 +119,11 @@ void phasesFlow(State *S)
             phasesFlow(S);
         }
 
+        else if (options == (int)'9')
+        {
+            return;
+        }
+
         else if (options == (int)'0')// (cekCommand("info options\n"))
         {
             //info();
@@ -177,6 +182,11 @@ void phasesFlow(State *S)
             phasesFlow(S);
         }
 
+        else if (options == (int)'9')
+        {
+            return;
+        }
+
         else if (options == (int)'0')// (cekCommand("info options\n"))
         {
             //info();
@@ -196,7 +206,7 @@ void prepPhase(State *S)
 {
     printf("\n***** Preparation Phase Day %d *****\n\n", Day(*S));
     TulisMATRIKS(Peta(*S));
-    TulisMATRIKSW(PetaAddress(*S)); //  buat debug
+    //TulisMATRIKSW(PetaAddress(*S)); //  buat debug
     printf("Legend:\n");
     printf("A = Antrian\n");
     printf("P = Player\n");
@@ -238,9 +248,9 @@ void mainPhase(State *S)
     TulisJAM(CloseTime(*S));
     printf("Time remaining: "); TulisDurasi(Durasi(CloseTime(*S), Time(*S)));
     printf("Daftar antrian [%d/%d]:\n", NBElmtQueue(Antrian(*S)), MaxEl(Antrian(*S)));
-    // PrintInfo(DataCustomers(*S));   //  buat debug
-    // printf("\n");  //  buat debug
-    // PrintPrioQueueChar(Antrian(*S));  //  buat debug
+    PrintInfo(DataCustomers(*S));   //  buat debug
+    printf("\n");  //  buat debug
+    PrintPrioQueueChar(Antrian(*S));  //  buat debug
     PrintAntrian(S);
     printf("\n");
     listMenuMainPhase(options);
