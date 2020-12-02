@@ -171,7 +171,7 @@ void phasesFlow(State *S)
         else if (options == (int)'5')// (cekCommand("prepare\n"))
         {
             //prepare
-            //Prepare(S);
+            Prepare(S);
             prepPhase(S);
             Prep(*S) = true;
             phasesFlow(S);
@@ -196,7 +196,7 @@ void prepPhase(State *S)
 {
     printf("\n***** Preparation Phase Day %d *****\n\n", Day(*S));
     TulisMATRIKS(Peta(*S));
-    TulisMATRIKSW(PetaAddress(*S));
+    TulisMATRIKSW(PetaAddress(*S)); //  buat debug
     printf("Legend:\n");
     printf("A = Antrian\n");
     printf("P = Player\n");
@@ -223,14 +223,13 @@ void mainPhase(State *S)
 {
     printf("\n***** Main Phase Day %d *****\n\n", Day(*S));
     TulisMATRIKS(Peta(*S));
-    TulisMATRIKSW(PetaAddress(*S));
+    // TulisMATRIKSW(PetaAddress(*S)); //  buat debug
     printf("Legend:\n");
     printf("A = Antrian\n");
     printf("P = Player\n");
     printf("W = Wahana\n");
     printf("O = Office\n");
     printf("^, <, v, > = Pagar\n\n");
-
     printf("Name: %s\n", Name(*S).TabKata);
     printf("Money: %d\n", Money(*S));
     printf("Current time: ");
@@ -239,6 +238,9 @@ void mainPhase(State *S)
     TulisJAM(CloseTime(*S));
     printf("Time remaining: "); TulisDurasi(Durasi(CloseTime(*S), Time(*S)));
     printf("Daftar antrian [%d/%d]:\n", NBElmtQueue(Antrian(*S)), MaxEl(Antrian(*S)));
+    // PrintInfo(DataCustomers(*S));   //  buat debug
+    // printf("\n");  //  buat debug
+    // PrintPrioQueueChar(Antrian(*S));  //  buat debug
     PrintAntrian(S);
     printf("\n");
     listMenuMainPhase(options);

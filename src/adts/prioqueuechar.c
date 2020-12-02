@@ -98,16 +98,18 @@ void Dequeue (PrioQueueChar * Q, address_c * X){
 
 /* Operasi Tambahan */
 void PrintPrioQueueChar (PrioQueueChar Q){
+    int real_head = Head(Q);
     if (IsEmptyQueue(Q)){
     }
     else{
-        printf("%d %c\n",Prio(InfoHead(Q)),Kesabaran(InfoHead(Q)));
+        printf("%d %p",Kesabaran(InfoHead(Q)),(InfoHead(Q)));
         while (Q.HEAD!=Q.TAIL)
         {
             (Q).HEAD= ((Q).HEAD+1)%(Q).MaxEl;
-            printf("%d %c\n",Prio(InfoHead(Q)),Kesabaran(InfoHead(Q)));
+            printf(", %d %p",Kesabaran(InfoHead(Q)),(InfoHead(Q)));
         }
     }
+    Head(Q) = real_head;
     printf("#\n");
 }
 /* Mencetak isi queue Q ke layar */
@@ -127,10 +129,10 @@ void ReSort(PrioQueueChar * Q, address_c P) {
     idxqueue i,j;
     address_c temp;
 
-    i = 0;
+    i = Head(*Q);
 
     while (ElmtQueue(*Q,i) != P) {
-        i++;
+        i = (i+1) % MaxEl(*Q);
     }
 
     j = (i-1+(*Q).MaxEl)%(*Q).MaxEl;

@@ -133,16 +133,23 @@ void PrintInfo (ListCustomer L) {
 /* Jika listcustomer kosong : menulis [] */
 /* Tidak ada tambahan karakter apa pun di awal, akhir, atau di tengah */
     address_c P;
+    int i;
 
     printf("[");
     P = First(L);
-    if (P != Nil) {
-        printf("%d", Kesabaran(P));
+
+    if (P){
+        for(i = 0; i< 5; i++) {
+            printf("%d ", Play(P,i));
+        }
         P = Next(P);
     }
     while (P != Nil) {
-        printf(",%d", Kesabaran(P));
-        P = Next(P);        
+        printf(", ");
+        for(i = 0; i< 5; i++) {
+            printf("%d ", Play(P,i));
+        }       
+        P = Next(P);
     }
     printf("]");
 }

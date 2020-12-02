@@ -119,6 +119,6 @@ int GetParentID(State * S, int ID);
 
 void SetStateWahana(State * S, Wahana * W);
 
-ListHistory TreeToHistory(BinTree P, infohistory W);
+ListHistory TreeToHistory(BinTree P, infohistory W_prev ,infohistory W);
 
 #endif

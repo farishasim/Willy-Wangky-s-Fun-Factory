@@ -546,9 +546,18 @@ void Main(State * S){
 void Execute(State * S) {
 /* I.S. user memberi command untuk Execute */
 /* F.S. semua aksi yang disimpan pada stack sudah dieksekusi.*/
+    int i;
     Money(*S) -= MoneyNeeded(*S);
 
     CreateEmptyStackt(&Act(*S));
+
+    for (i = 0; i < 5; i++) {
+        if (ListWahana(*S)[i]) {
+            if ((*ListWahana(*S)[i]).count_used == 0 && (*ListWahana(*S)[i]).broke){
+                (*ListWahana(*S)[i]).broke = false;
+            }
+        }
+    }
 
     Main(S);
 }
@@ -565,6 +574,12 @@ void Serve(State * S) {
         NEQPOINT(NextX(LocAntrian(*S)),Position(*S)) &&
         NEQPOINT(NextY(LocAntrian(*S)),Position(*S))) {
         printf("\nAnda tidak sedang berada di samping antrian!\n");
+        sleep(1);
+        return;
+    }
+
+    if (IsEmptyQueue(Antrian(*S))) {
+        printf("\nAntrian sedang kosong!\n");
         sleep(1);
         return;
     }
@@ -715,7 +730,7 @@ void OFFice(State * S) {
 /* F.S. jika user berada pada posisi office, akan ditampilkan antarmuka office
         selama di dalam office, user dapat memberi command Details, Report, Exit
         user akan terus berada di office hingga memberi command Exit*/
-    char choice[12];
+    char choice;
     int choice_w;
     boolean exit;
 
@@ -732,28 +747,33 @@ void OFFice(State * S) {
 
     do {
         printf("Masukkan perintah (Details / Report / Exit):");
-        fgets(choice, 12, stdin);
-        if (strcmp(choice, "Details\n") == 0) {
+        scanf("%c", &choice);
+        if (choice == 'D' || choice == 'd') {
             printListWahana(S); // tampilkan semua pilihan wahana
+            printf("Masukkan Nomor pilihan : ");
             scanf("%d", &choice_w);
-            if (ListWahana(*S)[choice_w]) {
-                printDetail(S,ListWahana(*S)[choice_w]);
+            scanf("%c", &choice);  //  skip \n
+            if (ListWahana(*S)[choice_w-1]) {
+                printDetail(S,ListWahana(*S)[choice_w-1]);
                 timeFlow(S,5); // melihat detail membutuhkan waktu 2 menit.
             } else {
                 printf("Invalid Command.");
             }
 
-        } else if (strcmp(choice, "Report\n") == 0) {
+        } else if (choice == 'R' || choice == 'r') {
             printListWahana(S); // tampilkan semua pilihan wahana
+            printf("Masukkan Nomor pilihan : ");
             scanf("%d", &choice_w);
-            if (ListWahana(*S)[choice_w]) {
-                printReport(ListWahana(*S)[choice_w]);
+            scanf("%c", &choice);  //  skip \n
+            if (ListWahana(*S)[choice_w-1]) {
+                printReport(ListWahana(*S)[choice_w-1]);
                 timeFlow(S,5); // melihat report membutuhkan waktu 2 menit.
             } else {
                 printf("Invalid Command.");
             }
 
-        } else if (strcmp(choice, "Exit\n") == 0) {
+        } else if (choice == 'E' || choice == 'e') {
+            scanf("%c", &choice); //  skip \n
             exit = true;
 
         } else {
@@ -763,11 +783,10 @@ void OFFice(State * S) {
 
     printf("Anda keluar dari Office.");
     sleep(1);
-    scanf("%c", &choice); // skip \n
 }   
 
 
-void PrepP(State * S) {
+void Prepare(State * S) {
     address_c P;
     int i;
     
@@ -985,10 +1004,13 @@ void ProcessAllCustomers(State * S) {
         Playtime(P) -= 1;
         if (Playtime(P) == 0) {
             if (Loc(P) != -1) {  //  customer berada pada suatu wahana
+                DataWahana(*S)[Loc(P)].banyak_orang--;
                 //  jika customer sudah tidak lagi memiliki daftar wahana 
                 //  yang ingin dinaiki, atau jika antrian penuh,
                 //  ia akan keluar
+                printf("Seorang Customer kembali dari wahana "); PrintKata(DataWahana(*S)[Loc(P)].nama);
                 count_play = PlayCount(P);  //  menghitung daftar wahana customer
+                printf("\nDia ingin naik %d wahana\n", count_play);
                 if (count_play == 0 || IsFullQueue(Antrian(*S))) {  
                     quit = true;
                 } else {
@@ -1009,22 +1031,25 @@ void ProcessAllCustomers(State * S) {
         }
 
         if (masuk_antrian) {
+            printf("Seorang customer kembali ke antrian.\n");
             Enqueue(&Antrian(*S),P);
             Prec = P;
             P = Next(P);
         } else if (quit) {
             // jika berada pada antrian, customer akan di-dequeue
             if (Loc(P) == -1) {
+                printf("seorang customer pergi meninggalkan antrian");
                 Dequeue(&Antrian(*S),&P);
             }
             if (P == First(DataCustomers(*S))) {
+                printf("Seorang customer pulang 1");
                 DelFirst(&DataCustomers(*S), &P);
                 Dealokasi(&P);
                 P = First(DataCustomers(*S)); //  ke customer selanjutnya
             } else {
+                printf("Seorang customer pulang 2");
                 DelAfter(&DataCustomers(*S), &P, Prec);
                 Dealokasi(&P);
-                Prec = P;
                 P = Next(Prec); //  ke customer selanjutnya
             }
         } else {
@@ -1038,11 +1063,8 @@ void ProcessAllCustomers(State * S) {
     chance = 5 + Day(*S);
     if (chance > 16) {chance = 16;}
 
-    printf("%d\n",rand_num);
-    if (rand_num < chance) {  //  16.7 % chance for generate customer
-        printf("BOOM!\n");
+    if (rand_num < chance) { 
         P = generateCustomer(S);
-        printf("BOOM!\n");
         if (P) {  //  if generate customer succes
             if (!IsEmpty(DataCustomers(*S))) {  //  jika list tidak kosong
                 InsertAfter(&DataCustomers(*S), P, Prec);  // masukkan customer setelah Prec ke data
@@ -1052,7 +1074,6 @@ void ProcessAllCustomers(State * S) {
                 Enqueue(&Antrian(*S),P);
             }
         }
-        printf("BOOM!");
     }
 }
 
@@ -1150,8 +1171,7 @@ void triggerBroke(address_w W, State * S) {
                     } else {
                         DelAfter(&DataCustomers(*S),&P,Prec);
                         Dealokasi(&P);
-                        Prec = P;
-                        P = Next(P);
+                        P = Next(Prec);
                     }
                 }
             } else {
@@ -1187,7 +1207,7 @@ void PrintAntrian(State * S) {
             }
             printf(")");
             printf(" kesabaran : ");
-            printf("%d", Kesabaran(P));  
+            printf("%d, ID : %p", Kesabaran(P), P);  
             printf("\n");            
             Head(Antrian(*S)) = (Head(Antrian(*S)) + 1) % MaxEl(Antrian(*S));
             P = InfoHead(Antrian(*S));

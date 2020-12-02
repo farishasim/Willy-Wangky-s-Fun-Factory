@@ -48,7 +48,7 @@ void OFFice(State * S);
         selama di dalam office, user dapat memberi command Details, Report, Exit
         user akan terus berada di office hingga memberi command Exit*/
 
-void PrepP(State * S);
+void Prepare(State * S);
 
 //********* Sub-Fungsi untuk Fungsi-fungsi Command *********//
 // ****** Sub-Fungsi Undo ****** //

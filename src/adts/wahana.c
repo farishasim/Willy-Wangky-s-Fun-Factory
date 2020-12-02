@@ -206,7 +206,7 @@ void printDetail(State * S, Wahana * W) {
         printf("berfungsi\n");
     }
 
-    printf("Tekan Enter untuk melanjutkan");
+    printf("Tekan Enter untuk melanjutkan\n");
     scanf("%c");
 }
 
@@ -218,6 +218,9 @@ void printReport(Wahana (*W)){
 
     printf("Total Pemasukkan : %d\n", (*W).income);
     printf("Pemasukkan hari ini: %d\n", (*W).income1);
+
+    printf("Tekan Enter untuk melanjutkan\n");
+    scanf("%c");
 }
 
 void printHistory1(ListHistory L){
@@ -359,17 +362,17 @@ void SetStateWahana(State * S, Wahana * W) {
     if (!((*W).broke && W->count_used == 0 )) {
         SetPermanentAddress(&(*S).peta_address[lahan]);
     }
-    (*W).history = TreeToHistory(DataWahana(*S)[id_prev].upgrade_tree, W);
+    (*W).history = TreeToHistory(DataWahana(*S)[id_prev].upgrade_tree, &DataWahana(*S)[id_prev], W);
 }
 
-ListHistory TreeToHistory(BinTree P, infohistory W) {
+ListHistory TreeToHistory(BinTree P, infohistory W_prev ,infohistory W) {
     if (Akar(P) == (*W).ID) {
         return AlokasiH(W);
     } else {
         if (SearchTree(Left(P),(*W).ID)) {
-            return Konso(W, TreeToHistory(Left(P),W));
+            return Konso(W_prev, TreeToHistory(Left(P),W_prev,W));
         } else {   //  asumsi (W).ID ada pada P 
-            return Konso(W, TreeToHistory(Right(P),W));
+            return Konso(W_prev, TreeToHistory(Right(P),W_prev,W));
         }
     }
 }

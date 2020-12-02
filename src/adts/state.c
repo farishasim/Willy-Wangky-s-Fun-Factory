@@ -330,7 +330,7 @@ void svActList(FILE** fp, State S)
 void ldActList(State* S)
 {
     int i = 0, j = 0;
-    if (CKata.TabKata[0] != '-')
+    if (CKata.TabKata[0] == '-')
     {
         CreateEmptyStackt(&Act(*S));
         ADVKATA(',');
