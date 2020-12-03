@@ -8,7 +8,7 @@
 #include "map.h"
 #include "jam.h"
 #include "stackt.h"
-#include "PrioQueueChar.h"
+#include "prioqueuechar.h"
 #include "wahana.h"
 #include "graph2.h"
 
@@ -130,6 +130,13 @@ void ldDefMaterial(State* S);
 
 void ldDefWahana(State* S);
 
+void svMap(FILE** fp, State S);
+
 void ldMap(State* S, boolean isLoad);
+
+void svLahanN(State S, FILE** fp);
+
+void ldLahanN(State *S);
+
 
 #endif

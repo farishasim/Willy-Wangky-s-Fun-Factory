@@ -21,6 +21,7 @@ void loading(State* S, char* filename, boolean isInput, boolean isLoad)
     ldQueue(S);
     ldMap(S, isInput);
     ldWahanaPlayer(S);
+    ldLahanN(S);
     while (!EndKata)
     {
         ADVKATA(',');
@@ -40,7 +41,9 @@ void saving(State S, char* filename)
     svInfoActs(&fp, S);
     svActList(&fp, S);
     svQueue(&fp, S);
+    svMap(&fp, S);
     svWahanaPlayer(&fp,S);
+    svLahanN(S, &fp);
     writeAChar(CC = MARK, &fp);
     fclose(fp);
 }
@@ -493,7 +496,6 @@ void ldWahanaPlayer(State* S)
         idWahana = ConvertKata(CKata);
         PrintKata(CKata);
         idxWahana = idxWahanaEQbyID(idWahana, DataWahana(*S));
-        printf("%d", idxWahana);
         ListWahana(*S)[j] = &DataWahana(*S)[idxWahana];
         for (int i = 0; i < 9; i++)
         {
@@ -607,6 +609,22 @@ void svWahanaPlayer(FILE** fp, State S)
     }
 }
 
+void svMap(FILE** fp, State S)
+{
+    char* string;
+    int i;
+    for (i = 0; i < 4; ++i)
+    {
+        convert2StrKata(&string, (S).peta[i].NBrsEff-2);
+        writeAString(string, fp);
+        if (i < 3)
+        {
+            writeAChar(CC = ',', fp);
+        }
+    }
+    writeAChar(CC = '\n', fp);
+}
+
 void ldMap(State* S, boolean isInput)
 {
     if (!isInput) {
@@ -627,7 +645,6 @@ void ldMap(State* S, boolean isInput)
                 Elmt((*S).peta[i], 0, NKolEff((*S).peta[i])/2) = '^';
             }
         }
-        printf("booyeahh!!!\n");
         MakeGraph(&Area(*S));
         SetAntrian(&Peta(*S), LocAntrian(*S));
         SetForbiddenAddress(&PetaAddress(*S), LocAntrian(*S));
@@ -636,6 +653,20 @@ void ldMap(State* S, boolean isInput)
         Position(*S) = MakePOINT(Absis(Office(*S)),Ordinat(Office(*S)));
         SetPlayer(&Peta(*S), Position(*S));
     }
+}
+
+void svLahanN(State S, FILE** fp)
+{
+    char* str;
+    convert2StrKata(&str, Area(S).First->info);
+    writeAString(str, fp);
+    writeAChar(CC = '\n', fp);
+}
+
+void ldLahanN(State *S)
+{
+    //Sudah dialokasi saat ldMap
+    Area(*S).First->info = ConvertKata(CKata); 
 }
 
 

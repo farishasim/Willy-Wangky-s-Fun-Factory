@@ -7,3 +7,4 @@ apa mungkin perlu ditambah komponen baru di wahananya? [clear]
 di fungsi loading, ld map sama load wahana player aku tuker urutannya
 biar bisa set wahana di map.
 
+- PrioQueueChar, error ADTs (blm compile), overwrite current obj codes
