@@ -406,11 +406,14 @@ void svQueue(FILE** fp, State S)
             if (Next(P) == Nil)
             {
                 writeAChar(CC = ';', fp);
+                writeAChar(CC = '\n', fp);
+            }
+            else 
+            {
+                writeAChar(CC = '\n', fp);
             }
             P = Next(P);
-            writeAChar(CC = '\n', fp);
         }
-        writeAChar(CC = '\n', fp);
     }   
 }
 
@@ -554,45 +557,49 @@ void ldWahanaPlayer(State* S)
 void svWahanaPlayer(FILE** fp, State S)
 {
     char* str; 
-    int i, j, halt = 0;
+    int i, j = 0, halt = 0;
     while (j < NWahana(S))
-    {
-        for (i = 0; i < 8; ++i)
+    {   
+        for (i = 0; i < 9; ++i)
         {
             if (i == 0)
             {
-                convert2StrKata(&str, ListWahana(S)[i]->ID);
+                convert2StrKata(&str, ListWahana(S)[j]->ID);
             }
             else if (i == 1)
             {
-                convert2StrKata(&str, ListWahana(S)[i]->position.X);
+                convert2StrKata(&str, ListWahana(S)[j]->position.X);
             }
             else if (i == 2)
             {
-                convert2StrKata(&str, ListWahana(S)[i]->position.Y);
+                convert2StrKata(&str, ListWahana(S)[j]->position.Y);
             }
             else if (i == 3)
             {
-                convert2StrKata(&str, ListWahana(S)[i]->count_used);
+                convert2StrKata(&str, ListWahana(S)[j]->count_used);
             }
             else if (i == 4)
             {
-                convert2StrKata(&str, ListWahana(S)[i]->income);
+                convert2StrKata(&str, ListWahana(S)[j]->income);
             }
             else if (i == 5)
             {
-                convert2StrKata(&str, ListWahana(S)[i]->count_used1);
+                convert2StrKata(&str, ListWahana(S)[j]->count_used1);
             }
             else if (i == 6)
             {
-                convert2StrKata(&str, ListWahana(S)[i]->income1);
+                convert2StrKata(&str, ListWahana(S)[j]->income1);
             }
             else if (i == 7)
             {
-                convert2StrKata(&str, ListWahana(S)[i]->broke);
+                convert2StrKata(&str, ListWahana(S)[j]->broke);
+            }
+            else if (i == 8)
+            {
+                convert2StrKata(&str, ListWahana(S)[j]->lahan);
             }
             writeAString(str, fp);
-            if (i != 7)
+            if (i != 8)
             {
                 writeAChar(CC = ',', fp);
             }
@@ -600,6 +607,7 @@ void svWahanaPlayer(FILE** fp, State S)
         if (j == NWahana(S)-1)
         {
             writeAChar(CC = ';', fp);
+            writeAChar(CC = '\n', fp);
         }
         else
         {
@@ -650,8 +658,6 @@ void ldMap(State* S, boolean isInput)
         SetForbiddenAddress(&PetaAddress(*S), LocAntrian(*S));
         SetOffice(&Peta(*S), Office(*S));
         SetForbiddenAddress(&PetaAddress(*S), Office(*S));
-        Position(*S) = MakePOINT(Absis(Office(*S)),Ordinat(Office(*S)));
-        SetPlayer(&Peta(*S), Position(*S));
     }
 }
 
@@ -666,9 +672,18 @@ void svLahanN(State S, FILE** fp)
 void ldLahanN(State *S)
 {
     //Sudah dialokasi saat ldMap
-    Area(*S).First->info = ConvertKata(CKata); 
+    int lahan;
+    lahan = ConvertKata(CKata);
+    if (lahan == 1) {
+        MoveMapRight(&Area(*S));
+    } else if (lahan == 2) {
+        MoveMapDown(&Area(*S));
+    } else if (lahan == 3) {
+        MoveMapRight(&Area(*S));
+        MoveMapDown(&Area(*S));
+    } 
+    SetPlayer(&Peta(*S), Position(*S));
 }
-
 
 void ldDefWahana(State* S)
 {

@@ -11,7 +11,7 @@ Dwi Kalam
 15,13,11,9
 0,5,7,0,0,0,0,0,0
 4,2,7,0,0,0,0,0,1;
-1
+0
 .
 #username nama_player 
 #pos pos_x_player pos_y_player pos_x_office pos_y_player pos_x_antrian pos_y_antrian
