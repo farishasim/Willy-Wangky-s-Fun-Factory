@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 bata,15,besi,20,kaca,20,kayu,10,plastik,15
+=======
+bata,10,besi,15,kaca,10,kayu,5,plastik,5
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
 .
 #nama_material harga_material

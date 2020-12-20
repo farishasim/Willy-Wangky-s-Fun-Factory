@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 int main()
 {
@@ -18,7 +19,7 @@ int main()
         isLoad = false;
         isName = false;
     }
-
+    srand(time(NULL));
     isPlaying = true;
     isInput = false;
     isMove = false;
@@ -33,13 +34,24 @@ int main()
 
         if (options == (int)'1') //pilih manual
         {
+<<<<<<< HEAD
             inputManual(&S);
+=======
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
             isInput = true;
+            inputManual(&S);
         }
         isLoad = false;
+<<<<<<< HEAD
         loading(&S, "../files/state.txt", isInput, isLoad);
         isLoad = true;
         Prep(S) = true;
+=======
+        loading(&S, "../../file/state.txt", isInput, isLoad);
+        isLoad = true;
+        Prep(S) = true;
+        TulisMATRIKS((Peta(S)));
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
         prepPhase(&S);
         phasesFlow(&S);
 

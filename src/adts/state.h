@@ -20,6 +20,18 @@ struct State_ {
   JAM time[3];    /*cur_time, open_time, close_time*/
   int money;         /* uang yang dimiliki pemain */
   int day;           /* hari ke-berapa */
+<<<<<<< HEAD
+=======
+  int NWahana;       /* banyaknya wahana yang dimiliki pemain*/
+  int tempActs;
+  int neededTime;
+  int neededMoney;
+  JAM time[3];    /*cur_time, open_time, close_time*/
+  Graph area;          /* lahan yang sedang diinjak pemain */
+  POINT office;     /* merepresentasikan kordinat posisi office berada*/
+  POINT position;    /* merepresentasikan kordinat posisi pemain berdiri */
+  POINT locAntrian;     /* merepresentasikan kordinat posisi antrian berada*/ 
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
   boolean prep_phase; /* bernilai true jika permainan sedang dalam preparation phase */
   int infoPrep[3]; /*temp_acts, neededTime, neededMoney*/
   Stack act_list;    /* stack untuk menyimpan aksi-aksi pada prep phase */
@@ -42,6 +54,15 @@ struct State_ {
 
 #define Name(S) (S).username
 #define Money(S) (S).money
+<<<<<<< HEAD
+=======
+#define Time(S) (S).time[0]
+#define TempActs(S) (S).tempActs
+#define MoneyNeeded(S) (S).neededMoney
+#define TimeNeeded(S) (S).neededTime
+#define OpenTime(S) (S).time[1]
+#define CloseTime(S) (S).time[2]
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
 #define Day(S) (S).day
 #define Time(S) (S).time[0]
 #define OpenTime(S) (S).time[1]
@@ -118,6 +139,7 @@ void svQueue(FILE** fp, State S);
 
 void ldQueue (State* S);
 
+<<<<<<< HEAD
 void ldDefWahana(State* S);
 
 void ldDefMaterial(State* S);
@@ -125,5 +147,23 @@ void ldDefMaterial(State* S);
 void svWahanaPlayer(FILE** fp, State S);
 
 void ldWahanaPlayer(State* S);
+=======
+void svWahanaPlayer(FILE** fp, State S);
+
+void ldWahanaPlayer(State* S);
+
+void ldDefMaterial(State* S);
+
+void ldDefWahana(State* S);
+
+void svMap(FILE** fp, State S);
+
+void ldMap(State* S, boolean isLoad);
+
+void svLahanN(State S, FILE** fp);
+
+void ldLahanN(State *S);
+
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
 
 #endif

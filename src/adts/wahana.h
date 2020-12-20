@@ -21,12 +21,12 @@ struct twahana {
     ListHistory history;  //  list yang mencatat upgrade history wahana
     BinTree upgrade_tree;
     int ID;
-    int harga;
+    int uang;
     int kapasitas;
     int banyak_orang;
     int durasi;
     int bahan[5];
-    int uang;
+    int harga;
     int time_needed;
     int harga_repair;
     int durasi_repair;  // waktu yang diperlukan untuk repair
@@ -35,6 +35,7 @@ struct twahana {
     int income;
     int count_used1;
     int income1;
+    int lahan;  //  lahan dimana wahana ini berada
     boolean starter;  // rencananya starter ini buat menunjukkan kalo suatu wahana itu wahana starter atau hasil upgrade
     boolean broke;
 };
@@ -77,7 +78,7 @@ Wahana getWahanaAt(Map_wahana * M, POINT P);
     // prekondisi : P  point yang valid
     // return value : sebuah wahana yang terletak pada P.
 
-void printDetail(Wahana * W);
+void printDetail(State * S,Wahana * W);
     // menampilkan detail wahana ke layar.
 
 void printReport(Wahana * W);
@@ -89,10 +90,10 @@ void printHistory(Wahana * W);
 void printHistory1(ListHistory L);
     // proses rekursif untuk printHistory
 
-void printNextGrade(Wahana * W);
+void printNextGrade(State * S, Wahana * W);
     // menampilkan Upgrade = []
 
-void printNextGrade1(BinTree P, int ID);
+void printNextGrade1(State * S, BinTree P, int ID);
     // proses rekurens untuk printNextGrade
     // mencari dan menampilkan semua pilihan upgrade
 
@@ -100,6 +101,7 @@ boolean IsWahanaFull(Wahana * W);
     // true jika suatu wahana full
     // definisi full yaitu banyak orang == kapasitas
 
+<<<<<<< HEAD
 boolean IsPosisiEmpty(Map_wahana * M, POINT P);
     // true jika wahana bisa dibangun di titik P
 
@@ -108,4 +110,28 @@ void SetForbiddenAddress(Map_wahana * M, POINT loc);
 
 int idxWahanaEQbyID(int ID, Wahana W[10]);
 
+=======
+boolean IsPosisiEmpty(Map_wahana * M, POINT P, POINT size);
+    // true jika wahana bisa dibangun di titik P
+
+void SetPohonWahana(State * S, Wahana * W);
+
+void SetForbiddenAddress(Map_wahana * M, POINT loc);
+
+void SetPermanentAddress(Map_wahana * M);
+    // proses : mengubah semua -1 menjadi -2;
+
+void RemoveAddress(Map_wahana * M, address_w W);
+
+void SetTemporer(Map_wahana *M, int i, int j);
+
+int idxWahanaEQbyID(int ID, Wahana W[10]);
+
+int GetParentID(State * S, int ID);
+
+void SetStateWahana(State * S, Wahana * W);
+
+ListHistory TreeToHistory(BinTree P, infohistory W_prev ,infohistory W);
+
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
 #endif

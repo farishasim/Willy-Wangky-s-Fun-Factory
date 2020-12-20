@@ -86,7 +86,21 @@ void SalinKata(char separator){
           CC adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
 
+<<<<<<< HEAD
 int ConvertKata(Kata Kin) {
+=======
+void writeAString(char* str, FILE** fp)
+{
+       int i;
+       for (i = 0; i < strlen(str); ++i)
+       {
+              CC = str[i];
+              writeAChar(CC, fp);
+       }
+}
+
+void CopyKata(Kata Kin, Kata * Kout) {
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
     int i;
     int val;
     
@@ -121,14 +135,35 @@ void writeAString(char* str, FILE** fp)
 
 void CopyKata(Kata Kin, Kata * Kout) {
     int i;
+<<<<<<< HEAD
 
     for(i = 0; i < Kin.Length; i++) {
         (*Kout).TabKata[i] = Kin.TabKata[i];
     }
 
     (*Kout).Length = Kin.Length;
-}
+=======
+    int val;
+    
+    val = 0;
+    if (Kin.TabKata[0] == '-'){
+        for(i = 1; i < Kin.Length; i++) {
+            val *= 10;
+            val += (Kin.TabKata[i] - '0');
+        } 
+        val *= -1;
+    }
 
+    else
+    {
+        for(i = 0; i < Kin.Length; i++) {
+            val *= 10;
+            val += (Kin.TabKata[i] - '0');
+        }
+    }
+    return val;
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
+}
 
 void convert2StrKata(char** str, int integer)
 {
@@ -146,4 +181,7 @@ void PrintKata(Kata K){
         printf("%c", K.TabKata[i]);
     }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143

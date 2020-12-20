@@ -60,9 +60,25 @@ void SetWahana(Map * M, POINT P, POINT Size) {
 /* F.S. M sebuah map yang berisi n+1 buah wahana, dengan wahana baru terletak pada koordinat P*/
     int i,j;
     
+<<<<<<< HEAD
     for(i = Absis(P); i < Absis(Size); i++) {
         for(j = Ordinat(P); j < Ordinat(Size); j++) {
             Elmt(*M,i,j) = obj[3];
+=======
+    for(i = Absis(P); i < Absis(P) + Absis(Size); i++) {
+        for(j = Ordinat(P); j < Ordinat(P) + Ordinat(Size); j++) {
+            Elmt(*M,i,j) = 'W';
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
+        }
+    }
+}
+
+void RemoveWahana(Map * M, POINT P, POINT Size){
+    int i,j;
+    
+    for(i = Absis(P); i < Absis(P) + Absis(Size); i++) {
+        for(j = Ordinat(P); j < Ordinat(P) + Ordinat(Size); j++) {
+            Elmt(*M,i,j) = '-';
         }
     }
 }

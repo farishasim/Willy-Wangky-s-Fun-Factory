@@ -4,6 +4,7 @@ Dwi Kalam
 10000
 1
 1
+<<<<<<< HEAD
 0,0,0,0,0
 0,0,0
 0,123
@@ -14,13 +15,28 @@ Dwi Kalam
 15, 1
 .
 
+=======
+50,50,50,50,50
+0,0,0
+-1
+-1;
+15,13,11,9
+0,5,7,0,0,0,0,0,0
+4,2,7,0,0,0,0,0,1;
+1
+.
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
 #username nama_player 
 #pos pos_x_player pos_y_player pos_x_office pos_y_player pos_x_antrian pos_y_antrian
 #jam currenttime opentime closetime {jam_dalam_menit (540 = jam 09.00)}
 #uang jumlah_uang 
 #day hari_ke
 #prep 1 (1= true / prep mode, 0=false/ main mode)
+<<<<<<< HEAD
 #materialstorage Quantitymatbata mQuantityatbesi Quantitymatkaca Quantitymatkayu Quantitymatplastik
+=======
+#materialstorage matbata matbesi matkaca matkayu matplastik
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
 #infoActs aksi_akan_dilakukan waktu_diperlukan uang_diperlukan
     //Tidak ada, 0.
 #act_list nkali, selectedActTarget[n-1], selectedAct[n] 
@@ -29,6 +45,13 @@ Dwi Kalam
     //prior_qu: 00|00000|0|0..,000000000.
                 -1 artinya tidak ada antrian.
                 Pembacaan terhadap antrean diakhiri oleh titik koma.
+<<<<<<< HEAD
 #wahana ID posistion_x position_y count_used income count_used1hr income1hr broke 
     //wahana -1|00|00|0...|0...|0..|0..|0|
 #Ukuran dan Lahan ke berapa
+=======
+#wahana ID posistion_x position_y count_used income count_used1 income1 broke 
+    //wahana -1|00|00|0...|0...|0..|0..|0|
+#Lahan ke berapa
+#Luas_Map1 Luas_Map2 Luas_Map3 Luas_Map4
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143

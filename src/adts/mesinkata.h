@@ -16,7 +16,11 @@ typedef struct {
 } Kata;
 
 /* State Mesin Kata */
+<<<<<<< HEAD
 extern boolean EndKata, counterNL, counterSC;
+=======
+extern boolean EndKata, counterNL, counterSC;;
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
 extern Kata CKata;
 
 void IgnoreBlank(char separator);
@@ -55,4 +59,8 @@ void convert2StrKata(char** str, int integer);
 
 void PrintKata(Kata K);
 
+<<<<<<< HEAD
 #endif
+=======
+#endif
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143

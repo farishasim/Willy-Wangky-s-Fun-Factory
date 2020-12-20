@@ -51,6 +51,13 @@ void OFFice(State * S);
 void Prepare(State * S);
 
 //********* Sub-Fungsi untuk Fungsi-fungsi Command *********//
+// ****** Sub-Fungsi Undo ****** //
+void UnBuy(State * S, infostack quest);
+
+void UnBuild(State * S, infostack quest);
+
+void UnUpgrade(State * S, infostack quest);
+
 POINT GateSpawnX (State *S);
 
 POINT GateSpawnY (State *S);
@@ -67,6 +74,12 @@ void ExecuteUpgrade(State * S, infostack quest);
 /* F.S. elemen pada ListWahana akan di ubah menjadi hasil upgradenya.
         PetaAddress(S) akan di set dengan address wahana hasil upgrade*/
 
+// ****** Sub-Fungsi Undo ****** //
+void UnBuy(State * S, infostack quest);
+
+void UnBuild(State * S, infostack quest);
+
+void UnUpgrade(State * S, infostack quest);
 
 //********** Fungsi-fungsi untuk Support ************//
 boolean isBetween(int val, int lower, int upper);
@@ -116,4 +129,10 @@ void RandomPlay(address_c P, State * State);
 // I.S. Sembarang
 /* F.S. RNG for Play(P)*/
 
+<<<<<<< HEAD
 #endif
+=======
+void PrintAntrian(State * S);
+
+#endif
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143

@@ -96,30 +96,55 @@ boolean IsBiner (BinTree T){
 mempunyai subpohon kiri dan subpohon kanan }*/
 
 
-boolean SearchTree (BinTree T, IdWahana X){
-    if (IsOneElmt(T)){
-        if (Akar(T)==X){
-            return true;
-        }
-        else {
-            return false;
-        }
+boolean SearchTree (BinTree P, IdWahana X) {
+/* Mengirimkan true jika ada node dari P yang bernilai X */
+    if (IsTreeEmpty(P)) {
+        return false;
+    } else {
+        return (Akar(P) == X) || SearchTree(Left(P),X) || SearchTree(Right(P),X);
     }
-    else {
-        if (IsUnerLeft(T)){
-            return SearchTree(Left(T),X);
+}
+
+void PrintTree(BinTree P, int h) {
+/* I.S. P terdefinisi, h adalah jarak indentasi (spasi) */
+/* F.S. Semua simpul P sudah ditulis dengan indentasi (spasi) */
+/* Penulisan akar selalu pada baris baru (diakhiri newline) */
+/* Contoh, jika h = 2: 
+1) Pohon preorder: (A()()) akan ditulis sbb:
+A
+2) Pohon preorder: (A(B()())(C()())) akan ditulis sbb:
+A
+  B
+  C
+3) Pohon preorder: (A(B(D()())())(C()(E()()))) akan ditulis sbb:
+A
+  B
+    D
+  C
+    E
+*/
+    PrintTree1(P,h,h);
+}
+
+void PrintTree1(BinTree P, int h, int acch) {
+// printtree dengan akumulator
+    int i;
+    if (!IsTreeEmpty(P)) {
+        printf("%d\n",Akar(P));
+        if (Left(P) != Nil) {
+            for(i = 0; i < acch; i++) {
+                printf(" ");
+            }
+            PrintTree1(Left(P),h,acch+h);
         }
-        else if (IsUnerRight(T)){
-            return SearchTree(Right(T),X);
-        }
-        else if (IsBiner(T)){
-            return (SearchTree(Left(T),X) || SearchTree(Right(T),X));
+        if (Right(P) != Nil) {
+            for(i = 0; i < acch; i++) {
+                printf(" ");
+            }
+            PrintTree1(Right(P),h,acch+h);
         }
     }
 }
-/*{ Mengirimkan true jika ada nodeTreeNodeTree dari P yang bernilai X }
-*/
-
 
 void AddDaun (BinTree T ,IdWahana X, IdWahana Y,boolean Kiri){
     if (IsOneElmt(T) && Akar(T)==X){

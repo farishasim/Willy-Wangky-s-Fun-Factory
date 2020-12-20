@@ -2,9 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "commands.h"
 
 void loading(State* S, char* filename, boolean isInput, boolean isLoad)
 {
+    ldDefMaterial(S);
+    ldDefWahana(S);
     STARTKATA(filename, ',');
     ldPlayerName(S, isLoad);
     ldPos(S, isInput);    
@@ -16,7 +19,13 @@ void loading(State* S, char* filename, boolean isInput, boolean isLoad)
     ldInfoActs(S);
     ldActList(S);
     ldQueue(S);
+<<<<<<< HEAD
     ldWahanaPlayer(S);
+=======
+    ldMap(S, isInput);
+    ldWahanaPlayer(S);
+    ldLahanN(S);
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
     while (!EndKata)
     {
         ADVKATA(',');
@@ -38,7 +47,13 @@ void saving(State S, char* filename)
     svInfoActs(&fp, S);
     svActList(&fp, S);
     svQueue(&fp, S);
+<<<<<<< HEAD
     svWahanaPlayer(&fp,S);
+=======
+    svMap(&fp, S);
+    svWahanaPlayer(&fp,S);
+    svLahanN(S, &fp);
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
     writeAChar(CC = MARK, &fp);
     fclose(fp);
 }
@@ -240,6 +255,10 @@ void svInfoActs(FILE** fp, State S)
         {
             convert2StrKata(&string, MoneyNeeded(S));
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
         writeAString(string, fp);
         if (i != 2)
         {
@@ -285,10 +304,27 @@ void ldQuantityMaterial(State* S)
     }
 }
 
+<<<<<<< HEAD
+=======
+void ldDefMaterial(State* S)
+{
+    STARTKATA("../../file/material.txt", ',');
+    int i = 0;
+    for (i = 0; i < 5; ++i)
+    {
+        CopyKata(CKata, &Storage(*S)[i].nama);
+        ADVKATA(',');
+        Storage(*S)[i].harga = ConvertKata(CKata);
+        ADVKATA(',');
+    }
+}   
+
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
 void svActList(FILE** fp, State S)
 {
     int i = 0, j;
     char* string;
+<<<<<<< HEAD
     while (i != (Top(Act(S)) + 1))
     {
         convert2StrKata(&string, Act(S).T[i++]);
@@ -299,11 +335,32 @@ void svActList(FILE** fp, State S)
         }
     }
     writeAChar(CC = '\n', fp);
+=======
+    if (IsEmptyStackt(Act(S)))
+    {
+        string = "-1\n";
+        writeAString(string, fp);
+    }
+    else
+    {
+        while (i != (Top(Act(S)) + 1))
+        {
+            convert2StrKata(&string, Act(S).T[i++]);
+            writeAString(string, fp);
+            if (i != (Top(Act(S)) + 1))
+            {
+                writeAChar(CC = ',', fp);
+            }
+        }
+        writeAChar(CC = '\n', fp);
+    }
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
 }
 
 void ldActList(State* S)
 {
     int i = 0, j = 0;
+<<<<<<< HEAD
     while (j != -1)
     {
         Act(*S).T[i++] = ConvertKata(CKata);
@@ -315,6 +372,27 @@ void ldActList(State* S)
         ADVKATA(',');
     }
     Top(Act(*S)) = i - 1;
+=======
+    if (CKata.TabKata[0] == '-')
+    {
+        CreateEmptyStackt(&Act(*S));
+        ADVKATA(',');
+    }
+    else
+    {
+        while (j != -1)
+        {
+            Act(*S).T[i++] = ConvertKata(CKata);
+            if (counterNL)
+            {   
+                --j; 
+                counterNL = false;
+            }
+            ADVKATA(',');
+        }
+        Top(Act(*S)) = i - 1;
+    }
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
 }
 
 void svQueue(FILE** fp, State S)
@@ -392,6 +470,10 @@ void ldQueue(State* S)
         if (CKata.TabKata[0] == '-')
         {
             First(DataCustomers(*S)) = Nil;
+<<<<<<< HEAD
+=======
+            ADVKATA(',');
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
         }
 
         else
@@ -452,6 +534,7 @@ void ldQueue(State* S)
 void ldWahanaPlayer(State* S)
 {
     /* Search wahana yang dimiliki pemain terhadap data wahana yang tersedia berdasarkan ID-nya */
+<<<<<<< HEAD
     int halt = 0, i, j = 0, posX, posY, idWahana, idxWahana;
     while (halt != -1)
     {
@@ -463,6 +546,20 @@ void ldWahanaPlayer(State* S)
             if (i == 0)
             {
                 ListWahana(*S)[j++]->ID = idWahana;
+=======
+    int halt = 0, i, j = 0, posX, posY, idWahana, idxWahana, lahan, id_prev;
+    while (halt != -1)
+    {
+        idWahana = ConvertKata(CKata);
+        PrintKata(CKata);
+        idxWahana = idxWahanaEQbyID(idWahana, DataWahana(*S));
+        ListWahana(*S)[j] = &DataWahana(*S)[idxWahana];
+        for (int i = 0; i < 9; i++)
+        {
+            if (i == 0)
+            {
+                ListWahana(*S)[j]->ID = idWahana;
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
             }
             else if (i == 1)
             {
@@ -471,6 +568,7 @@ void ldWahanaPlayer(State* S)
             else if (i == 2)
             {
                 posY = ConvertKata(CKata);
+<<<<<<< HEAD
                 ListWahana(*S)[j++]->position = MakePOINT(posX, posY);
             }
             else if (i == 3)
@@ -491,18 +589,56 @@ void ldWahanaPlayer(State* S)
             }
             else if (i == 7)
             {
+=======
+                ListWahana(*S)[j]->position = MakePOINT(posX, posY);
+            }
+            else if (i == 3)
+            {
+                ListWahana(*S)[j]->count_used = ConvertKata(CKata);
+            }
+            else if (i == 4)
+            {
+                ListWahana(*S)[j]->income = ConvertKata(CKata);
+            }
+            else if (i == 5)
+            {
+                ListWahana(*S)[j]->count_used1 = ConvertKata(CKata);
+            }
+            else if (i == 6)
+            {
+                ListWahana(*S)[j]->income1 = ConvertKata(CKata);
+            }
+            else if (i == 7)
+            {
+                ListWahana(*S)[j]->broke = ConvertKata(CKata);
+            }
+            else if (i == 8)
+            {
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
                 if (counterSC)
                 {
                     --CKata.Length;
                     --halt;
                     counterSC = false;
                 }
+<<<<<<< HEAD
                 ListWahana(*S)[j++]->broke = ConvertKata(CKata);
             }
             ADVKATA(',');
         }
 
     }
+=======
+                ListWahana(*S)[j]->lahan = ConvertKata(CKata);
+                lahan = ListWahana(*S)[j]->lahan;
+            }
+            ADVKATA(',');
+        }
+        SetStateWahana(S, ListWahana(*S)[j]);
+        ++j;
+    }
+    NWahana(*S) = j;
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
 }
 
 void svWahanaPlayer(FILE** fp, State S)
@@ -563,6 +699,7 @@ void svWahanaPlayer(FILE** fp, State S)
     }
 }
 
+<<<<<<< HEAD
 void ldDefWahana(State* S)
 {
     START("../../file/wahana.txt");
@@ -587,3 +724,77 @@ void ldDefMaterial(State* S)
         ADVKATA(',');
     }
 }   
+=======
+void svMap(FILE** fp, State S)
+{
+    char* string;
+    int i;
+    for (i = 0; i < 4; ++i)
+    {
+        convert2StrKata(&string, (S).peta[i].NBrsEff-2);
+        writeAString(string, fp);
+        if (i < 3)
+        {
+            writeAChar(CC = ',', fp);
+        }
+    }
+    writeAChar(CC = '\n', fp);
+}
+
+void ldMap(State* S, boolean isInput)
+{
+    if (!isInput) {
+        for(int i = 0; i<4; i++) 
+        {
+            inputManualPeta(&(*S).peta[i], &(*S).peta_address[i], isInput);
+            if (i == 0) {
+                Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, NKolEff((*S).peta[i])-1) = '>';
+                Elmt((*S).peta[i], NBrsEff((*S).peta[i])-1, NKolEff((*S).peta[i])/2) = 'V';
+            } else if (i == 1) {
+                Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, 0) = '<';
+                Elmt((*S).peta[i], NBrsEff((*S).peta[i])-1, NKolEff((*S).peta[i])/2) = 'V';
+            } else if (i == 2) {
+                Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, NKolEff((*S).peta[i])-1) = '>';
+                Elmt((*S).peta[i], 0, NKolEff((*S).peta[i])/2) = '^';
+            } else {
+                Elmt((*S).peta[i], NBrsEff((*S).peta[i])/2, 0) = '<';
+                Elmt((*S).peta[i], 0, NKolEff((*S).peta[i])/2) = '^';
+            }
+        }
+        MakeGraph(&Area(*S));
+        SetAntrian(&Peta(*S), LocAntrian(*S));
+        SetForbiddenAddress(&PetaAddress(*S), LocAntrian(*S));
+        SetOffice(&Peta(*S), Office(*S));
+        SetForbiddenAddress(&PetaAddress(*S), Office(*S));
+        Position(*S) = MakePOINT(Absis(Office(*S)),Ordinat(Office(*S)));
+        SetPlayer(&Peta(*S), Position(*S));
+    }
+}
+
+void svLahanN(State S, FILE** fp)
+{
+    char* str;
+    convert2StrKata(&str, Area(S).First->info);
+    writeAString(str, fp);
+    writeAChar(CC = '\n', fp);
+}
+
+void ldLahanN(State *S)
+{
+    //Sudah dialokasi saat ldMap
+    Area(*S).First->info = ConvertKata(CKata); 
+}
+
+
+void ldDefWahana(State* S)
+{
+    START("../../file/wahana.txt");
+    int i = 0;
+    while (!EOP)
+    {
+        LoadWahana(&DataWahana(*S)[i]);
+        SetPohonWahana(S,&DataWahana(*S)[i++]);
+        //ADVKATA(',');
+    }
+}
+>>>>>>> 5cfa79ab5dd61cf352085529d1ec6a1a41635143
