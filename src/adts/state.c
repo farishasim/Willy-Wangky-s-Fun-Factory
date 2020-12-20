@@ -459,7 +459,7 @@ void ldQueue(State* S)
                             if(Loc(P) == -1)
                             {
                                 Enqueue(&Antrian(*S), ElmtQueue(Antrian(*S), j));
-                            }
+                            } 
                         }
                         else if (i == 7)
                         {
