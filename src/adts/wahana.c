@@ -170,7 +170,7 @@ void TulisMATRIKSW (Map_wahana M){
     int i,j;
     for(i=0; i < NBrsEff(M); i++){
         for(j=0; j< NKolEff(M); j++) {
-            printf("%d",Elmt(M,i,j));
+            printf("%ld", (long) Elmt(M,i,j));
         } 
         printf("\n");
     }
@@ -185,6 +185,7 @@ Wahana getWahanaAt(Map_wahana * M, POINT P) {
 
 void printDetail(State * S, Wahana * W) {
     // menampilkan detail wahana ke layar.
+    char n;
     printf("\n// Melihat detail wahana //\n");
 
     printf("\nNama : ");
@@ -207,12 +208,13 @@ void printDetail(State * S, Wahana * W) {
     }
 
     printf("Tekan Enter untuk melanjutkan\n");
-    scanf("%c");
+    scanf("%c", &(n));
 }
 
 
 void printReport(Wahana (*W)){
     //menampilkan report wahana ke layar.
+    char n;
     printf("Total Pemakaian : %d\n", (*W).count_used);
     printf("Pemakaian hari ini : %d\n", (*W).count_used1);
 
@@ -220,7 +222,7 @@ void printReport(Wahana (*W)){
     printf("Pemasukkan hari ini: %d\n", (*W).income1);
 
     printf("Tekan Enter untuk melanjutkan\n");
-    scanf("%c");
+    scanf("%c", &n);
 }
 
 void printHistory1(ListHistory L){

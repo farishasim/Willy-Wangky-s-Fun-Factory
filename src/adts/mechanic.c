@@ -257,7 +257,7 @@ void Build(State *S){
     if (!DataWahana(*S)[ID].starter || NEQPOINT(DataWahana(*S)[ID].position,P)) {
             printf("Invalid command\n");
             sleep(1);
-            scanf("%c",&i);
+            scanf("%c", (char * ) &i);
             return;
         }
 
@@ -329,7 +329,7 @@ void Build(State *S){
 		printf("Proses build tersimpan ke dalam stack to-do.");
 	}
     sleep(1);
-    scanf("%c",&i);
+    scanf("%c", (char *)&i);
 }
 
 
@@ -373,7 +373,7 @@ void Upgrade(State *S){
     }
 
     scanf("%d", &ID_pilih);
-    scanf("%c", &i); // skip \n
+    scanf("%c", (char *)&i); // skip \n
 
     if (ID_pilih != ID_kiri && ID_pilih != ID_kanan) {
         printf("Input tidak valid\n");
@@ -500,7 +500,7 @@ void Buy(State *S){
         Push(&Act(*S), quest);
         printf("Proses buy tersimpan dalam stack\n");
 	}
-    scanf("%c", &i);  // skip \n
+    scanf("%c", (char *)&i);  // skip \n
     sleep(1);
 }
 
@@ -604,7 +604,7 @@ void Serve(State * S) {
     
     printf("Masukkan pilihan: ");
     scanf("%d", &choice);
-    scanf("%c", &i); // skip \n
+    scanf("%c", (char *)&i); // skip \n
 
     if (!isBetween(choice,1,num)) {
         printf("\nInvalid command. \n");

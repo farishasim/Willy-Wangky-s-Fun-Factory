@@ -172,7 +172,8 @@ void inputManual(State *S)
     }
     TulisMATRIKS((Peta(*S)));
     Time(*S) = CloseTime(*S);
-    scanf("%c", &i);
+    //scanf("%c", &i); // didn't work on linux
+    scanf("%c", (char * )&i);
     Position(*S) = MakePOINT(Absis(Office(*S)),Ordinat(Office(*S)));
     SetPlayer(&Peta(*S), Position(*S));
     TulisMATRIKS((Peta(*S)));
@@ -295,7 +296,8 @@ void inputManualCoba2(State *S)
     }
     TulisMATRIKS((Peta(*S)));
     Time(*S) = CloseTime(*S);
-    scanf("%c", &i);
+    //scanf("%c", &i);
+    scanf("%c", (char *)&i);
     Position(*S) = MakePOINT(Absis(Office(*S)),Ordinat(Office(*S)));
     SetPlayer(&Peta(*S), Position(*S));
     TulisMATRIKS((Peta(*S)));

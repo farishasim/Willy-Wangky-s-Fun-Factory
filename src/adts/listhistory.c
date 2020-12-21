@@ -162,7 +162,8 @@ void PrintListHistory (ListHistory L) {
 /* I.S. L terdefinisi. */
 /* F.S. Setiap elemen listHistory dicetak. */
     if (!IsEmptyHistory(L)) {
-        printf("%d\n", Info(L));
+        //printf("%d\n", Info(L)); // didn't work on linux
+        printf("%p\n", Info(L));
         PrintListHistory(Next(L));
     }
 }

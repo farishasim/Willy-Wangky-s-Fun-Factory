@@ -64,7 +64,7 @@ void BacaMATRIKS (MATRIKS * M, int NB, int NK){
     int i,j;
     for (i=0;i<=GetLastIdxBrs(*M);i++){
         for (j=0;j<=GetLastIdxBrs(*M);j++){
-            scanf("%d", &(M->Mem[i][j]));
+            scanf("%c", &(M->Mem[i][j]));
         }
     }
 }
